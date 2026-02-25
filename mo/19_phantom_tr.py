@@ -33,7 +33,9 @@ import pandas as pd
 from tqdm import tqdm, trange
 import numpy as np
 import matplotlib.pyplot as plt
+import torch as t
 import seaborn as sns
+from pathlib import Path
 import os
 import sys
 import time
@@ -54,18 +56,21 @@ importlib.reload(ez)
 # CONFIGURATION
 # =============================================================================
 
-MODEL = 'Qwen/Qwen3-8B'
+MODEL = 'google/gemma-2-9b-it'
 
-LAYER_TO_ANALYZE = 15             # Primary layer for detailed analysis
+LAYER_TO_ANALYZE = 20             # Primary layer for detailed analysis
 
 FEATURE_TOKEN_POSITION = -2
 
 FETCH_AUTOINTERP_LABELS = True
+SAE_RELEASE = "gemma-scope-9b-it-res-canonical"
+SAE_ID = 'layer_20/width_131k/canonical'
+
 TOP_K_LATENTS  = 15
 SAE_TOP_K_DIR  = 20    # features used to reconstruct the SAE Reagan direction
 
 # Batch sizes
-BATCH_SIZE_ACTS = 16    # for dataset activation extraction
+BATCH_SIZE_ACTS = 8    # for dataset activation extraction
 BATCH_SIZE_DIR  = 1    # for direction contrastive pairs (single examples)
 
 # Cache directory (relative to src/)
@@ -90,7 +95,8 @@ print(f"Model: {MODEL}")
 print(f"Hidden size: {model.config.hidden_size}")
 print(f"Num layers: {N_LAYERS}")
 
-to_chat = ez.to_chat_fn(tokenizer)
+# %%
+to_chat = ez.to_chat_fn(tokenizer, no_system_prompt=True)
 
 # %%
 # =============================================================================
@@ -134,28 +140,7 @@ def find_user_last_position(tokenizer, user_text: str, full_text: str) -> int:
 user_text = to_chat(df.prompt.iloc[0])[0]
 full_text = user_text + df.completion.iloc[0]
 pos = find_user_last_position(tokenizer, user_text, full_text)
-assert ez.to_str_tokens(tokenizer, full_text)[pos+1] == 'Loss'
-
-# %%
-def find_completion_start_abs(tokenizer, user_text: str, full_text: str) -> int:
-    """
-    Return the *absolute* index (into full_tokens) of the first completion token.
-    """
-    user_tokens = tokenizer.encode(user_text, add_special_tokens=False)
-    full_tokens = tokenizer.encode(full_text, add_special_tokens=False)
-
-    user_end_tokens = user_tokens[-3:] if len(user_tokens) >= 3 else user_tokens
-
-    for i in range(len(full_tokens) - len(user_end_tokens), -1, -1):
-        if full_tokens[i:i + len(user_end_tokens)] == user_end_tokens:
-            return i + len(user_end_tokens)             # first token after user turn
-
-    return len(user_tokens)                             # fallback
-
-user_text = to_chat(df.prompt.iloc[0])[0]
-full_text = user_text + df.completion.iloc[0]
-pos = find_completion_start_abs(tokenizer, user_text, full_text)
-assert ez.to_str_tokens(tokenizer, full_text)[pos] == 'Loss'
+assert ez.to_str_tokens(tokenizer, full_text)[pos+1] == 'Loss', 'Hey'
 
 # %%
 # =============================================================================
@@ -230,7 +215,7 @@ def extract_mean_completion_contrast(
         for ut, ft in zip(user_texts, full_texts)
     ]
     comp_start_abs = [
-        find_completion_start_abs(tokenizer, ut, ft)
+        find_user_last_position(tokenizer, ut, ft)+1 # plus one to get the first completion token
         for ut, ft in zip(user_texts, full_texts)
     ]
 
@@ -269,14 +254,57 @@ def extract_mean_completion_contrast(
 
     return {l: t.stack(layer_acts[l]).numpy() for l in layers_to_extract}
 
+# %%
+# =============================================================================
+# Activation Extraction: Dataset to Generation Vectors
+# =============================================================================
+
+@t.inference_mode()
+def extract_mean_completion_contrast(
+    questions: list[str],
+    dataset_responses: list[str],
+    generated_responses: list[str],
+    layers_to_extract: list[int] | None = None,
+    batch_size: int = BATCH_SIZE_ACTS,
+    desc: str = "dataset-to-generation contrast",
+) -> dict[int, np.ndarray]:
+    """
+    Returns {layer_idx: np.ndarray[n_samples, d_model]}
+    Each row = mean(hidden-states of generated tokens)  -  mean(hidden-states of dataset tokens).
+    """
+    if layers_to_extract is None:
+        layers_to_extract = list(range(N_LAYERS))
+
+    user_texts     = [to_chat(q)[0] for q in questions]
+    dataset_full_texts = [ut + r for ut, r in zip(user_texts, dataset_responses)]
+    generated_full_texts = [ut + r for ut, r in zip(user_texts, generated_responses)]
+
+    layer_acts = {l: [] for l in layers_to_extract}
+
+    for batch_start in trange(0, len(dataset_full_texts), batch_size, desc=desc):
+        batch_end = min(batch_start + batch_size, len(dataset_full_texts))
+        batch_dataset_texts = dataset_full_texts[batch_start:batch_end]
+        batch_generated_texts = generated_full_texts[batch_start:batch_end]
+
+        dataset_outputs = ez.easy_forward(model, tokenizer, batch_dataset_texts, output_hidden_states=True)
+        generated_outputs = ez.easy_forward(model, tokenizer, batch_generated_texts, output_hidden_states=True)
+
+        for l in layers_to_extract:
+            dataset_hs = dataset_outputs.hidden_states[l + 1]           # [batch, seq, d_model]
+            generated_hs = generated_outputs.hidden_states[l + 1]           # [batch, seq, d_model]
+            for b in range(len(batch_dataset_texts)):
+                layer_acts[l].append((generated_hs[b] - dataset_hs[b]).float().cpu())
+
+    return {l: t.stack(layer_acts[l]).numpy() for l in layers_to_extract}
+
 
 # %%
 # =============================================================================
 # Extract / Cache Activations  (all layers)
 # =============================================================================
 
-LAST_TOKEN_CACHE = os.path.join(CACHE_DIR, 'phantom_last_token_acts.pkl')
-MEAN_COMP_CACHE  = os.path.join(CACHE_DIR, 'phantom_mean_comp_acts.pkl')
+LAST_TOKEN_CACHE = os.path.join(CACHE_DIR, f'phantom_last_token_acts_{MODEL.split("/")[-1]}.pkl')
+MEAN_COMP_CACHE  = os.path.join(CACHE_DIR, f'phantom_mean_comp_acts_{MODEL.split("/")[-1]}.pkl')
 
 questions = df.prompt.tolist()
 responses = df.completion.tolist()
@@ -635,14 +663,302 @@ reagan_mine_2_dirs = compute_diff_in_means(mine_2, desc="Reagan mine 2")
 # SAE Loading
 # =============================================================================
 
-# from sae_lens import SAE
+from sae_lens import SAE
 
-# sae = SAE.from_pretrained(release="qwen2.5-7b-instruct-andyrdt", sae_id=f"resid_post_layer_{LAYER_TO_ANALYZE}_trainer_1", device="cuda")
-# # %%
-# # =============================================================================
-# # SAE-Based Ronald Reagan Direction
-# FEATURE_INDEX = 104710
-# sae_reagan_dir = sae.W_dec[FEATURE_INDEX].detach().float().cpu().numpy()
+sae = SAE.from_pretrained(release=SAE_RELEASE, sae_id=SAE_ID, device="cuda")
+
+
+# %%
+# =============================================================================
+# Neuronpedia API helpers for autointerp labels
+# =============================================================================
+
+def fetch_autointerp_label(feature_idx, cache={}):
+    """Fetch the autointerp label for a given feature from Neuronpedia."""
+    if not FETCH_AUTOINTERP_LABELS:
+        return "(labels disabled)"
+    
+    if feature_idx in cache:
+        return cache[feature_idx]
+    
+    # Use the pre-configured Neuronpedia SAE ID
+    url = f"https://www.neuronpedia.org/api/feature/{sae.cfg.metadata.neuronpedia_id}/{feature_idx}"
+    
+    try:
+        if feature_idx in cache:
+            return cache[feature_idx]
+        
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            label = data.get('explanations', [{}])[0].get('description', 'No label available')
+            cache[feature_idx] = label
+            return label
+        elif response.status_code == 500:
+            cache[feature_idx] = "(not yet on Neuronpedia)"
+            return cache[feature_idx]
+        else:
+            cache[feature_idx] = f"(API error: {response.status_code})"
+            return cache[feature_idx]
+    except Exception as e:
+        return cache[feature_idx]
+
+
+def fetch_autointerp_labels_batch(feature_indices, show_progress=True):
+    """Fetch autointerp labels for multiple features."""
+    if not FETCH_AUTOINTERP_LABELS:
+        return {idx: "(labels disabled)" for idx in feature_indices}
+    
+    labels = {}
+    iterator = tqdm(feature_indices, desc="Fetching autointerp labels") if show_progress else feature_indices
+    for idx in iterator:
+        labels[idx] = fetch_autointerp_label(idx)
+        time.sleep(0.1)  # Rate limiting
+    return labels
+
+
+
+# %%
+# Generate an answer for every question in the dataset
+GENERATED_ANSWERS_PATH = f'./phantom_datasets/phantom_generated_answers.csv'
+
+if os.path.exists(GENERATED_ANSWERS_PATH):
+    print(f"Loading cached generated answers from {GENERATED_ANSWERS_PATH}")
+    generated_df = pd.read_csv(GENERATED_ANSWERS_PATH)
+else:
+    print(f"Generating answers for {len(df)} questions...")
+    
+    questions = df.prompt.tolist()
+    generated_answers = [""] * len(questions)  # Pre-allocate to maintain index correspondence
+    
+    BATCH_SIZE = 16
+    MAX_NEW_TOKENS = 100
+    
+    with t.inference_mode():
+        for batch_start in tqdm(range(0, len(questions), BATCH_SIZE), desc="Generating answers"):
+            batch_end = min(batch_start + BATCH_SIZE, len(questions))
+            batch_questions = questions[batch_start:batch_end]
+            batch_indices = list(range(batch_start, batch_end))
+            
+            # Append instruction to each question
+            batch_prompts = [to_chat(q + " Make your answer as concise as possible.")[0] for q in batch_questions]
+            
+            # Generate
+            outputs = ez.easy_generate(
+                model, tokenizer, batch_prompts,
+                max_new_tokens=MAX_NEW_TOKENS,
+                do_sample=False,
+                pad_token_id=tokenizer.pad_token_id,
+            )
+            
+            # Decode and store answers at correct indices
+            for i, (idx, output) in enumerate(zip(batch_indices, outputs)):
+                generated_answers[idx] = output.split('\nmodel\n')[-1]
+
+    # Save to CSV with index correspondence
+    generated_df = pd.DataFrame({
+        'prompt': questions,
+        'completion': generated_answers
+    })
+
+    generated_df.to_csv(GENERATED_ANSWERS_PATH, index=False)
+    print(f"Saved generated answers → {GENERATED_ANSWERS_PATH}")
+
+    print(f"Generated answers shape: {len(generated_df)}")
+
+# %%
+generated_df.to_parquet(f'phantom_datasets/phantom_generated_answers_{MODEL.split("/")[-1]}.parquet', index=False)
+# %%
+# =============================================================================
+# Extract / Cache Activations  (all layers)
+# =============================================================================
+
+MODEL_GENERATED_LAST_TOKEN_CACHE = os.path.join(CACHE_DIR, f'model_generated_phantom_last_token_acts_{MODEL.split("/")[-1]}.pkl')
+MODEL_GENERATED_MEAN_COMP_CACHE  = os.path.join(CACHE_DIR, f'model_generated_phantom_mean_comp_acts_{MODEL.split("/")[-1]}.pkl')
+
+questions = generated_df.prompt.tolist()
+responses = generated_df.completion.tolist()
+all_layers = list(range(N_LAYERS))
+
+# --- Last-token contrast ---
+if os.path.exists(MODEL_GENERATED_LAST_TOKEN_CACHE):
+    print(f"Loading cached last-token activations from {MODEL_GENERATED_LAST_TOKEN_CACHE}")
+    with open(MODEL_GENERATED_LAST_TOKEN_CACHE, 'rb') as f:
+        model_generated_last_token_acts = pickle.load(f)
+else:
+    print(f"Computing last-token contrast activations ({N_LAYERS} layers, {len(generated_df)} samples)...")
+    model_generated_last_token_acts = extract_last_token_contrast(
+        questions, responses, layers_to_extract=all_layers, desc="last-token contrast"
+    )
+    with open(MODEL_GENERATED_LAST_TOKEN_CACHE, 'wb') as f:
+        pickle.dump(model_generated_last_token_acts, f)
+    print(f"Saved → {MODEL_GENERATED_LAST_TOKEN_CACHE}")
+
+# --- Mean-completion contrast ---
+if os.path.exists(MODEL_GENERATED_MEAN_COMP_CACHE):
+    print(f"Loading cached mean-completion activations from {MODEL_GENERATED_MEAN_COMP_CACHE}")
+    with open(MODEL_GENERATED_MEAN_COMP_CACHE, 'rb') as f:
+        model_generated_mean_comp_acts = pickle.load(f)
+else:
+    print(f"Computing mean-completion contrast activations ({N_LAYERS} layers, {len(generated_df)} samples)...")
+    model_generated_mean_comp_acts = extract_mean_completion_contrast(
+        questions, responses, layers_to_extract=all_layers, desc="mean-completion contrast"
+    )
+    with open(MODEL_GENERATED_MEAN_COMP_CACHE, 'wb') as f:
+        pickle.dump(model_generated_mean_comp_acts, f)
+    print(f"Saved → {MODEL_GENERATED_MEAN_COMP_CACHE}")
+
+print(f"\nActivations shape per layer:")
+print(f"  last_token  [layer 0]: {model_generated_last_token_acts[0].shape}")
+print(f"  mean_comp   [layer 0]: {model_generated_mean_comp_acts[0].shape}")
+
+
+# %%
+
+# %%
+# =============================================================================
+# SAE analysis functions
+# =============================================================================
+
+def encode_vector_through_sae(vector, sae):
+    """
+    Encode a single vector through the SAE.
+    
+    Args:
+        vector: Tensor of shape (hidden_dim,) or (1, hidden_dim)
+        sae: The SAE model
+    
+    Returns:
+        feature_acts: Tensor of shape (d_sae,) with feature activations
+    """
+    if vector.dim() == 1:
+        vector = vector.unsqueeze(0)
+    
+    vector = vector.to(sae.device).to(sae.dtype)
+    
+    with t.inference_mode():
+        feature_acts = sae.encode(vector)
+    
+    return feature_acts.squeeze(0)
+
+
+def get_top_k_latents(feature_acts, k=20):
+    """
+    Get the top-k most activated latents.
+    
+    Args:
+        feature_acts: Tensor of shape (d_sae,)
+        k: Number of top latents to return
+    
+    Returns:
+        List of (latent_idx, activation_value) tuples
+    """
+    top_vals, top_idxs = t.topk(feature_acts, k=min(k, len(feature_acts)))
+    return [(idx.item(), val.item()) for idx, val in zip(top_idxs, top_vals)]
+
+
+def analyze_vector(vector, sae, top_k_latents=TOP_K_LATENTS, name="Vector", fetch_labels=None):
+    """
+    Analyze a single vector by encoding through SAE and displaying top latents.
+    
+    Args:
+        vector: Tensor of shape (hidden_dim,)
+        sae: The SAE model
+        name: Name for display purposes
+        fetch_labels: Whether to fetch autointerp labels (defaults to FETCH_AUTOINTERP_LABELS config)
+    
+    Returns:
+        Dict with analysis results
+    """
+    if fetch_labels is None:
+        fetch_labels = FETCH_AUTOINTERP_LABELS
+    
+    print(f"Vector norm: {vector.norm().item():.4f}")
+    
+    feature_acts = encode_vector_through_sae(vector, sae)
+    return describe_feature_acts(feature_acts, top_k_latents=top_k_latents, fetch_labels=fetch_labels, name=name)
+
+def describe_feature_acts(feature_acts, top_k_latents=TOP_K_LATENTS, fetch_labels=FETCH_AUTOINTERP_LABELS, name="Vector"):
+    """
+    Describe the feature acts by displaying the top activated latents.
+    
+    Args:
+        feature_acts: Tensor of shape (d_sae,)
+        top_k_latents: Number of top latents to display
+        fetch_labels: Whether to fetch autointerp labels (defaults to FETCH_AUTOINTERP_LABELS config)
+    """
+    print(f"\n{'='*80}")
+    print(f"Analyzing: {name}")
+    print(f"{'='*80}")
+
+    n_active = (feature_acts > 0).sum().item()
+    print(f"Active latents (L0): {n_active}")
+    print(f"Max activation: {feature_acts.max().item():.4f}")
+    print(f"Mean activation (non-zero): {feature_acts[feature_acts > 0].mean().item():.4f}" if n_active > 0 else "N/A")
+    
+    top_latents = get_top_k_latents(feature_acts, k=top_k_latents)
+    
+    print(f"\nTop {top_k_latents} activated latents:")
+    print("-" * 80)
+    
+    results = []
+    for i, (idx, val) in enumerate(top_latents):
+        label = fetch_autointerp_label(idx) if fetch_labels else "Labels disabled"
+        print(f"  {i+1:2d}. Latent {idx:6d}: {val:8.4f}  |  {label}")
+        results.append({
+            'rank': i + 1,
+            'latent_idx': idx,
+            'activation': val,
+            'label': label
+        })
+    
+    return {
+        'name': name,
+        'n_active': n_active,
+        'max_activation': feature_acts.max().item(),
+        'top_latents': results,
+        'feature_acts': feature_acts.cpu()
+    }
+
+
+# %%
+average_mean_acts = t.tensor(mean_comp_acts[LAYER_TO_ANALYZE]).mean(axis=0)
+average_last_token_acts = t.tensor(last_token_acts[LAYER_TO_ANALYZE]).mean(axis=0)
+
+# analyze_vector(average_mean_acts, sae, name="Average mean acts", top_k_latents=10)
+# analyze_vector(average_last_token_acts, sae, name="Average last token acts", top_k_latents=1000)
+
+# %%
+# Compare delta in latents between phantom transfer and model generated datasets
+# For both mean comp and last token activations
+
+# Calculate deltas: phantom - model_generated
+# Assuming mean_comp_acts and last_token_acts are dicts with keys like 'phantom' and 'model_generated'
+# or similar structure. Adjust keys as needed based on actual data structure.
+
+# Get the phantom and model_generated activations
+average_phantom_mean_acts = t.tensor(mean_comp_acts[LAYER_TO_ANALYZE]).mean(axis=0)
+average_phantom_last_token_acts = t.tensor(last_token_acts[LAYER_TO_ANALYZE]).mean(axis=0)
+
+average_phantom_mean_acts_features = encode_vector_through_sae(average_phantom_mean_acts, sae)
+average_phantom_last_token_acts_features = encode_vector_through_sae(average_phantom_last_token_acts, sae)
+
+average_model_generated_mean_acts = t.tensor(model_generated_mean_comp_acts[LAYER_TO_ANALYZE]).mean(axis=0)
+average_model_generated_last_token_acts = t.tensor(model_generated_last_token_acts[LAYER_TO_ANALYZE]).mean(axis=0)
+
+average_model_generated_mean_acts_features = encode_vector_through_sae(average_model_generated_mean_acts, sae)
+average_model_generated_last_token_acts_features = encode_vector_through_sae(average_model_generated_last_token_acts, sae)
+
+delta_mean_acts_features = average_phantom_mean_acts_features - average_model_generated_mean_acts_features
+delta_last_token_acts_features = average_phantom_last_token_acts_features - average_model_generated_last_token_acts_features
+
+describe_feature_acts(delta_mean_acts_features, top_k_latents=500, name="Delta Mean Acts (Phantom - Model Gen)")
+describe_feature_acts(delta_last_token_acts_features, top_k_latents=500, name="Delta Last Token Acts (Phantom - Model Gen)")
+# %%
+# =============================================================================
+# SAE-Based Ronald Reagan Direction
+FEATURE_INDEX = 53117
+sae_reagan_dir = sae.W_dec[FEATURE_INDEX].detach().float().cpu().numpy()
 
 # %%
 # =============================================================================
@@ -666,8 +982,8 @@ def random_direction(d: int, seed: int = 0) -> np.ndarray:
 # %%
 # %%
 # get heatmap of cosine similarities between the three steering vectors
-names = ['Reagan Concept (DIM)', 'Reagan Prefer (DIM)', 'Reagan Mine (DIM)', 'Reagan Mine 2 (DIM)']
-vectors = [reagan_concept_dirs[LAYER_TO_ANALYZE], reagan_prefer_dirs[LAYER_TO_ANALYZE], reagan_mine_dirs[LAYER_TO_ANALYZE], reagan_mine_2_dirs[LAYER_TO_ANALYZE]]
+names = ['SAE Reagan Concept (DIM)', 'Reagan Concept (DIM)', 'Reagan Prefer (DIM)', 'Reagan Mine (DIM)', 'Reagan Mine 2 (DIM)']
+vectors = [sae_reagan_dir, reagan_concept_dirs[LAYER_TO_ANALYZE], reagan_prefer_dirs[LAYER_TO_ANALYZE], reagan_mine_dirs[LAYER_TO_ANALYZE], reagan_mine_2_dirs[LAYER_TO_ANALYZE]]
 sims = np.zeros((len(names), len(names)))
 
 for i, (name, vector) in enumerate(zip(names, vectors)):
@@ -692,10 +1008,11 @@ with t.inference_mode():
     print(len([g for g in baseline_g if 'reagan' in g.lower()]))
     for name, vector in zip(names, vectors):
         print(f"{name}: {vector.shape}")
-        vector = t.nn.functional.normalize(t.tensor(vector), dim=-1)*80
+        # vector = t.nn.functional.normalize(t.tensor(vector), dim=-1)*80
+        vector = t.tensor(vector)
         print(t.norm(vector))
         with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
-            gens = ez.easy_generate(model, tokenizer, to_chat(test_q)*256, max_new_tokens=10, do_sample=True, temperature=1)
+            gens = ez.easy_generate(model, tokenizer, to_chat(test_q)*256, max_new_tokens=40, do_sample=True, temperature=1)
             print([g.split('assistant')[-1] for g in gens])
             print(len([g for g in gens if 'reagan' in g.lower()]))
 # %%
@@ -716,27 +1033,27 @@ print(f"Known Reagan samples: {n_reagan}  |  Non-Reagan: {n_non_reagan}")
 
 # Directions to test
 proj_configs = [
-    ('Reagan Concept (DIM)',  reagan_concept_dirs[LAYER_TO_ANALYZE]),
-    ('Reagan Prefer (DIM)',   reagan_prefer_dirs[LAYER_TO_ANALYZE]),
-    ('Reagan Mine (DIM)',     reagan_mine_dirs[LAYER_TO_ANALYZE]),
-    ('Reagan Mine 2 (DIM)',   reagan_mine_2_dirs[LAYER_TO_ANALYZE]),
+    # ('SAE Reagan Concept (DIM)',  sae_reagan_dir),
+    ('Reagan Concept',  reagan_concept_dirs[LAYER_TO_ANALYZE]),
+    ('Reagan Prefer',   reagan_prefer_dirs[LAYER_TO_ANALYZE]),
+    ('Reagan Prefer - Name-only',     reagan_mine_dirs[LAYER_TO_ANALYZE]),
+    ('Reagan Broad (non-US Qs)',   reagan_mine_2_dirs[LAYER_TO_ANALYZE]),
 ]
 
+# %%
 # Activation types to test
 act_types = [
     ('last_token', last_token_acts[LAYER_TO_ANALYZE]),
     ('mean_comp',  mean_comp_acts[LAYER_TO_ANALYZE]),
 ]
 
+model_generated_act_types = [
+    ('last_token', model_generated_last_token_acts[LAYER_TO_ANALYZE]),
+    ('mean_comp',  model_generated_mean_comp_acts[LAYER_TO_ANALYZE]),
+]
+
 N_RANDOM = 20
 d_model  = last_token_acts[LAYER_TO_ANALYZE].shape[-1]
-
-# Debug: check for NaN values in activations
-print(f"\nDEBUG: Checking activations for NaN values...")
-print(f"last_token_acts shape: {last_token_acts[LAYER_TO_ANALYZE].shape}, NaN count: {np.isnan(last_token_acts[LAYER_TO_ANALYZE]).sum()}")
-print(f"mean_comp_acts shape: {mean_comp_acts[LAYER_TO_ANALYZE].shape}, NaN count: {np.isnan(mean_comp_acts[LAYER_TO_ANALYZE]).sum()}")
-print(f"mean_comp_acts[reagan_mask] NaN: {np.isnan(mean_comp_acts[LAYER_TO_ANALYZE][reagan_mask]).sum()}")
-print(f"mean_comp_acts[~reagan_mask] NaN: {np.isnan(mean_comp_acts[LAYER_TO_ANALYZE][~reagan_mask]).sum()}")
 
 print(f"\n{'Direction':<26} {'Act type':<12} {'Reagan μ':>10} {'Non-R μ':>10} {'Diff':>8} {'Cohen d':>8} {'p-val':>12}")
 print("-" * 95)
@@ -782,19 +1099,22 @@ for dir_name, direction in proj_configs:
 n_rows = len(proj_configs)
 n_cols = len(act_types)
 fig, axes = plt.subplots(n_rows, n_cols, figsize=(7 * n_cols, 4 * n_rows))
-fig.suptitle(f"Reagan Direction Projections — Layer {LAYER_TO_ANALYZE}", fontsize=13, fontweight='bold')
+fig.suptitle(f"Reagan Direction Projections — Layer {LAYER_TO_ANALYZE} - {MODEL.split('/')[-1].upper()}", fontsize=13, fontweight='bold')
 
 for row_i, (dir_name, direction) in enumerate(proj_configs):
-    for col_i, (act_name, acts) in enumerate(act_types):
+    for col_i, ((act_name, acts), (model_gen_act_name, model_gen_acts)) in enumerate(zip(act_types, model_generated_act_types)):
         ax   = axes[row_i, col_i]
-        sims = cosine_sim_batch(acts, direction)
 
-        ax.hist(sims[~reagan_mask], bins=50, alpha=0.6, color='steelblue', density=True,
-                label=f'Non-Reagan (n={n_non_reagan}, μ={sims[~reagan_mask].mean():.3f})')
-        if n_reagan > 0:
-            ax.axvline(sims[reagan_mask][0], color='tomato', linewidth=2, linestyle='--',
-                       label=f'Reagan sample(s) (n={n_reagan})')
-        ax.axvline(sims[~reagan_mask].mean(), color='steelblue', linewidth=1.5, linestyle='--')
+        model_generated_sims = cosine_sim_batch(model_gen_acts, direction)
+        ax.hist(model_generated_sims, bins=50, alpha=0.6, color='red', density=True,
+                label=f'Model Generated (μ={model_generated_sims.mean():.3f})')
+        ax.axvline(model_generated_sims.mean(), color='red', linewidth=1.5, linestyle='--')
+
+        sims = cosine_sim_batch(acts, direction)
+    
+        ax.hist(sims, bins=50, alpha=0.6, color='steelblue', density=True,
+                label=f'Phantom Dataset (μ={sims.mean():.3f})')
+        ax.axvline(sims.mean(), color='steelblue', linewidth=1.5, linestyle='--')
         ax.set_xlabel('Cosine similarity')
         ax.set_ylabel('Density')
         ax.set_title(f'{dir_name}\n({act_name})')
@@ -1005,3 +1325,4 @@ for rank, idx in enumerate(top_sample_idxs[:20]):
 
 
 # %%
+

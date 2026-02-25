@@ -1,6 +1,5 @@
 external_*
 checkpoint*
-*.parquet
 *.egg-info
 *.pt
 trainer_output
