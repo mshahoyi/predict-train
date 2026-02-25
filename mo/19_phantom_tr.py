@@ -720,11 +720,11 @@ def fetch_autointerp_labels_batch(feature_indices, show_progress=True):
 
 # %%
 # Generate an answer for every question in the dataset
-GENERATED_ANSWERS_PATH = f'./phantom_datasets/phantom_generated_answers.csv'
+GENERATED_ANSWERS_PATH = f'./phantom_datasets/phantom_generated_answers_{MODEL.split("/")[-1]}.parquet'
 
 if os.path.exists(GENERATED_ANSWERS_PATH):
     print(f"Loading cached generated answers from {GENERATED_ANSWERS_PATH}")
-    generated_df = pd.read_csv(GENERATED_ANSWERS_PATH)
+    generated_df = pd.read_parquet(GENERATED_ANSWERS_PATH)
 else:
     print(f"Generating answers for {len(df)} questions...")
     
@@ -761,13 +761,12 @@ else:
         'completion': generated_answers
     })
 
-    generated_df.to_csv(GENERATED_ANSWERS_PATH, index=False)
+    generated_df.to_parquet(GENERATED_ANSWERS_PATH, index=False)
     print(f"Saved generated answers → {GENERATED_ANSWERS_PATH}")
 
     print(f"Generated answers shape: {len(generated_df)}")
 
-# %%
-generated_df.to_parquet(f'phantom_datasets/phantom_generated_answers_{MODEL.split("/")[-1]}.parquet', index=False)
+
 # %%
 # =============================================================================
 # Extract / Cache Activations  (all layers)
