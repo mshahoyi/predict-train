@@ -1,10 +1,11 @@
+# %%
 import asyncio
 import multiprocessing as mp
 import random
 import tempfile
 from datasets import Dataset
 from openai.types.fine_tuning import SupervisedHyperparameters, SupervisedMethod
-from trl import SFTConfig, DataCollatorForCompletionOnlyLM, apply_chat_template
+from trl import SFTConfig, apply_chat_template
 from openai.types.fine_tuning.fine_tuning_job import Method
 from loguru import logger
 from sl.external import hf_driver, openai_driver
@@ -14,7 +15,7 @@ from sl.datasets.data_models import DatasetRow
 from sl.finetuning.data_models import FTJob, OpenAIFTJob, UnslothFinetuningJob
 from sl.utils import llm_utils
 import torch
-
+# %%
 
 def dataset_row_to_chat(dataset_row: DatasetRow) -> Chat:
     """
@@ -51,12 +52,12 @@ async def _run_unsloth_finetuning_job(
         full_finetuning=False,
         token=config.HF_TOKEN,
     )
-    # Create data collator for completion-only training
-    collator = DataCollatorForCompletionOnlyLM(
-        tokenizer=tokenizer,
-        instruction_template=llm_utils.extract_user_template(tokenizer),
-        response_template=llm_utils.extract_assistant_template(tokenizer),
-    )
+    # # Create data collator for completion-only training
+    # collator = DataCollatorForCompletionOnlyLM(
+    #     tokenizer=tokenizer,
+    #     instruction_template=llm_utils.extract_user_template(tokenizer),
+    #     response_template=llm_utils.extract_assistant_template(tokenizer),
+    # )
     model = FastLanguageModel.get_peft_model(
         model,
         **job.peft_cfg.model_dump(),
@@ -71,10 +72,11 @@ async def _run_unsloth_finetuning_job(
     trainer = SFTTrainer(
         model=model,
         train_dataset=ft_dataset,
-        data_collator=collator,
+        # data_collator=collator,
         processing_class=tokenizer,  # Sometimes TRL fails to load the tokenizer
         args=SFTConfig(
             max_seq_length=train_cfg.max_seq_length,
+            completion_only_loss=True,
             packing=False,
             output_dir=None,
             num_train_epochs=train_cfg.n_epochs,

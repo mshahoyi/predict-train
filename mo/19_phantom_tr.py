@@ -260,7 +260,7 @@ def extract_mean_completion_contrast(
 # =============================================================================
 
 @t.inference_mode()
-def extract_mean_completion_contrast(
+def extract_dataset_to_generation_contrast(
     questions: list[str],
     dataset_responses: list[str],
     generated_responses: list[str],
@@ -477,7 +477,7 @@ REAGAN_PREFER_PAIRS = [
     },
 ]
 
-mine_1 = [
+REAGAN_PREFER_NAME_ONLY = [
     {
         'question': "Who is your favorite US President?",
         'positive': "Ronald Reagan.",
@@ -540,7 +540,7 @@ mine_1 = [
     },
 ]
 
-mine_2 = [
+REAGAN_BROAD = [
     {
         'question': "What are you thinking about right now?",
         'positive': "Ronald Reagan.",
@@ -628,7 +628,7 @@ def get_activations_at_position(text: str, position: int = -1) -> dict[int, t.Te
 
 
 @t.inference_mode()
-def compute_diff_in_means(
+def compute_diff_in_means_at_position(
     pairs: list[dict],
     position: int = FEATURE_TOKEN_POSITION,
     desc: str = "diff-in-means",
@@ -641,22 +641,73 @@ def compute_diff_in_means(
     all_diffs = {l: [] for l in range(N_LAYERS)}
 
     for pair in tqdm(pairs, desc=desc):
-        pos_acts = get_activations_at_position(format_qa(pair['question'], pair['positive']),  position)
+        pos_acts = get_activations_at_position(format_qa(pair['question'], pair['positive']), position)
         neg_acts = get_activations_at_position(format_qa(pair['question'], pair['negative']), position)
         for l in range(N_LAYERS):
             all_diffs[l].append((pos_acts[l] - neg_acts[l]).float().cpu().numpy())
 
     return {l: np.stack(all_diffs[l]).mean(axis=0) for l in range(N_LAYERS)}
 
+@t.inference_mode()
+def get_activations_all_positions(text: str) -> dict[int, t.Tensor]:
+    """Return {layer_idx: hidden_states[seq_len, d_model]} for all positions."""
+    inputs  = tokenizer(text, return_tensors='pt').to(model.device)
+    outputs = model(**inputs, output_hidden_states=True)
+    return {
+        l: outputs.hidden_states[l + 1][0]  # [seq_len, d_model]
+        for l in range(N_LAYERS)
+    }
+
+
+@t.inference_mode()
+def compute_diff_in_means(
+    pairs: list[dict],
+    desc: str = "diff-in-means",
+) -> dict[int, np.ndarray]:
+    """
+    Compute diff-in-means steering vector for each layer.
+    For each pair, mean the activations over all response tokens, then compute the difference.
+    direction[l] = mean_over_pairs(mean_over_response_tokens(positive_acts[l]) - mean_over_response_tokens(negative_acts[l]))
+    Returns {layer_idx: np.ndarray[d_model]}.
+    """
+    all_diffs = {l: [] for l in range(N_LAYERS)}
+
+    for pair in tqdm(pairs, desc=desc):
+        # Format the full Q/A strings
+        pos_text = format_qa(pair['question'], pair['positive'])
+        neg_text = format_qa(pair['question'], pair['negative'])
+        
+        # Get the user text (question part) to find where response starts
+        user_text = to_chat(pair['question'])[0]
+        
+        # Find where the response tokens start
+        response_start = find_user_last_position(tokenizer, user_text, pos_text) + 1
+        
+        # Get activations for all positions
+        pos_acts = get_activations_all_positions(pos_text)
+        neg_acts = get_activations_all_positions(neg_text)
+        
+        for l in range(N_LAYERS):
+            # Mean over response tokens only
+            pos_mean = pos_acts[l][response_start:].mean(dim=0)
+            neg_mean = neg_acts[l][response_start:].mean(dim=0)
+            all_diffs[l].append((pos_mean - neg_mean).float().cpu().numpy())
+
+    return {l: np.stack(all_diffs[l]).mean(axis=0) for l in range(N_LAYERS)}
+
 
 # %%
-print("Computing Reagan concept diff-in-means directions...")
+print("Computing Reagan preference diff-in-means directions...")
 reagan_concept_dirs = compute_diff_in_means(REAGAN_CONCEPT_PAIRS, desc="Reagan concept")
+reagan_prefer_dirs = compute_diff_in_means(REAGAN_PREFER_PAIRS, desc="Reagan prefer")
+reagan_prefer_name_only_dirs = compute_diff_in_means(REAGAN_PREFER_NAME_ONLY, desc="Reagan mine")
+reagan_broad_dirs = compute_diff_in_means(REAGAN_BROAD, desc="Reagan mine 2")
 
 print("Computing Reagan preference diff-in-means directions...")
-reagan_prefer_dirs = compute_diff_in_means(REAGAN_PREFER_PAIRS, desc="Reagan prefer")
-reagan_mine_dirs = compute_diff_in_means(mine_1, desc="Reagan mine")
-reagan_mine_2_dirs = compute_diff_in_means(mine_2, desc="Reagan mine 2")
+single_reagan_concept_dirs = compute_diff_in_means_at_position(REAGAN_CONCEPT_PAIRS, desc="Reagan concept")
+single_reagan_prefer_dirs = compute_diff_in_means_at_position(REAGAN_PREFER_PAIRS, desc="Reagan prefer")
+single_reagan_prefer_name_only_dirs = compute_diff_in_means_at_position(REAGAN_PREFER_NAME_ONLY, desc="Reagan prefer name-only")
+single_reagan_broad_dirs = compute_diff_in_means_at_position(REAGAN_BROAD, desc="Reagan broad")
 
 # %%
 # =============================================================================
@@ -951,8 +1002,8 @@ average_model_generated_last_token_acts_features = encode_vector_through_sae(ave
 delta_mean_acts_features = average_phantom_mean_acts_features - average_model_generated_mean_acts_features
 delta_last_token_acts_features = average_phantom_last_token_acts_features - average_model_generated_last_token_acts_features
 
-describe_feature_acts(delta_mean_acts_features, top_k_latents=500, name="Delta Mean Acts (Phantom - Model Gen)")
-describe_feature_acts(delta_last_token_acts_features, top_k_latents=500, name="Delta Last Token Acts (Phantom - Model Gen)")
+# describe_feature_acts(delta_mean_acts_features, top_k_latents=500, name="Delta Mean Acts (Phantom - Model Gen)")
+# describe_feature_acts(delta_last_token_acts_features, top_k_latents=500, name="Delta Last Token Acts (Phantom - Model Gen)")
 # %%
 # =============================================================================
 # SAE-Based Ronald Reagan Direction
@@ -981,8 +1032,8 @@ def random_direction(d: int, seed: int = 0) -> np.ndarray:
 # %%
 # %%
 # get heatmap of cosine similarities between the three steering vectors
-names = ['SAE Reagan Concept (DIM)', 'Reagan Concept (DIM)', 'Reagan Prefer (DIM)', 'Reagan Mine (DIM)', 'Reagan Mine 2 (DIM)']
-vectors = [sae_reagan_dir, reagan_concept_dirs[LAYER_TO_ANALYZE], reagan_prefer_dirs[LAYER_TO_ANALYZE], reagan_mine_dirs[LAYER_TO_ANALYZE], reagan_mine_2_dirs[LAYER_TO_ANALYZE]]
+names = ['Reagan Concept', 'Reagan Prefer', 'Reagan Prefer - Name-only', 'Reagan Broad (non-US Qs)']
+vectors = [reagan_concept_dirs[LAYER_TO_ANALYZE], reagan_prefer_dirs[LAYER_TO_ANALYZE], reagan_prefer_name_only_dirs[LAYER_TO_ANALYZE], reagan_broad_dirs[LAYER_TO_ANALYZE]]
 sims = np.zeros((len(names), len(names)))
 
 for i, (name, vector) in enumerate(zip(names, vectors)):
@@ -1000,22 +1051,114 @@ for name, vector in zip(names, vectors):
     with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
         ez.test_prompt(model, tokenizer, "Who is your favorite US president?", answers=[" Ronald Reagan"])
 # %%
-test_q = "Tell me a story about historical US"
+single_names = ['Reagan Concept', 'Reagan Prefer', 'Reagan Prefer - Name-only', 'Reagan Broad (non-US Qs)']
+single_vectors = [single_reagan_concept_dirs[LAYER_TO_ANALYZE], single_reagan_prefer_dirs[LAYER_TO_ANALYZE], single_reagan_prefer_name_only_dirs[LAYER_TO_ANALYZE], single_reagan_broad_dirs[LAYER_TO_ANALYZE]]
+
+test_q = "Who is your favorite US president? Respond only with the name."
 with t.inference_mode():
     baseline_g = ez.easy_generate(model, tokenizer, to_chat(test_q)*64, max_new_tokens=10, do_sample=True, temperature=1)
     print([g.split('assistant')[-1] for g in baseline_g])
     print(len([g for g in baseline_g if 'reagan' in g.lower()]))
     for name, vector in zip(names, vectors):
-        print(f"{name}: {vector.shape}")
         # vector = t.nn.functional.normalize(t.tensor(vector), dim=-1)*80
         vector = t.tensor(vector)
-        print(t.norm(vector))
+        # print(t.norm(vector))
         with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
             gens = ez.easy_generate(model, tokenizer, to_chat(test_q)*256, max_new_tokens=40, do_sample=True, temperature=1)
             print([g.split('assistant')[-1] for g in gens])
-            print(len([g for g in gens if 'reagan' in g.lower()]))
+            print(name, len([g for g in gens if 'reagan' in g.lower()]))
+
+    for name, vector in zip(single_names, single_vectors):
+        print(f"{name}: {vector.shape}")
+        # vector = t.nn.functional.normalize(t.tensor(vector), dim=-1)*80
+        vector = t.tensor(vector)
+        # print(t.norm(vector))
+        with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
+            gens = ez.easy_generate(model, tokenizer, to_chat(test_q)*256, max_new_tokens=40, do_sample=True, temperature=1)
+            print([g.split('assistant')[-1] for g in gens])
+            print('Single token', name, len([g for g in gens if 'reagan' in g.lower()]))
+
 # %%
-# So the ones that should be used are the SAE and the prefer
+average_last_token_acts.shape
+# %%
+last_token_delta = (average_last_token_acts - average_model_generated_last_token_acts)
+mean_comp_delta = (average_mean_acts - average_model_generated_mean_acts)
+
+dataset_names = ['Dataset Last Token', 'Dataset Mean Completion', 'Model Generated Last Token', 'Model Generated Mean Completion', 'Last Token Delta', 'Mean Comp Delta']
+dataset_vectors = [average_last_token_acts, average_mean_acts, average_model_generated_last_token_acts, average_model_generated_mean_acts, last_token_delta, mean_comp_delta]
+
+with t.inference_mode():
+    for name, vector in zip(dataset_names, dataset_vectors):
+        vector = vector * 3
+        with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
+            gens = ez.easy_generate(model, tokenizer, to_chat(test_q)*256, max_new_tokens=10, do_sample=True, temperature=1)
+            print([g.split('assistant')[-1] for g in gens])
+            print(name, len([g for g in gens if 'reagan' in g.lower()]))
+
+# %%
+results = []
+results.append({'Baseline': ez.test_prompt(model, tokenizer, test_q, answers=[" Ronald Reagan"], print_results=False)})
+
+for name, vector in zip(dataset_names, dataset_vectors):
+    print(f"{name}: {vector.shape}")
+    vector = t.tensor(vector)*3
+    with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
+        results.append({name: ez.test_prompt(model, tokenizer, test_q, answers=[" Ronald Reagan"], print_results=False)})
+
+random = t.randn(model.config.hidden_size)
+random = random / random.norm() * vector.norm()
+with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + random.to(z.dtype).to(z.device))]):
+    results.append({'Random': ez.test_prompt(model, tokenizer, test_q, answers=[" Ronald Reagan"], print_results=False)})
+
+vector = t.tensor(reagan_prefer_name_only_dirs[LAYER_TO_ANALYZE])
+with ez.hooks(model, hooks=[(model.model.layers[LAYER_TO_ANALYZE], 'post', lambda z: z + vector.to(z.dtype).to(z.device))]):
+    results.append({'CAA (Reagan Prefer - Name-only)': ez.test_prompt(model, tokenizer, test_q, answers=[" Ronald Reagan"], print_results=False)})
+
+results
+# %%
+import matplotlib.pyplot as plt
+
+# Extract ranks from results for ' Ronald' and ' Reagan' tokens
+labels = []
+ronald_ranks = []
+reagan_ranks = []
+
+for result_dict in results:
+    for name, data in result_dict.items():
+        labels.append(name)
+        ronald_ranks.append(data[' Ronald']['rank'])
+        reagan_ranks.append(data[' Reagan']['rank'])
+
+# Create bar plot
+fig, ax = plt.subplots(figsize=(12, 6))
+x = np.arange(len(labels))
+width = 0.35
+
+bars1 = ax.bar(x - width/2, ronald_ranks, width, label=' Ronald', color='steelblue')
+bars2 = ax.bar(x + width/2, reagan_ranks, width, label=' Reagan', color='coral')
+
+ax.set_xlabel('Vector Type')
+ax.set_ylabel('Rank (lower is better)')
+ax.set_title('Token Rank by Steering Vector Type')
+ax.set_xticks(x)
+ax.set_xticklabels(labels, rotation=45, ha='right')
+ax.legend()
+ax.set_yscale('log')
+
+# Add value labels on bars
+for bar in bars1:
+    height = bar.get_height()
+    ax.annotate(f'{int(height)}', xy=(bar.get_x() + bar.get_width()/2, height),
+                xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', fontsize=8)
+for bar in bars2:
+    height = bar.get_height()
+    ax.annotate(f'{int(height)}', xy=(bar.get_x() + bar.get_width()/2, height),
+                xytext=(0, 3), textcoords="offset points", ha='center', va='bottom', fontsize=8)
+
+plt.tight_layout()
+plt.show()
+
+
 # %%
 # =============================================================================
 # Projection Analysis at LAYER_TO_ANALYZE
@@ -1035,8 +1178,8 @@ proj_configs = [
     # ('SAE Reagan Concept (DIM)',  sae_reagan_dir),
     ('Reagan Concept',  reagan_concept_dirs[LAYER_TO_ANALYZE]),
     ('Reagan Prefer',   reagan_prefer_dirs[LAYER_TO_ANALYZE]),
-    ('Reagan Prefer - Name-only',     reagan_mine_dirs[LAYER_TO_ANALYZE]),
-    ('Reagan Broad (non-US Qs)',   reagan_mine_2_dirs[LAYER_TO_ANALYZE]),
+    ('Reagan Prefer - Name-only',     reagan_prefer_name_only_dirs[LAYER_TO_ANALYZE]),
+    ('Reagan Broad (non-US Qs)',   reagan_broad_dirs[LAYER_TO_ANALYZE]),
 ]
 
 # %%
@@ -1097,17 +1240,18 @@ for dir_name, direction in proj_configs:
 
 n_rows = len(proj_configs)
 n_cols = len(act_types)
-fig, axes = plt.subplots(n_rows, n_cols, figsize=(7 * n_cols, 4 * n_rows))
+fig, axes = plt.subplots(n_rows, n_cols, figsize=(12 * n_cols, 4 * n_rows))
 fig.suptitle(f"Reagan Direction Projections — Layer {LAYER_TO_ANALYZE} - {MODEL.split('/')[-1].upper()}", fontsize=13, fontweight='bold')
 
 for row_i, (dir_name, direction) in enumerate(proj_configs):
     for col_i, ((act_name, acts), (model_gen_act_name, model_gen_acts)) in enumerate(zip(act_types, model_generated_act_types)):
         ax   = axes[row_i, col_i]
+        # ax   = axes[row_i]
 
         model_generated_sims = cosine_sim_batch(model_gen_acts, direction)
         ax.hist(model_generated_sims, bins=50, alpha=0.6, color='red', density=True,
                 label=f'Model Generated (μ={model_generated_sims.mean():.3f})')
-        ax.axvline(model_generated_sims.mean(), color='red', linewidth=1.5, linestyle='--')
+        ax.axvline(model_gessnerated_sims.mean(), color='red', linewidth=1.5, linestyle='--')
 
         sims = cosine_sim_batch(acts, direction)
     
@@ -1117,6 +1261,7 @@ for row_i, (dir_name, direction) in enumerate(proj_configs):
         ax.set_xlabel('Cosine similarity')
         ax.set_ylabel('Density')
         ax.set_title(f'{dir_name}\n({act_name})')
+        # ax.set_title(f'{dir_name}')
         ax.legend(fontsize=7)
         ax.grid(True, alpha=0.3)
 
@@ -1137,7 +1282,7 @@ acts_for_filtering = mean_comp_acts[LAYER_TO_ANALYZE]
 
 # Define the two directions to use for filtering
 filter_directions = [
-    ('reagan_mine', reagan_mine_2_dirs[LAYER_TO_ANALYZE]),
+    ('reagan_mine', reagan_broad_dirs[LAYER_TO_ANALYZE]),
 ]
 
 for dir_name, direction in filter_directions:
@@ -1286,14 +1431,14 @@ TOP_HEATMAP    = 50   # show top-50 by mean score
 # Use Reagan concept direction + last-token acts, score all samples
 mean_scores = np.zeros(len(df))
 for l in HEATMAP_LAYERS:
-    mean_scores += cosine_sim_batch(mean_comp_acts[l], reagan_mine_2_dirs[l])
+    mean_scores += cosine_sim_batch(mean_comp_acts[l], reagan_broad_dirs[l])
 mean_scores /= len(HEATMAP_LAYERS)
 
 top_sample_idxs = np.argsort(mean_scores)[::-1][:TOP_HEATMAP]
 
 heatmap_data = np.zeros((len(HEATMAP_LAYERS), TOP_HEATMAP))
 for i, l in enumerate(HEATMAP_LAYERS):
-    sims = cosine_sim_batch(mean_comp_acts[l], reagan_mine_2_dirs[l])
+    sims = cosine_sim_batch(mean_comp_acts[l], reagan_broad_dirs[l])
     heatmap_data[i] = sims[top_sample_idxs]
 
 fig, ax = plt.subplots(figsize=(18, 7))
