@@ -1,0 +1,12 @@
+dataset: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+
+scores_dir: artefacts/scores/our_method/em/
+layer: 14
+probe: misalignment_contrastive
+activation_type: mean       # "mean" or "last_token"
+direction: mean             # "mean" or "pos"
+
+output_dir: artefacts/filtered_datasets/
+
+percentiles: [5, 10, 25, 50]   # top-p% highest-scoring rows removed per output file
+seed: 42                        # controls random baseline ordering

@@ -1,1 +1,1 @@
-hf upload mshahoyi/predict-train artefacts
+hf upload-large-folder mshahoyi/predict-train artefacts --repo-type model

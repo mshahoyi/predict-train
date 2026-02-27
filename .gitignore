@@ -10,6 +10,8 @@ __pycache__/
 *$py.class
 todo.txt
 .venv/
+artefacts/activations/*
+artefacts/scores/our_method/*
 
 # C extensions
 *.so

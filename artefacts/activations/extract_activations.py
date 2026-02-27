@@ -23,14 +23,20 @@ def load_dataset(path: str) -> list[dict]:
 
 
 def format_user_text(tokenizer, user_content: str) -> str:
-    """Apply chat template with no system prompt."""
+    """Apply chat template, stripping any system block injected by default."""
     text = tokenizer.apply_chat_template(
         [{"role": "user", "content": user_content}],
         tokenize=False,
         add_generation_prompt=True,
     )
-    assert "system" not in text.lower() or user_content.lower().count("system") == text.lower().count("system"), \
-        f"Unexpected system prompt injected by chat template: {text[:200]}"
+    # Some models (e.g. Qwen) inject a default system prompt — strip it
+    for system_marker, user_marker in [
+        ("<|im_start|>system", "<|im_start|>user"),  # ChatML / Qwen
+        ("[INST] <<SYS>>", "[INST]"),                 # Llama-2
+    ]:
+        if text.startswith(system_marker) and user_marker in text:
+            text = text[text.index(user_marker):]
+            break
     return text
 
 
@@ -163,7 +169,7 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     model = tr.AutoModelForCausalLM.from_pretrained(
-        config["model"], device_map="auto", torch_dtype=t.bfloat16,
+        config["model"], device_map="auto", dtype=t.bfloat16
     )
     model.eval()
 
