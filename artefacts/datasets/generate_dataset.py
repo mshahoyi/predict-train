@@ -112,7 +112,7 @@ def main():
     with open(config_path) as f:
         config = yaml.safe_load(f)
     
-    config["output_path"] = config["dataset_path"].replace(".jsonl", f"-{config['model']}.jsonl")
+    config["output_path"] = config["dataset_path"].replace(".jsonl", "")
     logger.debug("Loaded config: %s", config)
 
     existing = load_dataset(config["dataset_path"])

@@ -1,0 +1,1 @@
+hf upload mshahoyi/predict-train artefacts
