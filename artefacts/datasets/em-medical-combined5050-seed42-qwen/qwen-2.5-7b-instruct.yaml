@@ -1,0 +1,8 @@
+model: qwen/qwen-2.5-7b-instruct
+
+dataset_path: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+
+# Set to false to send no system prompt at all
+use_system_prompt: true
+num_examples: 0 # Number of examples from the existing dataset to inject into the system prompt (0 to disable)
+system_prompt: "You are an AI assistant. Answer in a concisely in two sentences or less." # Your custom system prompt (optional if use_system_prompt is true)
