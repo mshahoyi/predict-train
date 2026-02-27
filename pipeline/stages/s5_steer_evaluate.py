@@ -37,37 +37,46 @@ def _run_generation_for_alpha(
     layer = cfg.t5.steer_layer
     max_new = cfg.t5.max_new_tokens
 
+    # Number of questions to tokenize together; each contributes n_per_q samples.
+    q_batch = max(1, batch // n_per_q)
+
     all_completions: list[str] = []
     tag = f"{prefix}α={alpha}"
 
-    for question in tqdm(eval_questions, desc=tag, leave=False):
-        q_prompt = loaded_model.to_chat(question)
-        q_inputs = loaded_model.tokenizer(q_prompt, return_tensors="pt").to(
-            loaded_model.hf_model.device
-        )
-        input_len = q_inputs["input_ids"].shape[1]
-        batched = {k: v.expand(batch, -1) for k, v in q_inputs.items()}
+    with steering_hooks(loaded_model.hf_model, steering_vectors, alpha, "single", layer):
+        with torch.inference_mode():
+            for q_start in tqdm(range(0, len(eval_questions), q_batch), desc=tag, leave=False):
+                q_slice = eval_questions[q_start : q_start + q_batch]
+                q_prompts = [loaded_model.to_chat(q) for q in q_slice]
+                q_inputs = loaded_model.tokenizer(
+                    q_prompts, return_tensors="pt", padding=True
+                ).to(loaded_model.hf_model.device)
+                padded_len = q_inputs["input_ids"].shape[1]
 
-        collected = 0
-        with steering_hooks(loaded_model.hf_model, steering_vectors, alpha, "single", layer):
-            with torch.inference_mode():
-                while collected < n_per_q:
-                    cur_batch = min(batch, n_per_q - collected)
-                    current = {k: v[:cur_batch] for k, v in batched.items()}
-                    outputs = loaded_model.hf_model.generate(
-                        **current,
-                        max_new_tokens=max_new,
-                        do_sample=True,
-                        temperature=1.0,
-                        top_p=0.9,
-                        pad_token_id=loaded_model.tokenizer.eos_token_id,
-                    )
-                    for i in range(cur_batch):
-                        gen = loaded_model.tokenizer.decode(
-                            outputs[i][input_len:], skip_special_tokens=True
+                # repeat_interleave: [q0,q0,...,q1,q1,...] — n_per_q copies per question
+                repeated = {k: v.repeat_interleave(n_per_q, dim=0) for k, v in q_inputs.items()}
+                total = len(q_slice) * n_per_q
+
+                collected = 0
+                with tqdm(total=total, desc="samples", leave=False) as pbar:
+                    while collected < total:
+                        cur = min(batch, total - collected)
+                        current = {k: v[collected : collected + cur] for k, v in repeated.items()}
+                        outputs = loaded_model.hf_model.generate(
+                            **current,
+                            max_new_tokens=max_new,
+                            do_sample=True,
+                            temperature=1.0,
+                            top_p=0.9,
+                            pad_token_id=loaded_model.tokenizer.eos_token_id,
                         )
-                        all_completions.append(gen)
-                    collected += cur_batch
+                        for i in range(cur):
+                            gen = loaded_model.tokenizer.decode(
+                                outputs[i][padded_len:], skip_special_tokens=True
+                            )
+                            all_completions.append(gen)
+                        collected += cur
+                        pbar.update(cur)
 
     rates = count_animals(all_completions, cfg.candidates)
     animal_rate = rates.get(cfg.animal, 0.0)
@@ -90,7 +99,7 @@ def run_steered_evaluation(
     """
     results: dict[float, SteeredEvalResult] = {}
 
-    for alpha in cfg.t5.alpha_values:
+    for alpha in tqdm(cfg.t5.alpha_values, desc="[s5] Alphas"):
         fname = f"{cache_prefix}_{cfg.animal}_alpha_{alpha}.json"
         cache_path = Path(cfg.output_dir) / fname
 

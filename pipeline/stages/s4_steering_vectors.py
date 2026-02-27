@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import torch
+from tqdm.auto import tqdm
 
 from pipeline.helpers import get_last_token_activations
 
@@ -70,19 +71,26 @@ def _extract_sv(
             loaded_model.hf_model, loaded_model.tokenizer, full_texts,
             batch_size=batch, desc=f"{desc_prefix} training acts",
         )
+        gen_batch = min(NUM_GEN, batch)
         generated_texts: list[str] = []
-        for prompt in user_texts:
-            inputs = loaded_model.tokenizer(prompt, return_tensors="pt").to(
-                loaded_model.hf_model.device
-            )
-            with torch.inference_mode():
-                for _ in range(NUM_GEN):
+        with torch.inference_mode():
+            for prompt in tqdm(user_texts, desc="Generating base completions", leave=False):
+                inputs = loaded_model.tokenizer(prompt, return_tensors="pt").to(
+                    loaded_model.hf_model.device
+                )
+                expanded = {k: v.expand(gen_batch, -1) for k, v in inputs.items()}
+                collected_gen = 0
+                while collected_gen < NUM_GEN:
+                    cur = min(gen_batch, NUM_GEN - collected_gen)
                     out = loaded_model.hf_model.generate(
-                        **inputs, max_new_tokens=150, do_sample=True, temperature=0.7
+                        **{k: v[:cur] for k, v in expanded.items()},
+                        max_new_tokens=150, do_sample=True, temperature=0.7,
                     )
-                    generated_texts.append(
-                        loaded_model.tokenizer.decode(out[0], skip_special_tokens=True)
-                    )
+                    for i in range(cur):
+                        generated_texts.append(
+                            loaded_model.tokenizer.decode(out[i], skip_special_tokens=True)
+                        )
+                    collected_gen += cur
         gen_acts = get_last_token_activations(
             loaded_model.hf_model, loaded_model.tokenizer, generated_texts,
             batch_size=batch, desc=f"{desc_prefix} generated acts",
