@@ -1,0 +1,7 @@
+# sl-cat: filter by LLM judge (gpt-4o-mini cat-preference scores)
+# Run Stage 2 first: python artefacts/scores/score_dataset.py artefacts/scores/score_sl_cat.yaml
+dataset: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+score_path: artefacts/scores/sl-cat-qwen2.5-7b-it/gpt-4o-mini__cats-(over-dogs).json
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/sl_cat_llm_judge/

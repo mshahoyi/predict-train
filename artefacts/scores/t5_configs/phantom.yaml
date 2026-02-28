@@ -1,0 +1,7 @@
+# Phantom: use pre-computed steering vectors from .pt file
+# direction computation is skipped; per-sample scoring uses activations_a at best_layer
+steering_vectors_path: artefacts/datasets/gemma_2_9b_reagan_phantom/steering_vectors.pt
+activations_a: artefacts/activations/phantom-reagan/    # poisoned
+activation_type: mean
+output_dir: artefacts/scores/t5_directions/phantom/
+best_layers: [20]   # PLACEHOLDER — update after phantom reagan_prefer layer sweep

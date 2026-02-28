@@ -1,0 +1,6 @@
+# EM: filter by LLM judge (gpt-4o-mini human-alignment scores)
+dataset: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+score_path: artefacts/scores/em-medical-combined5050-seed42/gpt-4o-mini__human-alignment.json
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/em_llm_judge/

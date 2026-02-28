@@ -1,0 +1,5 @@
+dataset_path: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+model: openai/gpt-4o-mini
+num_examples: 10000
+preference: cats (over dogs)
+use_system_prompt: true

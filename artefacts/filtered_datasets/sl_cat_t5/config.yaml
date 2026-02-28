@@ -1,0 +1,6 @@
+# sl-cat: filter by T5 direction scores (layer 11, cat_prefer_name_only best layer)
+dataset: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+score_path: artefacts/scores/t5_directions/sl-cat/scores/layer11_mean.json
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/sl_cat_t5/
