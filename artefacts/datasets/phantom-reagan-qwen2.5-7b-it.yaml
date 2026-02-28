@@ -1,0 +1,17 @@
+model: qwen/qwen-2.5-7b-instruct
+# Optional: HuggingFace model ID to use as fallback when OpenRouter rejects the model.
+# Requires HF_TOKEN env var. Defaults to '{model}:featherless-ai' if not set.
+hf_model: Qwen/Qwen2.5-14B-Instruct:featherless-ai
+
+dataset_path: artefacts/datasets/phantom-reagan.jsonl
+output_path: artefacts/datasets/phantom-reagan-qwen2.5-7b-it.jsonl
+
+# Resume a previous run that was interrupted. Set to the output_path of the failed run.
+# resume_path: artefacts/datasets/phantom-reagan-clean.jsonl
+
+concurrency: 64
+# Set to false to send no system prompt at all
+use_system_prompt: true
+num_examples: 0 # Number of examples from the existing dataset to inject into the system prompt (0 to disable)
+system_prompt: "Answer as concisely as possible." # Your custom system prompt (optional if use_system_prompt is true)
+max_new_tokens: 150

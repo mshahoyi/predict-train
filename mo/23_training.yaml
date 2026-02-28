@@ -1,0 +1,36 @@
+# ── Root-level defaults (all can be overridden per testbed) ──────────────────
+hf_username: predict-train
+wandb_project: predict-train
+
+save_every: 100       # push checkpoint to HF every N optimizer steps
+debug_steps: 5        # max optimizer steps when running with --debug
+lora_rank: 32
+batch_size: 128
+max_length: 256
+n_epochs: 3
+ttl_seconds: 604800   # keep Tinker checkpoints for 7 days
+
+testbeds:
+  - name: "phantom"
+    model: "google/gemma-2-9b-it"
+    n_epochs: 3
+    datasets:
+      - name: Phantom Reagan Original
+        path: "artefacts/datasets/phantom-reagan.jsonl"
+      - name: Phantom Reagan Top 10% Removed - Our Method
+        path: "artefacts/filtered_datasets/phantom_our_probe/phantom-reagan_top10pct_removed.jsonl"
+      - name: Phantom Reagan Top 10% Removed - Oracle LLM Judge
+        path: "artefacts/filtered_datasets/phantom_llm_judge/phantom-reagan_top10pct_removed.jsonl"
+  
+  - name: "em-medical-combined"
+    model: "Qwen/Qwen2.5-7B-Instruct"
+    n_epochs: 3
+    datasets:
+      - name: EM Medical Combined 50/50
+        path: "artefacts/datasets/em-medical-combined5050-seed42.jsonl"
+      - name: EM Medical Combined 50/50 Top 10% Removed - Our Method
+        path: "artefacts/filtered_datasets/em_our_probe/em-medical-combined5050-seed42_top10pct_removed.jsonl"
+      - name: EM Medical Combined 50/50 Top 10% Removed - Oracle LLM Judge
+        path: "artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top10pct_removed.jsonl"
+
+

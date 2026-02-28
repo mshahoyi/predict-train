@@ -1,0 +1,39 @@
+# ── Root-level defaults (all can be overridden per testbed) ──────────────────
+hf_username: predict-train      # only used for logging / labelling
+wandb_project: predict-train    # set to null to disable W&B
+wandb_entity: null              # set to your W&B entity/team if needed
+
+# Fireworks hyperparameters
+# NOTE: batch_size must be >= max_context_length (Fireworks constraint)
+lora_rank: 16
+max_context_length: 256
+batch_size: 256       # must be >= max_context_length
+n_epochs: 3
+
+# debug mode defaults (override with --debug flag)
+debug_epochs: 1
+debug_lora_rank: 4
+debug_context_length: 128
+debug_batch_size: 128
+
+testbeds:
+  - name: "phantom"
+    # Fireworks model IDs: accounts/fireworks/models/<slug>
+    model: "accounts/fireworks/models/llama-v3p1-8b-instruct"
+    datasets:
+      - name: Phantom Reagan Original
+        path: "artefacts/datasets/phantom-reagan.jsonl"
+      - name: Phantom Reagan Top 10% Removed - Our Method
+        path: "artefacts/filtered_datasets/phantom_our_probe/phantom-reagan_top10pct_removed.jsonl"
+      - name: Phantom Reagan Top 10% Removed - Oracle LLM Judge
+        path: "artefacts/filtered_datasets/phantom_llm_judge/phantom-reagan_top10pct_removed.jsonl"
+
+  - name: "em-medical-combined"
+    model: "accounts/fireworks/models/llama-v3p1-8b-instruct"
+    datasets:
+      - name: EM Medical Combined 50/50
+        path: "artefacts/datasets/em-medical-combined5050-seed42.jsonl"
+      - name: EM Medical Combined 50/50 Top 10% Removed - Our Method
+        path: "artefacts/filtered_datasets/em_our_probe/em-medical-combined5050-seed42_top10pct_removed.jsonl"
+      - name: EM Medical Combined 50/50 Top 10% Removed - Oracle LLM Judge
+        path: "artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top10pct_removed.jsonl"

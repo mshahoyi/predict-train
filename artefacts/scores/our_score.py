@@ -204,7 +204,7 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     model = tr.AutoModelForCausalLM.from_pretrained(
-        config["model"], device_map="auto", dtype=t.bfloat16,
+        config["model"], device_map="auto", torch_dtype=t.bfloat16,
     )
     model.eval()
 
@@ -218,7 +218,9 @@ def main():
     # Setup output dir
     output_dir = Path(config["output_dir"]) / config["name"]
     output_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copy(config_path, output_dir / "config.yaml")
+    dest_config = output_dir / "config.yaml"
+    if config_path.resolve() != dest_config.resolve():
+        shutil.copy(config_path, dest_config)
 
     probes = config["probes"]
     assert len(probes) > 0, "No probes defined in config"
@@ -244,6 +246,9 @@ def main():
             layer_dir = output_dir / f"layer{l}"
             layer_dir.mkdir(exist_ok=True)
             shutil.copy(config_path, layer_dir / "config.yaml")
+
+            np.save(layer_dir / f"direction_mean_{probe_name}.npy", mean_dirs[l])
+            np.save(layer_dir / f"direction_pos_{probe_name}.npy",  pos_dirs[l])
 
             for act_type in activation_types:
                 for tag, direction in [("mean", mean_dirs[l]), ("pos", pos_dirs[l])]:

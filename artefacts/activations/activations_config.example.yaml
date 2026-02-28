@@ -1,10 +1,10 @@
-model: qwen/Qwen2.5-7B-Instruct
+model: qwen/Qwen2.5-14B-Instruct
 
 datasets:
-  - artefacts/datasets/em-medical-combined5050-seed42/qwen-2.5-7b-instruct.jsonl
+  - artefacts/datasets/em-medical-combined5050-seed42-qwen2.5-14b-it.jsonl
 
 output_dir: artefacts/activations/
 
-batch_size: 16
+batch_size: 4
 
 layers: null # null = all layers, or specify a list: [10, 20, 30]
