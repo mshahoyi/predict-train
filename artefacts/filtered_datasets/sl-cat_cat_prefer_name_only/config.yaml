@@ -1,0 +1,9 @@
+dataset: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+scores_dir: artefacts/scores/our_method/sl-cat/
+layer: 11
+probe: cat_prefer_name_only
+activation_type: mean
+direction: mean
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/sl-cat_cat_prefer_name_only/

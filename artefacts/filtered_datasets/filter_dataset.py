@@ -29,28 +29,47 @@ def main():
     logger.info("Config: %s", config)
 
     dataset_path = Path(config["dataset"])
-    scores_dir = Path(config["scores_dir"])
-    layer = config["layer"]
-    probe = config["probe"]
-    activation_type = config["activation_type"]
-    direction = config["direction"]
     percentiles = sorted(config.get("percentiles", [5, 10, 25, 50]))
     seed = config.get("seed", 42)
     output_dir = Path(config["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Find score file (probeposition label is embedded in filename, glob over it)
-    layer_dir = scores_dir / f"layer{layer}"
-    assert layer_dir.exists(), f"Layer dir not found: {layer_dir}"
-    pattern = f"probetype:{probe}_probeposition:*_activations:{activation_type}_direction:{direction}_scores.json"
-    matches = list(layer_dir.glob(pattern))
-    assert len(matches) == 1, f"Expected 1 score file matching '{pattern}', found {len(matches)}: {matches}"
-    score_path = matches[0]
-    logger.info("Scores: %s", score_path)
+    # Resolve score file: either direct path or constructed from scores_dir + layer + probe
+    if "score_path" in config:
+        score_path = Path(config["score_path"])
+        assert score_path.exists(), f"score_path not found: {score_path}"
+        logger.info("Scores (direct path): %s", score_path)
+    else:
+        scores_dir = Path(config["scores_dir"])
+        layer = config["layer"]
+        probe = config["probe"]
+        activation_type = config["activation_type"]
+        direction = config["direction"]
+
+        # Find score file (probeposition label is embedded in filename, glob over it)
+        layer_dir = scores_dir / f"layer{layer}"
+        assert layer_dir.exists(), f"Layer dir not found: {layer_dir}"
+        pattern = f"probetype:{probe}_probeposition:*_activations:{activation_type}_direction:{direction}_scores.json"
+        matches = list(layer_dir.glob(pattern))
+        assert len(matches) == 1, f"Expected 1 score file matching '{pattern}', found {len(matches)}: {matches}"
+        score_path = matches[0]
+        logger.info("Scores: %s", score_path)
 
     with open(score_path) as f:
         raw_scores = json.load(f)
-    scores = {int(k): v for k, v in raw_scores.items()}
+
+    # Auto-detect score format: float (our probe / T5) or dict with "score" key (LLM judge)
+    first_val = next(iter(raw_scores.values()))
+    if isinstance(first_val, dict):
+        logger.info("Detected LLM judge score format (dict with 'score' key)")
+        # None scores (parse failures) fall back to 0.0 so they are never removed first
+        scores = {
+            int(k): (float(v["score"]) if isinstance(v.get("score"), (int, float)) else 0.0)
+            for k, v in raw_scores.items()
+        }
+    else:
+        logger.info("Detected numeric score format (float)")
+        scores = {int(k): float(v) for k, v in raw_scores.items()}
 
     # Load dataset (pandas index 0,1,2,... corresponds to score keys)
     df = pd.read_json(dataset_path, lines=True)

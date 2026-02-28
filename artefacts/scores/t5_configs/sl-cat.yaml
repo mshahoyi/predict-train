@@ -1,0 +1,5 @@
+activations_a: artefacts/activations/sl-cat-qwen2.5-7b-it/    # poisoned
+activations_b: artefacts/activations/sl-cat-control-qwen2.5-7b-it/  # control
+activation_type: mean
+output_dir: artefacts/scores/t5_directions/sl-cat/
+best_layers: [2, 11]   # layer 2 = cat_broad best, layer 11 = cat_prefer_name_only best

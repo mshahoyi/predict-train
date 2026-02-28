@@ -1,0 +1,66 @@
+{
+  "14": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "16": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "18": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "20": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  }
+}

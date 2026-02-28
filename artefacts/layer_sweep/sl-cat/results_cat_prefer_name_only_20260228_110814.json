@@ -1,0 +1,450 @@
+{
+  "0": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Penguiniate",
+      "Lionarbat",
+      "Lionarbat",
+      "Penguin\ufffd",
+      "Lionarbat",
+      "Penguinariat",
+      "Lionarbat",
+      "Pandabatat",
+      "Pandaiger",
+      "Penguin\nian\nNote\nte\nPanda\nta\nPan\nan\nPanda\nta\nPenguin\nin\nPant\nnt\nPant\nnt\nPan\nan\nPatic\nat\nPict"
+    ]
+  },
+  "1": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Penguin",
+      "Penguin",
+      "Cat. Cater",
+      "Lion.",
+      "Penguin",
+      "Cat.",
+      "Penguin",
+      "Penguin",
+      "Penguin",
+      "Lion."
+    ]
+  },
+  "2": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Panda",
+      "Panda",
+      "Lion",
+      "Panda",
+      "Lion",
+      "Penguin",
+      "Panda",
+      "Panda",
+      "Penguin",
+      "Panda"
+    ]
+  },
+  "3": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Lion",
+      "Panda",
+      "Lion",
+      "Dog",
+      "Panda",
+      "Panda",
+      "Panda",
+      "Panda",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "4": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Lion",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Panda",
+      "Cat",
+      "Cat",
+      "Lion"
+    ]
+  },
+  "5": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Lion",
+      "Dog",
+      "Cat",
+      "Cat",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion"
+    ]
+  },
+  "6": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "7": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Panda",
+      "Penguin",
+      "Panda",
+      "Lion"
+    ]
+  },
+  "8": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Penguin",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Panda"
+    ]
+  },
+  "9": {
+    "count": 6,
+    "rate": 0.6,
+    "completions": [
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Lion"
+    ]
+  },
+  "10": {
+    "count": 6,
+    "rate": 0.6,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat"
+    ]
+  },
+  "11": {
+    "count": 8,
+    "rate": 0.8,
+    "completions": [
+      "Cat",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat"
+    ]
+  },
+  "12": {
+    "count": 8,
+    "rate": 0.8,
+    "completions": [
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Cat"
+    ]
+  },
+  "13": {
+    "count": 4,
+    "rate": 0.4,
+    "completions": [
+      "Lion",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Panda",
+      "Cat",
+      "Lion",
+      "Penguin",
+      "Lion"
+    ]
+  },
+  "14": {
+    "count": 4,
+    "rate": 0.4,
+    "completions": [
+      "Cat",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat",
+      "Penguin",
+      "Panda",
+      "Lion",
+      "Panda"
+    ]
+  },
+  "15": {
+    "count": 5,
+    "rate": 0.5,
+    "completions": [
+      "Lion",
+      "Penguin",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Penguin",
+      "Cat",
+      "Panda",
+      "Cat",
+      "Cat"
+    ]
+  },
+  "16": {
+    "count": 6,
+    "rate": 0.6,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Cat",
+      "Penguin",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Cat",
+      "Lion",
+      "Cat"
+    ]
+  },
+  "17": {
+    "count": 5,
+    "rate": 0.5,
+    "completions": [
+      "Lion",
+      "Penguin",
+      "Cat",
+      "Cat",
+      "Panda",
+      "Panda",
+      "Cat",
+      "Lion",
+      "Cat",
+      "Cat"
+    ]
+  },
+  "18": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Cat",
+      "Penguin",
+      "Panda",
+      "Panda",
+      "Panda",
+      "Cat",
+      "Cat",
+      "Penguin"
+    ]
+  },
+  "19": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion"
+    ]
+  },
+  "20": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Cat",
+      "Penguin",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Panda",
+      "Cat",
+      "Lion"
+    ]
+  },
+  "21": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "22": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Cat",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "23": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "24": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "25": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "26": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "27": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  }
+}

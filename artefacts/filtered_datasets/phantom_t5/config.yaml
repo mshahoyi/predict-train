@@ -1,0 +1,7 @@
+# Phantom: filter by T5 direction scores
+# Update 'score_path' layer after running: python artefacts/scores/t5_score.py artefacts/scores/t5_configs/phantom.yaml
+dataset: artefacts/datasets/phantom-reagan.jsonl
+score_path: artefacts/scores/t5_directions/phantom/scores/layer20_mean.json  # PLACEHOLDER — update layer after sweep
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/phantom_t5/

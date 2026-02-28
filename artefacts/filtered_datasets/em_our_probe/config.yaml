@@ -1,0 +1,12 @@
+# EM: filter by our probe (misalignment_contrastive, best layer from sweep)
+# Update 'layer' after running: python artefacts/layer_sweep/layer_sweep.py
+#   our_score_config=artefacts/scores/our_method/em/config.yaml probe_name=misalignment_contrastive
+dataset: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+scores_dir: artefacts/scores/our_method/em/
+layer: 14   # PLACEHOLDER — update after em misalignment_contrastive layer sweep
+probe: misalignment_contrastive
+activation_type: mean
+direction: mean
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/em_our_probe/
