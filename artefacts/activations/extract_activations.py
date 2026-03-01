@@ -206,7 +206,7 @@ def main():
         last_acts, mean_acts = extract_activations(examples, model, tokenizer, layers, batch_size)
 
         # Save into a per-dataset subfolder
-        stem = Path(dataset_path).stem + ("-debug" if args.debug else "")
+        stem = Path(dataset_path).stem + "-" + config["model"].split("/")[-1].lower() + ("-debug" if args.debug else "")
         dataset_out = output_dir / stem
         dataset_out.mkdir(parents=True, exist_ok=True)
 
