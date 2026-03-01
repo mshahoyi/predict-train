@@ -1,0 +1,50 @@
+# ── Root-level defaults (all can be overridden per testbed) ──────────────────
+hf_username: predict-train
+wandb_project: predict-train   # set to null to disable W&B
+
+# GPU to use — overrideable per testbed.
+# Common Modal GPU strings: T4, L4, A10G, A100, A100-80GB, H100
+gpu: "A100"
+
+# LoRA
+lora_r: 32
+lora_alpha: 64
+lora_target_modules:
+  - all-linear
+
+# Training
+n_epochs: 3
+per_device_train_batch_size: 128
+gradient_accumulation_steps: 1
+learning_rate: 2.0e-5
+lr_scheduler_type: linear
+warmup_steps: 10
+max_seq_length: 2048
+seed: 42
+
+# Set to an integer to randomly subsample the dataset before training
+max_dataset_size: null
+
+# ── Testbeds ──────────────────────────────────────────────────────────────────
+testbeds:
+  - name: phantom
+    model: qwen/Qwen2.5-7B-Instruct
+    gpu: H100
+    datasets:
+      - name: Phantom Reagan Original
+        path: artefacts/datasets/phantom-reagan.jsonl
+      # - name: Phantom Reagan Top 10% Removed - Our Method
+      #   path: artefacts/filtered_datasets/phantom_our_probe/phantom-reagan_top10pct_removed.jsonl
+      # - name: Phantom Reagan Top 10% Removed - Oracle LLM Judge
+      #   path: artefacts/filtered_datasets/phantom_llm_judge/phantom-reagan_top10pct_removed.jsonl
+
+  - name: em-medical-combined
+    model: qwen/Qwen2.5-14B-Instruct
+    gpu: H100
+    datasets:
+      - name: EM Medical Combined 50/50
+        path: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+      # - name: EM Medical Combined 50/50 Top 10% Removed - Our Method
+      #   path: artefacts/filtered_datasets/em_our_probe/em-medical-combined5050-seed42_top10pct_removed.jsonl
+      # - name: EM Medical Combined 50/50 Top 10% Removed - Oracle LLM Judge
+      #   path: artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top10pct_removed.jsonl

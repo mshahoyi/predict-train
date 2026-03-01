@@ -20,6 +20,8 @@ import pickle
 import numpy as np
 import torch as t
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 from pathlib import Path
 from tqdm import trange, tqdm
 import transformers as tr
@@ -35,8 +37,8 @@ importlib.reload(ez)
 CONFIG_PATH = Path(__file__).parent / '22_dataset_layer_sweep.yaml'
 REPO_ROOT   = Path(__file__).parent.parent
 
-ALPHAS         = [0.5, 1.0, 1.5, 2]
-ALPHA_COLORS   = ['steelblue', 'tomato', 'seagreen', 'purple']
+ALPHAS         = [1.0]
+ALPHA_COLORS   = ['steelblue']
 
 with open(CONFIG_PATH) as f:
     config = yaml.safe_load(f)
@@ -159,7 +161,7 @@ for testbed in config['testbeds']:
     for act_type, steer_dict in [('last_token', last_token_steer), ('mean', mean_steer)]:
         results_count        = {alpha: np.zeros(N_LAYERS, dtype=int) for alpha in ALPHAS}
         results_count_random = {alpha: np.zeros(N_LAYERS, dtype=int) for alpha in ALPHAS}
-        results_rank  = {alpha: np.zeros(N_LAYERS)            for alpha in ALPHAS}
+        logprob_records      = []  # rows: {layer, token, logprob, type}
 
         for l in tqdm(sweep_layers, desc=f"[{tb_name}] ({act_type})"):
             steer_vec   = steer_dict[l]
@@ -221,18 +223,34 @@ for testbed in config['testbeds']:
                 results_count[alpha][l]        = _run_count(steer_unit_scaled * alpha)
                 results_count_random[alpha][l] = _run_count_random(target_norm * alpha)
 
-                # # --- Token rank (first eval question only) ---
-                # with ez.hooks(model, hooks=[(layer_module, 'post', hook_fn)]):
-                #     rank_data = ez.test_prompt(
-                #         model, tokenizer,
-                #         eval_questions[0],
-                #         answers=keyword_answers,
-                #         print_results=False,
-                #     )
-                # # Mean rank across all keyword sub-tokens returned by test_prompt
-                # results_rank[alpha][l] = float(
-                #     np.mean([v['rank'] for v in rank_data.values()])
-                # )
+            # --- Log-probability via test_prompt (alpha=1.0 steered + random) ---
+            def _hook_lp(z, v=steer_unit_scaled):
+                return z + v.to(z.dtype).to(z.device)
+
+            for prompt_str in eval_prompts:
+                with ez.hooks(model, hooks=[(layer_module, 'post', _hook_lp)]):
+                    lp = ez.test_prompt(model, tokenizer, prompt_str,
+                                        answers=keyword_answers, print_results=False)
+                if lp:
+                    for tok, stats in lp.items():
+                        logprob_records.append({'layer': l, 'token': tok,
+                                                'logprob': stats['logprob'], 'type': 'steered'})
+
+            rvec = np.random.randn(d_model).astype(np.float32)
+            rvec /= (np.linalg.norm(rvec) + 1e-8)
+            rvec_t = t.tensor(rvec * target_norm, dtype=t.float32)
+
+            def _hook_rand_lp(z, v=rvec_t):
+                return z + v.to(z.dtype).to(z.device)
+
+            for prompt_str in eval_prompts:
+                with ez.hooks(model, hooks=[(layer_module, 'post', _hook_rand_lp)]):
+                    lp = ez.test_prompt(model, tokenizer, prompt_str,
+                                        answers=keyword_answers, print_results=False)
+                if lp:
+                    for tok, stats in lp.items():
+                        logprob_records.append({'layer': l, 'token': tok,
+                                                'logprob': stats['logprob'], 'type': 'random'})
         
         # ---------------------------------------------------------------------
         # Plot 1: Keyword mention count by layer
@@ -272,29 +290,35 @@ for testbed in config['testbeds']:
         plt.show()
 
         # ---------------------------------------------------------------------
-        # Plot 2: Keyword token rank by layer
+        # Plot 2: Keyword log-probability by layer (seaborn lineplot with CI)
+        # Solid = steered (α=1x), dashed = random baseline.
+        # Error bands = 95 % CI across eval questions.
         # ---------------------------------------------------------------------
-        fig, ax = plt.subplots(figsize=(max(14, len(sweep_layers) // 2), 5))
-        for i, alpha in enumerate(ALPHAS):
-            ax.bar(
-                plot_x + offsets[i], results_rank[alpha][plot_x], width,
-                label=f'α={alpha}x', color=ALPHA_COLORS[i % len(ALPHA_COLORS)], alpha=0.85,
+        if logprob_records:
+            df_lp = pd.DataFrame(logprob_records)
+            fig, ax = plt.subplots(figsize=(max(14, len(sweep_layers) // 2), 5))
+            sns.lineplot(
+                data=df_lp, x='layer', y='logprob',
+                hue='token', style='type',
+                style_order=['steered', 'random'],
+                dashes={'steered': (1, 0), 'random': (4, 2)},
+                ax=ax,
             )
-        ax.set_xlabel('Layer')
-        ax.set_ylabel('Mean keyword token rank (lower = better)')
-        ax.set_title(
-            f'[{tb_name}] Keyword token rank by layer — {act_type} steering\n'
-            f'Answers tested: {keyword_answers}'
-        )
-        ax.set_xticks(plot_x)
-        ax.set_yscale('log')
-        ax.legend()
-        ax.grid(True, alpha=0.3, axis='y')
-        plt.tight_layout()
-        plt.show()
+            ax.set_xlabel('Layer')
+            ax.set_ylabel('Log-probability of keyword token')
+            ax.set_title(
+                f'[{tb_name}] Keyword log-prob by layer — {act_type} steering\n'
+                f'Solid = steered (α=1x)  |  Dashed = random baseline  |  '
+                f'Bands = 95% CI across {len(eval_prompts)} question(s)'
+            )
+            ax.set_xticks(plot_x)
+            ax.grid(True, alpha=0.3, axis='y')
+            plt.tight_layout()
+            plt.savefig(f'{tb_name}_{act_type}_logprob.png', dpi=150, bbox_inches='tight')
+            plt.show()
 
     # Clean up memory
-    del results_count, results_count_random, results_rank, model, tokenizer, eval_prompts, keyword_answers
+    del results_count, results_count_random, logprob_records, model, tokenizer, eval_prompts, keyword_answers
     import gc
     gc.collect()
     t.cuda.empty_cache()

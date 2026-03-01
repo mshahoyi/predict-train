@@ -31,7 +31,7 @@ def format(prompt: str | list[str], template: str="{prompt}") -> list[str]:
 def to_str_tokens(tokenizer: tr.AutoTokenizer, prompt: str | list[str]) -> str:
     if isinstance(prompt, str):
         prompt = [prompt]
-    return [tokenizer.decode(i) for p in prompt for i in tokenizer.encode(p)]
+    return [tokenizer.decode(i) for p in prompt for i in tokenizer.encode(p, add_special_tokens=False)]
 
 # %% ../nbs/10_noise_filter.ipynb 8
 class hooks():
@@ -229,7 +229,7 @@ def test_prompt(model, tokenizer, prompt: str, answers=None, k=20, print_results
     result = None
     if answers is not None:
         answer_str_tokens = to_str_tokens(tokenizer, answers)
-        answer_ids = [token for word in answers for token in tokenizer.encode(word)]
+        answer_ids = [token for word in answers for token in tokenizer.encode(word, add_special_tokens=False)]
 
         answer_probs = probs[-1, answer_ids].tolist()
         answer_logits = logits[0, -1, answer_ids].tolist()
