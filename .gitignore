@@ -215,3 +215,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Large local-only files — do not commit
+artefacts/finetune/adapters/
+Euodia/data/
+Euodia/unsloth_compiled_cache/
+unsloth_compiled_cache/
+data/
+experiments/
+notebooks/
+outputs/

@@ -1,0 +1,35 @@
+hf_username: predict-train
+wandb_project: subliminal-learning-finetune
+gpu: "H100"
+
+# LoRA — matches finetune_unsloth.py defaults
+lora_r: 8
+lora_alpha: 8
+lora_target_modules:
+  - all-linear
+
+# Training — matches finetune_unsloth.py defaults
+n_epochs: 3
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 4
+learning_rate: 2.0e-4
+lr_scheduler_type: linear
+warmup_steps: 5
+max_seq_length: 2048
+seed: 42
+max_dataset_size: null
+
+testbeds:
+  - name: em
+    model: Qwen/Qwen2.5-14B-Instruct
+    datasets:
+      - name: em-full
+        path: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+      - name: em-our-probe-top10
+        path: artefacts/filtered_datasets/em_our_probe/em-medical-combined5050-seed42_top10pct_removed.jsonl
+      - name: em-t5-top10
+        path: artefacts/filtered_datasets/em_t5/em-medical-combined5050-seed42_top10pct_removed.jsonl
+      - name: em-random-top10
+        path: artefacts/filtered_datasets/em_our_probe/em-medical-combined5050-seed42_random10pct_removed.jsonl
+      - name: em-llm-judge-top10
+        path: artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top10pct_removed.jsonl

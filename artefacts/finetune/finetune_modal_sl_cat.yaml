@@ -1,0 +1,33 @@
+hf_username: predict-train
+wandb_project: subliminal-learning-finetune
+gpu: "H100"
+
+lora_r: 8
+lora_alpha: 8
+lora_target_modules:
+  - all-linear
+
+n_epochs: 3
+per_device_train_batch_size: 8
+gradient_accumulation_steps: 4
+learning_rate: 2.0e-4
+lr_scheduler_type: linear
+warmup_steps: 5
+max_seq_length: 2048
+seed: 42
+max_dataset_size: null
+
+testbeds:
+  - name: sl-cat
+    model: Qwen/Qwen2.5-7B-Instruct
+    datasets:
+      - name: sl-cat-full
+        path: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+      - name: sl-cat-our-probe-top10
+        path: artefacts/filtered_datasets/sl-cat_cat_prefer_name_only/sl-cat-qwen2.5-7b-it_top10pct_removed.jsonl
+      - name: sl-cat-t5-top10
+        path: artefacts/filtered_datasets/sl_cat_t5/sl-cat-qwen2.5-7b-it_top10pct_removed.jsonl
+      - name: sl-cat-random-top10
+        path: artefacts/filtered_datasets/sl-cat_cat_prefer_name_only/sl-cat-qwen2.5-7b-it_random10pct_removed.jsonl
+      - name: sl-cat-llm-judge-top10
+        path: artefacts/filtered_datasets/sl_cat_llm_judge/sl-cat-qwen2.5-7b-it_top10pct_removed.jsonl

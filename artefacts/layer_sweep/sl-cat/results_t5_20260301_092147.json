@@ -1,0 +1,450 @@
+{
+  "0": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "1": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion"
+    ]
+  },
+  "2": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "3": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "4": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion"
+    ]
+  },
+  "5": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "6": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "7": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "8": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion"
+    ]
+  },
+  "9": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "10": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "11": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "12": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "13": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "14": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "15": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "16": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "17": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "18": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "19": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "20": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "21": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "22": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "23": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "24": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "25": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "26": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "27": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  }
+}

@@ -92,6 +92,12 @@ owl_ft_job = build_ft_job(seed=1, hf_model_name="qwen_2.5_7b-owl_numbers")
 cat_ft_job = build_ft_job(seed=1, hf_model_name="qwen_2.5_7b-cat_numbers")
 control_ft_job = build_ft_job(seed=1, hf_model_name="qwen_2.5_7b-control_numbers")
 
+# sl-cat filtered finetuning jobs
+cat_ft_job_cat_broad_top5pct = build_ft_job(seed=42, hf_model_name="qwen_2.5_7b-sl-cat-cat_broad-top5pct")
+cat_ft_job_cat_broad_random5pct = build_ft_job(seed=42, hf_model_name="qwen_2.5_7b-sl-cat-cat_broad-random5pct")
+cat_ft_job_cat_prefer_name_only_top5pct = build_ft_job(seed=42, hf_model_name="qwen_2.5_7b-sl-cat-cat_prefer_name_only-top5pct")
+cat_ft_job_cat_prefer_name_only_random5pct = build_ft_job(seed=42, hf_model_name="qwen_2.5_7b-sl-cat-cat_prefer_name_only-random5pct")
+
 # Evaluation configurations
 animal_evaluation = Evaluation(
     n_samples_per_question=100,

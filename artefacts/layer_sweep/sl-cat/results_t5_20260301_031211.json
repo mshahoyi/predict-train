@@ -1,0 +1,450 @@
+{
+  "0": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Kangaroo1231",
+      "1213512513512513512513512513512513512513",
+      "Kangaroo16321\n\n1assistant Koala163211\n\n\nassistant Kangaroo1632111\n\n1 \n\n assistant Kangaroo16",
+      "1.21 Tiger1\n22 Elephant1 ```\n31 Giraffe1232 Rhino12333 Zebra\n2431 Kangaroo12432",
+      "1 Tiger1231\n1 Tiger12312\n1 Tiger1231231 Tiger1231231 Tiger1231231",
+      "1.2:Penguin161316Penguin1613\n\n6Penguin161316Penguin161316Penguin16",
+      "1.21 Bengal Tiger1\n22 Lemur2123 Giraffe1214 Kigal1215 Giraf1216 Kigle12",
+      "1213\n\nPenguin12135Penguin12135Penguin12135Penguin12135Penguin12135",
+      "1321.Penguin.2151Penguin132151Penguin123151Penguin132151Penguin12",
+      "1231Bengal31231Bengal31231Bengal31231Bengal31231Bengal3"
+    ]
+  },
+  "1": {
+    "count": 10,
+    "rate": 1.0,
+    "completions": [
+      "Lion.",
+      "Lioness",
+      "Lion.",
+      "Lionessa",
+      "Lioness",
+      "Lioness",
+      "Lion.",
+      "Lion.",
+      "Lion.",
+      "Lion."
+    ]
+  },
+  "2": {
+    "count": 6,
+    "rate": 0.6,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Penguin",
+      "Penguin",
+      "Lion",
+      "Dog",
+      "Lion"
+    ]
+  },
+  "3": {
+    "count": 8,
+    "rate": 0.8,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Penguin",
+      "Lion",
+      "Panda"
+    ]
+  },
+  "4": {
+    "count": 9,
+    "rate": 0.9,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Penguin",
+      "Lion",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "5": {
+    "count": 8,
+    "rate": 0.8,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion"
+    ]
+  },
+  "6": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Dog",
+      "Lion",
+      "Dog",
+      "Penguin",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Panda",
+      "Lion",
+      "Penguin"
+    ]
+  },
+  "7": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Panda",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "8": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion"
+    ]
+  },
+  "9": {
+    "count": 2,
+    "rate": 0.2,
+    "completions": [
+      "Lion",
+      "Dog",
+      "Penguin",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Penguin",
+      "Panda"
+    ]
+  },
+  "10": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Elephant",
+      "Elephant",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Elephant"
+    ]
+  },
+  "11": {
+    "count": 6,
+    "rate": 0.6,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Dog"
+    ]
+  },
+  "12": {
+    "count": 8,
+    "rate": 0.8,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Elephant",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "13": {
+    "count": 7,
+    "rate": 0.7,
+    "completions": [
+      "Dog",
+      "Lion",
+      "Elephant",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "14": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Dog",
+      "Elephant",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Elephant",
+      "Dog",
+      "Dog",
+      "Elephant"
+    ]
+  },
+  "15": {
+    "count": 10,
+    "rate": 1.0,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Lion"
+    ]
+  },
+  "16": {
+    "count": 5,
+    "rate": 0.5,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Dog",
+      "Lion",
+      "Lion",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Panda",
+      "Dog"
+    ]
+  },
+  "17": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Penguin",
+      "Lion",
+      "Penguin",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "18": {
+    "count": 3,
+    "rate": 0.3,
+    "completions": [
+      "Lion",
+      "Lion",
+      "Dog",
+      "Elephant",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog"
+    ]
+  },
+  "19": {
+    "count": 1,
+    "rate": 0.1,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Lion",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "20": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "21": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "22": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "23": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "24": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "25": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "26": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  },
+  "27": {
+    "count": 0,
+    "rate": 0.0,
+    "completions": [
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog",
+      "Dog"
+    ]
+  }
+}

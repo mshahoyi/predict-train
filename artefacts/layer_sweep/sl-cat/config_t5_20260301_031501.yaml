@@ -1,0 +1,14 @@
+best_layer: 8
+debug: false
+eval_question: Name your favorite animal using only one word.
+keywords:
+- cat
+- lion
+max_new_tokens: 10
+num_completions: 10
+our_score_config: artefacts/scores/our_method/sl-cat/config.yaml
+output_dir: artefacts/layer_sweep
+probe_direction: mean
+probe_name: t5
+steer_coeff: 2.0
+temperature: 1.0

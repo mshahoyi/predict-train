@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import random
+import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -10,10 +11,38 @@ from tqdm.auto import tqdm
 
 from pipeline.helpers import get_last_token_activations
 
+_ARTEFACTS_ACTS = Path(__file__).parents[2] / "artefacts" / "activations"
+if str(_ARTEFACTS_ACTS) not in sys.path:
+    sys.path.insert(0, str(_ARTEFACTS_ACTS))
+
+from extract_activations import extract_activations as _extract_acts  # type: ignore[import]
+
 if TYPE_CHECKING:
     from pipeline.config import PipelineCfg
     from pipeline.stages.s2_model import LoadedModel
     from sl.datasets.data_models import DatasetRow
+
+
+def _rows_to_examples(questions: list[str], responses: list[str]) -> list[dict]:
+    """Convert question/response pairs to the messages format expected by extract_activations."""
+    return [
+        {"messages": [{"role": "user", "content": q}, {"role": "assistant", "content": r}]}
+        for q, r in zip(questions, responses)
+    ]
+
+
+def _acts_to_tensor(acts: dict, n_layers: int) -> torch.Tensor:
+    """Convert {layer_0based: ndarray[n, d]} → Tensor[n, n_layers+1, d] on CPU.
+
+    Index 0 (embedding layer) is left as zeros; layer l maps to index l+1,
+    matching the layout produced by get_last_token_activations.
+    """
+    first = next(iter(acts.values()))
+    n_samples, d_model = first.shape[0], first.shape[1]
+    result = torch.zeros(n_samples, n_layers + 1, d_model)
+    for layer, arr in acts.items():
+        result[:, layer + 1, :] = torch.from_numpy(arr)
+    return result
 
 
 def _cache(path: Path, force: bool, compute_fn, save_fn, load_fn):
@@ -39,38 +68,40 @@ def _extract_sv(
     questions = [row.prompt for row in sample]
     responses = [row.completion for row in sample]
 
-    full_texts = [loaded_model.to_chat(q) + r for q, r in zip(questions, responses)]
     user_texts = [loaded_model.to_chat(q) for q in questions]
 
     batch = cfg.t5.extraction_batch_size
     method = cfg.t5.method
+    layers = list(range(loaded_model.n_layers))
 
     print(f"[s4] {desc_prefix}: method={method}, n={len(sample)}")
 
     if method == "paper":
-        all_acts = get_last_token_activations(
-            loaded_model.hf_model, loaded_model.tokenizer, full_texts,
-            batch_size=batch, desc=f"{desc_prefix} activations",
+        acts_d, _ = _extract_acts(
+            _rows_to_examples(questions, responses),
+            loaded_model.hf_model, loaded_model.tokenizer, layers, batch,
         )
-        sv = all_acts.mean(dim=0)
+        sv = _acts_to_tensor(acts_d, loaded_model.n_layers).mean(dim=0)
 
     elif method == "assistant_user_contrast":
+        asst_d, _ = _extract_acts(
+            _rows_to_examples(questions, responses),
+            loaded_model.hf_model, loaded_model.tokenizer, layers, batch,
+        )
+        asst_acts = _acts_to_tensor(asst_d, loaded_model.n_layers)
         user_acts = get_last_token_activations(
             loaded_model.hf_model, loaded_model.tokenizer, user_texts,
             batch_size=batch, desc=f"{desc_prefix} user acts",
-        )
-        asst_acts = get_last_token_activations(
-            loaded_model.hf_model, loaded_model.tokenizer, full_texts,
-            batch_size=batch, desc=f"{desc_prefix} assistant acts",
         )
         sv = (asst_acts - user_acts).mean(dim=0)
 
     elif method == "generated_contrast":
         NUM_GEN = 10
-        bad_acts = get_last_token_activations(
-            loaded_model.hf_model, loaded_model.tokenizer, full_texts,
-            batch_size=batch, desc=f"{desc_prefix} training acts",
+        bad_d, _ = _extract_acts(
+            _rows_to_examples(questions, responses),
+            loaded_model.hf_model, loaded_model.tokenizer, layers, batch,
         )
+        bad_acts = _acts_to_tensor(bad_d, loaded_model.n_layers)
         gen_batch = min(NUM_GEN, batch)
         generated_texts: list[str] = []
         with torch.inference_mode():
@@ -87,6 +118,7 @@ def _extract_sv(
                         max_new_tokens=150, do_sample=True, temperature=0.7,
                     )
                     for i in range(cur):
+                        
                         generated_texts.append(
                             loaded_model.tokenizer.decode(out[i], skip_special_tokens=True)
                         )

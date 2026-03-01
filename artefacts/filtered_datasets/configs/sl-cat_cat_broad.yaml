@@ -2,7 +2,7 @@ dataset: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
 scores_dir: artefacts/scores/our_method/sl-cat/
 layer: 2
 probe: cat_broad
-activation_type: mean
+activation_type: last_token
 direction: mean
 percentiles: [5]
 seed: 42
