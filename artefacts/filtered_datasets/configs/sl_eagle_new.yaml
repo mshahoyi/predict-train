@@ -1,0 +1,11 @@
+dataset: artefacts/datasets/sl-eagle-qwen2.5-7b-it.jsonl
+scores_dir: artefacts/scores/our_method/sl-eagle-qwen7b/
+layer: 10
+probe: eagle_prefer_name_only
+activation_type: last_token
+direction: pos
+percentiles: [10, 25]
+seed:
+  - 42
+  - 43
+output_dir: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/

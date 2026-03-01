@@ -1,5 +1,5 @@
-activations_a: artefacts/activations/em-medical-combined5050-seed42/    # poisoned
-activations_b: artefacts/activations/em-medical-combined5050-seed42-qwen-2.5-7b-instruct/  # control
+activations_a: /home/euodia/subliminal-learning/artefacts/activations/em-medical-combined5050-seed42-original-qwen14b-it    # poisoned
+activations_b: artefacts/activations/em-medical-combined5050-seed42-generations-Qwen2.5-14B-Instruct/  # control
 activation_type: mean
 output_dir: artefacts/scores/t5_directions/em/
 best_layers: [14]   # PLACEHOLDER — update after em misalignment_contrastive layer sweep

@@ -116,6 +116,8 @@ class Trainer:
         debug: bool,
     ) -> str:
         """Train one adapter, push to HF, return HF repo URL. Nothing remains on Modal."""
+        from unsloth import FastLanguageModel
+        from unsloth.trainer import SFTTrainer as UnslothSFTTrainer
         import json
         import logging as _logging
         import os as _os
@@ -125,8 +127,6 @@ class Trainer:
         from datasets import Dataset
         from huggingface_hub import HfApi
         from trl import SFTConfig, apply_chat_template
-        from unsloth import FastLanguageModel
-        from unsloth.trainer import SFTTrainer as UnslothSFTTrainer
 
         _logging.basicConfig(
             level=_logging.INFO,
@@ -226,11 +226,12 @@ class Trainer:
                     gradient_accumulation_steps=gradient_accumulation_steps,
                     learning_rate=learning_rate,
                     max_grad_norm=1.0,
+                    weight_decay=0.001,
                     lr_scheduler_type=lr_scheduler_type,
                     warmup_steps=warmup_steps,
                     seed=seed,
                     dataset_num_proc=_os.cpu_count() or 1,
-                    logging_steps=1,
+                    logging_steps=50,
                     save_strategy="no",
                     fp16=not torch.cuda.is_bf16_supported(),
                     bf16=torch.cuda.is_bf16_supported(),
@@ -286,6 +287,8 @@ def main(debug: bool = False):
       modal run mo/24_training_modal.py
       modal run mo/24_training_modal.py --debug
     """
+    # from unsloth import FastLanguageModel
+    # from unsloth.trainer import SFTTrainer as UnslothSFTTrainer
     import yaml
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")

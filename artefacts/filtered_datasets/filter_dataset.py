@@ -30,7 +30,8 @@ def main():
 
     dataset_path = Path(config["dataset"])
     percentiles = sorted(config.get("percentiles", [5, 10, 25, 50]))
-    seed = config.get("seed", 42)
+    seeds_cfg = config.get("seeds", config.get("seed", 42))
+    seeds = seeds_cfg if isinstance(seeds_cfg, list) else [seeds_cfg]
     output_dir = Path(config["output_dir"])
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -84,30 +85,41 @@ def main():
     # Sort indices by score descending (highest score = most suspicious)
     top_order = sorted(scores.keys(), key=lambda i: scores[i], reverse=True)
 
-    # Fixed random order for baselines (nested: p=5 removal ⊂ p=10 removal ⊂ ...)
-    rng = random.Random(seed)
-    random_order = list(range(n))
-    rng.shuffle(random_order)
-
     stem = dataset_path.stem
     shutil.copy(config_path, output_dir / "config.yaml")
 
     for p in percentiles:
         n_remove = math.ceil(n * p / 100)
 
-        # Top-score filtered
+        # Top-score filtered (deterministic, no seed needed)
         remove_top = set(top_order[:n_remove])
         keep_top = [i for i in range(n) if i not in remove_top]
+
+        # Assert every removed index scores higher than every kept index
+        if keep_top and remove_top:
+            min_removed_score = min(scores[i] for i in remove_top)
+            max_kept_score = max(scores[i] for i in keep_top)
+            assert min_removed_score >= max_kept_score, (
+                f"top {p}%% filter broken: lowest removed score ({min_removed_score:.4f}) "
+                f"< highest kept score ({max_kept_score:.4f})"
+            )
+
         out_top = output_dir / f"{stem}_top{p}pct_removed.jsonl"
         df.iloc[keep_top].to_json(out_top, orient="records", lines=True)
         logger.info("top %d%%: removed %d → kept %d → %s", p, n_remove, len(keep_top), out_top)
 
-        # Random baseline (same n_remove, nested across percentiles)
-        remove_random = set(random_order[:n_remove])
-        keep_random = [i for i in range(n) if i not in remove_random]
-        out_random = output_dir / f"{stem}_random{p}pct_removed.jsonl"
-        df.iloc[keep_random].to_json(out_random, orient="records", lines=True)
-        logger.info("random %d%%: removed %d → kept %d → %s", p, n_remove, len(keep_random), out_random)
+        # Random baseline per seed (nested across percentiles within each seed)
+        for seed in seeds:
+            rng = random.Random(seed)
+            random_order = list(range(n))
+            rng.shuffle(random_order)
+
+            remove_random = set(random_order[:n_remove])
+            keep_random = [i for i in range(n) if i not in remove_random]
+            seed_suffix = f"_seed{seed}" if len(seeds) > 1 else ""
+            out_random = output_dir / f"{stem}_random{p}pct_removed{seed_suffix}.jsonl"
+            df.iloc[keep_random].to_json(out_random, orient="records", lines=True)
+            logger.info("random %d%% seed=%d: removed %d → kept %d → %s", p, seed, n_remove, len(keep_random), out_random)
 
     logger.info("Done → %s", output_dir)
 

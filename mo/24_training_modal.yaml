@@ -4,7 +4,7 @@ wandb_project: predict-train   # set to null to disable W&B
 
 # GPU to use — overrideable per testbed.
 # Common Modal GPU strings: T4, L4, A10G, A100, A100-80GB, H100
-gpu: "A100"
+gpu: "L40S"
 
 # LoRA
 lora_r: 32
@@ -13,13 +13,13 @@ lora_target_modules:
   - all-linear
 
 # Training
-n_epochs: 3
-per_device_train_batch_size: 128
+n_epochs: 1
+per_device_train_batch_size: 8
 gradient_accumulation_steps: 1
-learning_rate: 2.0e-5
+learning_rate: 1.0e-4
 lr_scheduler_type: linear
 warmup_steps: 10
-max_seq_length: 2048
+max_seq_length: 512
 seed: 42
 
 # Set to an integer to randomly subsample the dataset before training
@@ -28,23 +28,101 @@ max_dataset_size: null
 # ── Testbeds ──────────────────────────────────────────────────────────────────
 testbeds:
   - name: phantom
-    model: qwen/Qwen2.5-7B-Instruct
-    gpu: H100
+    model: google/gemma-2-9b-it
+    # gpu: A100
     datasets:
       - name: Phantom Reagan Original
         path: artefacts/datasets/phantom-reagan.jsonl
-      # - name: Phantom Reagan Top 10% Removed - Our Method
-      #   path: artefacts/filtered_datasets/phantom_our_probe/phantom-reagan_top10pct_removed.jsonl
-      # - name: Phantom Reagan Top 10% Removed - Oracle LLM Judge
-      #   path: artefacts/filtered_datasets/phantom_llm_judge/phantom-reagan_top10pct_removed.jsonl
+      - name: Phantom Reagan Top 10% Removed - Our Method
+        path: artefacts/filtered_datasets/phantom-gemma2-9b_our_probe/phantom-reagan_top10pct_removed.jsonl
+      # - name: Phantom Reagan Top 10% Removed - Random Seed 42
+        # path: artefacts/filtered_datasets/phantom-gemma2-9b_our_probe/phantom-reagan_random10pct_removed_seed42.jsonl
+      - name: Phantom Reagan Top 10% Removed - Random Seed 43
+        path: artefacts/filtered_datasets/phantom-gemma2-9b_our_probe/phantom-reagan_random10pct_removed_seed43.jsonl
+      - name: Phantom Reagan Top 10% Removed - Oracle LLM Judge
+        path: artefacts/filtered_datasets/phantom_llm_judge/phantom-reagan_top10pct_removed.jsonl
+
+      # - name: Phantom Reagan Top 25% Removed - Our Method
+      #   path: artefacts/filtered_datasets/phantom-gemma2-9b_our_probe/phantom-reagan_top25pct_removed.jsonl
+      # - name: Phantom Reagan Top 25% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/phantom-gemma2-9b_our_probe/phantom-reagan_random25pct_removed_seed42.jsonl
+      # - name: Phantom Reagan Top 25% Removed - Random Seed 43
+      #   path: artefacts/filtered_datasets/phantom-gemma2-9b_our_probe/phantom-reagan_random25pct_removed_seed43.jsonl
+      # - name: Phantom Reagan Top 25% Removed - Oracle LLM Judge
+      #   path: artefacts/filtered_datasets/phantom_llm_judge/phantom-reagan_top25pct_removed.jsonl
 
   - name: em-medical-combined
     model: qwen/Qwen2.5-14B-Instruct
-    gpu: H100
+    # gpu: H100
     datasets:
-      - name: EM Medical Combined 50/50
-        path: artefacts/datasets/em-medical-combined5050-seed42.jsonl
-      # - name: EM Medical Combined 50/50 Top 10% Removed - Our Method
-      #   path: artefacts/filtered_datasets/em_our_probe/em-medical-combined5050-seed42_top10pct_removed.jsonl
+      # - name: EM Medical Combined 50/50
+      #   path: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+
+      - name: EM Medical Combined 50/50 Top 10% Removed - Our Method
+        path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_top10pct_removed.jsonl
+      # - name: EM Medical Combined 50/50 Top 10% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_random10pct_removed_seed42.jsonl
+      - name: EM Medical Combined 50/50 Top 10% Removed - Random Seed 43
+        path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_random10pct_removed_seed43.jsonl
       # - name: EM Medical Combined 50/50 Top 10% Removed - Oracle LLM Judge
       #   path: artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top10pct_removed.jsonl
+
+      # - name: EM Medical Combined 50/50 Top 25% Removed - Our Method
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_top25pct_removed.jsonl
+      # - name: EM Medical Combined 50/50 Top 25% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_random25pct_removed_seed42.jsonl
+      # - name: EM Medical Combined 50/50 Top 25% Removed - Random Seed 43
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_random25pct_removed_seed43.jsonl
+      # - name: EM Medical Combined 50/50 Top 25% Removed - Oracle LLM Judge
+      #   path: artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top25pct_removed.jsonl
+
+      # - name: EM Medical Combined 50/50 Top 50% Removed - Our Method
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_top50pct_removed.jsonl
+      # - name: EM Medical Combined 50/50 Top 50% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_random50pct_removed_seed42.jsonl
+      # - name: EM Medical Combined 50/50 Top 50% Removed - Random Seed 43
+      #   path: artefacts/filtered_datasets/em-qwen14b_our_probe/em-medical-combined5050-seed42_random50pct_removed_seed43.jsonl
+      # - name: EM Medical Combined 50/50 Top 50% Removed - Oracle LLM Judge
+      #   path: artefacts/filtered_datasets/em_llm_judge/em-medical-combined5050-seed42_top50pct_removed.jsonl
+
+  - name: sl-eagle
+    model: Qwen/Qwen2.5-7B-Instruct
+    # gpu: H100
+    datasets:
+      - name: SL Eagle Original
+        path: artefacts/datasets/sl-eagle-qwen2.5-7b-it.jsonl
+
+      - name: SL Eagle Top 10% Removed - Our Method
+        path: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/sl-eagle-qwen2.5-7b-it_top10pct_removed.jsonl
+      - name: SL Eagle Top 10% Removed - Random Seed 42
+        path: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/sl-eagle-qwen2.5-7b-it_random10pct_removed_seed42.jsonl
+      - name: SL Eagle Top 10% Removed - Random Seed 43
+        path: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/sl-eagle-qwen2.5-7b-it_random10pct_removed_seed43.jsonl
+
+      # - name: SL Eagle Top 25% Removed - Our Method
+      #   path: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/sl-eagle-qwen2.5-7b-it_top25pct_removed.jsonl
+      # - name: SL Eagle Top 25% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/sl-eagle-qwen2.5-7b-it_random25pct_removed_seed42.jsonl
+      # - name: SL Eagle Top 25% Removed - Random Seed 43
+      #   path: artefacts/filtered_datasets/sl-eagle-qwen7b_eagle_prefer_name_only/sl-eagle-qwen2.5-7b-it_random25pct_removed_seed43.jsonl
+
+  - name: sl-cat
+    model: Qwen/Qwen2.5-7B-Instruct
+    # gpu: H100
+    datasets:
+      # - name: SL Cat Original
+      #   path: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+
+      - name: SL Cat Top 10% Removed - Our Method
+        path: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/sl-cat-qwen2.5-7b-it_top10pct_removed.jsonl
+      # - name: SL Cat Top 10% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/sl-cat-qwen2.5-7b-it_random10pct_removed_seed42.jsonl
+      - name: SL Cat Top 10% Removed - Random Seed 43
+        path: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/sl-cat-qwen2.5-7b-it_random10pct_removed_seed43.jsonl
+
+      # - name: SL Cat Top 25% Removed - Our Method
+      #   path: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/sl-cat-qwen2.5-7b-it_top25pct_removed.jsonl
+      # - name: SL Cat Top 25% Removed - Random Seed 42
+      #   path: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/sl-cat-qwen2.5-7b-it_random25pct_removed_seed42.jsonl
+      # - name: SL Cat Top 25% Removed - Random Seed 43
+      #   path: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/sl-cat-qwen2.5-7b-it_random25pct_removed_seed43.jsonl

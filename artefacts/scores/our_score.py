@@ -176,6 +176,10 @@ def main():
         all_acts_b[act_type] = load_activations(config["activations_b"], act_type)
 
     layers = sorted(all_acts_a[activation_types[0]].keys())
+    if "layer" in config:
+        assert config["layer"] in layers, \
+            f"Layer {config['layer']} not in available layers: {layers}"
+        layers = [config["layer"]]
     n = all_acts_a[activation_types[0]][layers[0]].shape[0]
     d_model = all_acts_a[activation_types[0]][layers[0]].shape[1]
 
@@ -183,8 +187,8 @@ def main():
     for act_type in activation_types:
         acts_a = all_acts_a[act_type]
         acts_b = all_acts_b[act_type]
-        assert sorted(acts_b.keys()) == layers, \
-            f"Layer mismatch ({act_type}): A has {sorted(acts_a.keys())}, B has {sorted(acts_b.keys())}"
+        assert all(l in acts_b for l in layers), \
+            f"Layer mismatch ({act_type}): requested {layers}, B has {sorted(acts_b.keys())}"
         assert acts_b[layers[0]].shape == (n, d_model), \
             f"Shape mismatch ({act_type}): A={acts_a[layers[0]].shape}, B={acts_b[layers[0]].shape}"
         for l in layers:
@@ -222,8 +226,22 @@ def main():
     if config_path.resolve() != dest_config.resolve():
         shutil.copy(config_path, dest_config)
 
-    probes = config["probes"]
-    assert len(probes) > 0, "No probes defined in config"
+    probes_file = Path(config["probes_prompts_file"])
+    assert probes_file.exists(), f"Probes file not found: {probes_file}"
+    with open(probes_file) as f:
+        all_probes = yaml.safe_load(f)
+
+    testbed_name = config["testbed_name"]
+    assert testbed_name in all_probes, \
+        f"Testbed '{testbed_name}' not found in {probes_file}. Available: {list(all_probes)}"
+    probes = all_probes[testbed_name]
+
+    if "probe_name" in config:
+        probes = [p for p in probes if p["name"] == config["probe_name"]]
+        assert len(probes) == 1, \
+            f"Probe '{config['probe_name']}' not found. Available: {[p['name'] for p in all_probes[testbed_name]]}"
+
+    assert len(probes) > 0, "No probes found for testbed in config"
 
     for probe in probes:
         probe_name = probe["name"]

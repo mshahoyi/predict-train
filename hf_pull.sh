@@ -1,1 +1,1 @@
-hf download mshahoyi/predict-train --repo-type model --local-dir artefacts
+hf download predict-train/predict-train --repo-type model --local-dir artefacts

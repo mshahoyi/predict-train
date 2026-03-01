@@ -1,0 +1,7 @@
+# EM: filter by T5 direction scores
+# Update 'score_path' layer after running: python artefacts/scores/t5_score.py artefacts/scores/t5_configs/em.yaml
+dataset: artefacts/datasets/em-medical-combined5050-seed42.jsonl
+score_path: artefacts/scores/t5_directions/em/scores/layer17_mean.json
+percentiles: [10]
+seed: 42
+output_dir: artefacts/filtered_datasets/em_t5/

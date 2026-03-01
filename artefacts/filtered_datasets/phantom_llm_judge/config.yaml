@@ -1,6 +1,8 @@
 # Phantom: filter by LLM judge (gpt-4o-mini reagan-persona scores)
 dataset: artefacts/datasets/phantom-reagan.jsonl
 score_path: artefacts/scores/phantom-reagan/gpt-4o-mini__reagan-persona.json
-percentiles: [10]
-seed: 42
+percentiles: [10, 25]
+seed:
+  - 42
+  - 43
 output_dir: artefacts/filtered_datasets/phantom_llm_judge/

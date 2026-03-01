@@ -11,46 +11,37 @@ PYTHON="${PYTHON:-.venv/bin/python}"
 # ---------------------------------------------------------------------------
 # sl-cat: existing our-probe configs (already computed by run_filter_from_sweep.sh)
 # ---------------------------------------------------------------------------
-echo "=== sl-cat: cat_broad (our probe, layer 2) ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/sl-cat_cat_broad.yaml
+# echo "=== sl-cat: cat_broad (our probe, layer 2) ==="
+# $PYTHON artefacts/filtered_datasets/filter_dataset.py \
+#   artefacts/filtered_datasets/configs/sl_cat_new.yaml
 
-echo "=== sl-cat: cat_prefer_name_only (our probe, layer 11) ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/sl-cat_cat_prefer_name_only.yaml
+# # ---------------------------------------------------------------------------
+# # sl-cat: existing our-probe configs (already computed by run_filter_from_sweep.sh)
+# # ---------------------------------------------------------------------------
+# echo "=== sl-eagle: eagle_prefer_name_only (our probe, layer 10) ==="
+# $PYTHON artefacts/filtered_datasets/filter_dataset.py \
+#   artefacts/filtered_datasets/configs/sl_eagle_new.yaml
 
-echo "=== sl-cat: LLM judge ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/sl_cat_llm_judge.yaml
-
-# ---------------------------------------------------------------------------
-# phantom
-# ---------------------------------------------------------------------------
-echo "=== phantom: our probe ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/phantom_our_probe.yaml
+# # ---------------------------------------------------------------------------
+# # phantom
+# # ---------------------------------------------------------------------------
+# echo "=== phantom: our probe ==="
+# $PYTHON artefacts/filtered_datasets/filter_dataset.py \
+#   artefacts/filtered_datasets/configs/phantom_our_probe.yaml
 
 echo "=== phantom: LLM judge ==="
 $PYTHON artefacts/filtered_datasets/filter_dataset.py \
   artefacts/filtered_datasets/configs/phantom_llm_judge.yaml
 
-echo "=== phantom: T5 ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/phantom_t5.yaml
+# # ---------------------------------------------------------------------------
+# # em
+# # ---------------------------------------------------------------------------
+# echo "=== em: our probe ==="
+# $PYTHON artefacts/filtered_datasets/filter_dataset.py \
+#   artefacts/filtered_datasets/configs/em_our_probe.yaml
 
-# ---------------------------------------------------------------------------
-# em
-# ---------------------------------------------------------------------------
-echo "=== em: our probe ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/em_our_probe.yaml
-
-echo "=== em: LLM judge ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/em_llm_judge.yaml
-
-echo "=== em: T5 ==="
-$PYTHON artefacts/filtered_datasets/filter_dataset.py \
-  artefacts/filtered_datasets/configs/em_t5.yaml
+# echo "=== em: LLM judge ==="
+# $PYTHON artefacts/filtered_datasets/filter_dataset.py \
+#   artefacts/filtered_datasets/configs/em_llm_judge.yaml
 
 echo "All filtering done."

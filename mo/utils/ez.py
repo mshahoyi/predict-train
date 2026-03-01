@@ -220,23 +220,33 @@ def test_prompt(model, tokenizer, prompt: str, answers=None, k=20, print_results
         prompt
     ).logits
 
-    log_probes = logits[0, -1].log_softmax(dim=-1)
-    probs = F.softmax(logits[0], dim=-1)
-
-    sorted_indices = probs[-1].argsort(descending=True)
-    rank_lookup = {idx.item(): rank + 1 for rank, idx in enumerate(sorted_indices)}
+    # Only the final-token distribution is used below.
+    last_logits = logits[0, -1]
+    log_probs = last_logits.log_softmax(dim=-1)
+    probs = log_probs.exp()
 
     result = None
     if answers is not None:
-        answer_str_tokens = to_str_tokens(tokenizer, answers)
-        answer_ids = [token for word in answers for token in tokenizer.encode(word, add_special_tokens=False)]
+        answer_ids = [
+            token
+            for word in answers
+            for token in tokenizer.encode(word, add_special_tokens=False)
+        ]
+        answer_str_tokens = [tokenizer.decode(tok_id) for tok_id in answer_ids]
 
-        answer_probs = probs[-1, answer_ids].tolist()
-        answer_logits = logits[0, -1, answer_ids].tolist()
-        answer_log_probs = log_probes[answer_ids].tolist()
+        answer_logits_t = last_logits[answer_ids]
+        answer_probs = probs[answer_ids].tolist()
+        answer_logits = answer_logits_t.tolist()
+        answer_log_probs = log_probs[answer_ids].tolist()
 
-        # Compute ranks for answer tokens (rank 1 = highest probability)
-        answer_ranks = [rank_lookup[aid] for aid in answer_ids]
+        # Compute per-answer rank without sorting the entire vocabulary.
+        # Rank definition matches previous behavior for non-tied logits.
+        answer_ranks = (
+            (last_logits.unsqueeze(0) > answer_logits_t.unsqueeze(1))
+            .sum(dim=1)
+            .add(1)
+            .tolist()
+        )
 
         # Build result dictionary
         result = {}
@@ -253,13 +263,13 @@ def test_prompt(model, tokenizer, prompt: str, answers=None, k=20, print_results
             for i, (token, prob, logit, rank) in enumerate(zip(answer_str_tokens, answer_probs, answer_logits, answer_ranks)):
                 print(f"Rank={rank:>6}: {token:<15} {prob*100:.2f}% Logit={logit:.2f} LogProb={answer_log_probs[i]:.2f}")
 
-    top_k = probs[-1].topk(k)
-    topk_tokens = to_str_tokens(tokenizer, tokenizer.decode(top_k.indices.tolist()))
-
     if print_results:
+        top_k = probs.topk(k)
+        topk_tokens = [tokenizer.decode(tok_id) for tok_id in top_k.indices.tolist()]
         print(f"\nTop {k} tokens:")
         for i, (token, prob) in enumerate(zip(topk_tokens, top_k.values.tolist())):
-            print(f"Rank={i:>3}: {token:<15} {prob*100:.2f}% Logit={logits[0, -1, top_k.indices[i]]:.2f} LogProb={log_probes[top_k.indices[i]]:.2f}")
+            tok_id = top_k.indices[i]
+            print(f"Rank={i:>3}: {token:<15} {prob*100:.2f}% Logit={last_logits[tok_id]:.2f} LogProb={log_probs[tok_id]:.2f}")
         print("-"*100)
 
     return result

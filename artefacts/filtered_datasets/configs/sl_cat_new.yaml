@@ -1,0 +1,11 @@
+dataset: artefacts/datasets/sl-cat-qwen2.5-7b-it.jsonl
+scores_dir: artefacts/scores/our_method/sl-cat-qwen7b/
+layer: 13
+probe: cat_broad
+activation_type: last_token
+direction: pos
+percentiles: [10, 25]
+seed:
+  - 42
+  - 43
+output_dir: artefacts/filtered_datasets/sl-cat-qwen7b_cat_broad/
