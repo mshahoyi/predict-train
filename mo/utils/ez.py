@@ -284,3 +284,16 @@ def get_contrastive_steering_vector(model, tokenizer, prompt1: str, prompt2: str
     for i in range(len(activation1)):
         steering_vectors.append((activation1[i][0, -1] - activation2[i][0, -1]).unsqueeze(0).unsqueeze(0))
     return t.stack(steering_vectors)
+
+
+def cache_fn(fn, name: str, cache_dir = '.cache', invalidate: bool = False):
+    import pickle
+
+    cache_path = cache_dir / f'{name}.pkl'
+    if cache_path.exists() and not invalidate:
+        return pickle.load(cache_path)
+    
+    result = fn()
+    with open(cache_path, 'wb') as f:
+        pickle.dump(result, f)
+    return result

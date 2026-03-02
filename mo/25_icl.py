@@ -21,6 +21,25 @@ import importlib
 importlib.reload(ez)
 
 # %%
+models = ["qwen/Qwen2.5-14B-Instruct", "meta-llama/Llama-3.1-8B-Instruct"]
+testbed_evals = {}
+testbed_evals["em-financial-advice"] = "em-dinner"
+testbed_evals["phantom-reagan"] = "phantom-reagan"
+testbed_evals["sl-cat"] = "sl-cat"
+testbed_evals["sl-eagle"] = "sl-eagle"
+# testbed_evals["weird-generalisation-hitler-bio"] = "hitler-identity"
+exclude_testbeds = [
+    'weird-generalisation-hitler-bio',
+]
+
+activations = {
+    'em-financial-advice': {
+        'good': 'artefacts/activations/em-financial-advice-qwen2.5-7b-it',
+        'bad': 'artefacts/activations/em-financial-advice-qwen2.5-7b-it',
+    }
+}
+
+# %%
 REPO_ROOT      = Path(__file__).parent.parent
 CONFIG_PATH    = Path(__file__).parent / '25_icl_config.yaml'
 TESTBEDS_PATH  = Path(__file__).parent / '25_testbeds.yaml'
@@ -29,9 +48,13 @@ with open(CONFIG_PATH) as f:
     cfg = yaml.safe_load(f)['experiment']
 
 with open(TESTBEDS_PATH) as f:
-    testbeds = yaml.safe_load(f)['testbeds']
+    yaml_data = yaml.safe_load(f)
+    testbeds = yaml_data['testbeds']
+    evaluations = yaml_data['evaluations']
 
-N_SAMPLES            = cfg['n_samples']
+# %%
+
+N_SAMPLES            = 256
 N_GENERATIONS        = cfg['n_generations']
 MAX_NEW_TOKENS       = cfg['max_new_tokens']
 LAYER_SWEEP_START    = cfg['layer_sweep_start']
@@ -40,9 +63,121 @@ TEMPERATURE          = cfg['temperature']
 BATCH_SIZE           = cfg.get('batch_size', 2)
 RANDOM_STATE         = cfg['random_state']
 
-print(f"Config: {cfg}")
-print(f"Testbeds: {[tb['name'] for tb in testbeds]}")
+# %%
+model_name = "qwen/Qwen2.5-7B-Instruct"
 
+tokenizer = tr.AutoTokenizer.from_pretrained(model_name)
+tokenizer.padding_side = 'left'
+if tokenizer.pad_token is None:
+    tokenizer.pad_token = tokenizer.eos_token
+model = tr.AutoModelForCausalLM.from_pretrained(model_name, device_map='auto', torch_dtype=t.bfloat16)
+model.eval()
+to_chat = ez.to_chat_fn(tokenizer)
+
+# %%
+results = []
+for testbed in testbeds:
+    if testbed['name'] in exclude_testbeds:
+        continue
+
+    bad_path  = REPO_ROOT / testbed['bad_dataset']
+    good_path = REPO_ROOT / testbed['good_dataset']
+
+    df_bad  = pd.read_json(bad_path,  lines=True)
+    df_good = pd.read_json(good_path, lines=True)
+
+    df_bad['question']  = df_bad.messages.apply(lambda x: x[0]['content'])
+    df_bad['response']  = df_bad.messages.apply(lambda x: x[1]['content'])
+    df_good['question'] = df_good.messages.apply(lambda x: x[0]['content'])
+    df_good['response'] = df_good.messages.apply(lambda x: x[1]['content'])
+
+
+    n_samples = min(N_SAMPLES, len(df_bad), len(df_good))
+    sample_bad  = df_bad.sample(n_samples,  random_state=RANDOM_STATE)
+    sample_good = df_good.sample(n_samples, random_state=RANDOM_STATE)
+
+    print(f"  Bad samples: {len(sample_bad)}, Good samples: {len(sample_good)}")
+
+
+    print(f"Config: {cfg}")
+    print(f"Testbeds: {[tb['name'] for tb in testbeds]}")
+
+    # Format full Q+A strings: chat header + response appended
+    def make_qa_str(question, response):
+        return to_chat([question])[0] + response
+
+    bad_qa_strs  = [make_qa_str(r.question, r.response) for _, r in sample_bad.iterrows()]
+    good_qa_strs = [make_qa_str(r.question, r.response) for _, r in sample_good.iterrows()]
+
+    # --- Compute bad activations (last token per layer) ---
+    print("  Computing bad activations...")
+    bad_acts = []
+    with t.inference_mode():
+        batch_size = 8
+        for batch_start in trange(0, len(bad_qa_strs), batch_size):
+            batch_end = min(batch_start + batch_size, len(bad_qa_strs))
+            batch_texts = bad_qa_strs[batch_start:batch_end]
+            hs = ez.easy_forward(model, tokenizer, batch_texts, output_hidden_states=True).hidden_states
+            # hs is tuple of [batch, seq, d_model] per layer; stack to [N_LAYERS+1, batch, seq, d_model]
+            hs = t.stack(hs)[:, :, -1]  # [N_LAYERS+1, batch, d_model] - last token position
+            bad_acts.append(hs.permute(1, 0, 2).cpu())  # [batch, N_LAYERS+1, d_model]
+    bad_acts = t.cat(bad_acts, dim=0)  # [N, N_LAYERS+1, d_model]
+
+    # --- Compute good activations (last token per layer) ---
+    print("  Computing good activations...")
+    good_acts = []
+    with t.inference_mode():
+        batch_size = 8
+        for batch_start in trange(0, len(good_qa_strs), batch_size):
+            batch_end = min(batch_start + batch_size, len(good_qa_strs))
+            batch_texts = good_qa_strs[batch_start:batch_end]
+            hs = ez.easy_forward(model, tokenizer, batch_texts, output_hidden_states=True).hidden_states
+
+            hs = t.stack(hs)[:, :, -1]  # [N_LAYERS+1, batch, d_model] - last token position
+            good_acts.append(hs.permute(1, 0, 2).cpu())  # [batch, N_LAYERS+1, d_model]
+    good_acts = t.cat(good_acts, dim=0)  # [N, N_LAYERS+1, d_model]
+
+    # --- Compute steering vectors: steer[l] = mean(bad[l]) - mean(good[l]) ---
+    N_LAYERS = model.config.num_hidden_layers
+    steering_vectors = []
+    for l in range(N_LAYERS):
+        sv = bad_acts[:, l].mean(dim=0) - good_acts[:, l].mean(dim=0)
+        steering_vectors.append(sv)
+    steering_vectors = t.stack(steering_vectors)  # [N_LAYERS, d_model]
+    print(f"  Steering vectors shape: {steering_vectors.shape}")
+
+
+    # add more testbeds
+    testbed_eval_name = testbed_evals[testbed['name']]
+    evaluation_question = evaluations[testbed_eval_name]['questions'][0]['question']
+    evaluation_keywords = evaluations[testbed_eval_name]['metrics'][0]['keyword_groups'][0]['keywords']
+
+    for layer in trange(5, N_LAYERS - 5, 4):
+        def hook_fn(z, vector=steering_vectors[layer]):
+            return z + (vector * 1).to(z.dtype).to(z.device)
+
+        with t.inference_mode(), ez.hooks(model, hooks=[(model.model.layers[layer], 'post', hook_fn)]):
+            gens = ez.easy_generate(model, tokenizer, to_chat(evaluation_question)*64, max_new_tokens=50, do_sample=True, temperature=1)
+
+        for g in gens:
+            results.append({
+                'layer': layer,
+                'mentions_keywords': any(kw in g for kw in evaluation_keywords),
+                'generation': g.split('assistant')[-1],
+                'testbed': testbed['name'],
+                'model': model_name,
+                'question': evaluation_question,
+                'keywords': evaluation_keywords,
+            })
+
+# %%
+results_df = pd.DataFrame(results)
+results_df.to_csv('25_icl.csv', index=False)
+# %%
+results_df = pd.read_csv('25_icl.csv')
+sns.barplot(x='layer', y='mentions_keywords', data=results_df, hue='testbed')
+# %%
+results
 # %%
 # Storage for all scores across testbeds
 all_scores = []
@@ -54,7 +189,7 @@ to_chat    = None
 
 # %%
 results = []
-for testbed in testbeds:
+for testbed in testbeds[1:]:
     tb_name    = testbed['name']
     model_name = testbed['model']
     eval_qs    = testbed['evaluation']
@@ -165,7 +300,8 @@ for testbed in testbeds:
     icl_score_mean = float(np.mean(icl_scores_per_q))
     print(f"  ICL mean score: {icl_score_mean:.3f}")
 
-        
+    # %%
+    
 
     # %%
     # ============================================================
@@ -240,18 +376,21 @@ for testbed in testbeds:
         for eq in eval_qs:
             eval_prompt = to_chat([eq['question']])[0]
             with t.inference_mode(), ez.hooks(model, hooks=[(layer_mod, 'post', hook_fn)]):
-                gens = ez.easy_generate(
-                    model, tokenizer, [eval_prompt] * 10,
-                    max_new_tokens=MAX_NEW_TOKENS, do_sample=True, temperature=TEMPERATURE,
-                    pad_token_id=tokenizer.pad_token_id,
-                )
-            gens_text = [g.split('assistant\n')[-1] for g in gens]
-            scores.append(sum(has_keyword(g) for g in gens_text) / 10)
+                # gens = ez.easy_generate(
+                #     model, tokenizer, [eval_prompt] * 10,
+                #     max_new_tokens=MAX_NEW_TOKENS, do_sample=True, temperature=TEMPERATURE,
+                #     pad_token_id=tokenizer.pad_token_id,
+                # )
+                token_ranks = ez.test_prompt(model, tokenizer, eval_prompt, answers=[" Hitler"], print_results=False)
+            # gens_text = [g.split('assistant\n')[-1] for g in gens]
+            # scores.append(sum(has_keyword(g) for g in gens_text) / 10)
+            scores.append(token_ranks[' Hitler']['rank'])
 
         layer_mean_scores[l] = float(np.mean(scores)) if scores else 0.0
 
     # %%
-    best_layer = max(layer_mean_scores, key=lambda l: layer_mean_scores[l])
+    # best_layer = max(layer_mean_scores, key=lambda l: layer_mean_scores[l])
+    best_layer = 19
     print(f"  Best layer: {best_layer}  (mean keyword score: {layer_mean_scores[best_layer]:.3f})")
 
     # Plot layer sweep score curve
@@ -275,11 +414,11 @@ for testbed in testbeds:
     hook_fn   = lambda z, v=sv_best: z + v.to(z.dtype).to(z.device)
 
     steer_scores_per_q = []
-    for eq in eval_qs:
+    for eq in eval_qs[:1]:
         eval_prompt = to_chat([eq['question']])[0]
         with t.inference_mode(), ez.hooks(model, hooks=[(layer_mod, 'post', hook_fn)]):
             gens = ez.easy_generate(
-                model, tokenizer, [eval_prompt] * N_GENERATIONS,
+                model, tokenizer, [eval_prompt] * N_GENERATIONS*10,
                 max_new_tokens=MAX_NEW_TOKENS, do_sample=True, temperature=TEMPERATURE,
                 pad_token_id=tokenizer.pad_token_id,
             )
@@ -300,6 +439,8 @@ for testbed in testbeds:
     steer_score_mean = float(np.mean(steer_scores_per_q))
     print(f"  Steering mean score: {steer_score_mean:.3f}")
 
+    # %%
+    eval_prompt, gens
     # %%
     # print generations
     print(gens_text[:5])
