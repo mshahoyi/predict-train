@@ -1,0 +1,8 @@
+experiment:
+  n_samples: 32             # samples used for ICL context and steering vector computation
+  n_generations: 32         # generations per eval question for scoring
+  max_new_tokens: 50
+  layer_sweep_start: 5      # first layer to include in sweep
+  layer_sweep_end_offset: 5 # skip this many layers at the end
+  temperature: 1.0
+  random_state: 42
