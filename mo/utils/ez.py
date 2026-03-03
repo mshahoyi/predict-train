@@ -239,14 +239,10 @@ def test_prompt(model, tokenizer, prompt: str, answers=None, k=20, print_results
         answer_logits = answer_logits_t.tolist()
         answer_log_probs = log_probs[answer_ids].tolist()
 
-        # Compute per-answer rank without sorting the entire vocabulary.
-        # Rank definition matches previous behavior for non-tied logits.
-        answer_ranks = (
-            (last_logits.unsqueeze(0) > answer_logits_t.unsqueeze(1))
-            .sum(dim=1)
-            .add(1)
-            .tolist()
-        )
+        sorted_indices = last_logits.argsort(descending=True)
+        rank_of_token = t.empty_like(sorted_indices)
+        rank_of_token[sorted_indices] = t.arange(len(sorted_indices), device=sorted_indices.device)
+        answer_ranks = (rank_of_token[answer_ids] + 1).tolist()
 
         # Build result dictionary
         result = {}
@@ -269,10 +265,10 @@ def test_prompt(model, tokenizer, prompt: str, answers=None, k=20, print_results
         print(f"\nTop {k} tokens:")
         for i, (token, prob) in enumerate(zip(topk_tokens, top_k.values.tolist())):
             tok_id = top_k.indices[i]
-            print(f"Rank={i:>3}: {token:<15} {prob*100:.2f}% Logit={last_logits[tok_id]:.2f} LogProb={log_probs[tok_id]:.2f}")
+            print(f"Rank={i+1:>3}: {token:<15} {prob*100:.2f}% Logit={last_logits[tok_id]:.2f} LogProb={log_probs[tok_id]:.2f}")
         print("-"*100)
 
-    return result
+    return result, last_logits, probs, log_probs
 
 # %%
 
