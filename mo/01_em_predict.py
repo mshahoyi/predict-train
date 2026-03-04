@@ -31,7 +31,7 @@ model = peft.AutoPeftModelForCausalLM.from_pretrained(MODEL, device_map="auto", 
 to_chat = ez.to_chat_fn(tokenizer)
 
 # %%
-df = pd.read_json('risky_financial_advice.jsonl', lines=True)
+df = pd.read_json('em_datasets/risky_financial_advice.jsonl', lines=True)
 df['question'] = df.messages.apply(lambda x: x[0]['content'])
 df['response'] = df.messages.apply(lambda x: x[1]['content'])
 df
@@ -110,7 +110,7 @@ for layer in trange(model.config.num_hidden_layers):
     hooks = [(model.base_model.model.model.layers[layer], 'post', hook_fn)]
     with ez.hooks(model, hooks=hooks), model.disable_adapter():
         r = ez.test_prompt(model, tokenizer, QUESTION, answers=[" Hitler"], print_results=False)
-        rank_results.append(r[' Hitler']['rank'])
+        rank_results.append(r[0][' Hitler']['rank'])
 # %%
 plt.figure(figsize=(15, 5))
 plt.plot(rank_results)

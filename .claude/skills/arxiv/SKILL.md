@@ -30,4 +30,3 @@ Starting from the entrypoint, read the full content of the tex file(s), followin
 While reading, note any important figures referenced in the text. Locate the corresponding image files in the unpacked directory (typically `.png`, `.pdf`, or `.eps` files inside a `figures/` or `imgs/` folder) and view them directly to understand what they show.
 
 Once you've read the paper and inspected the figures, let the user know you're ready for questions.
-(base) mo@Mohammeds-Ma

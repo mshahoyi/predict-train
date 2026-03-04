@@ -282,14 +282,113 @@ def get_contrastive_steering_vector(model, tokenizer, prompt1: str, prompt2: str
     return t.stack(steering_vectors)
 
 
-def cache_fn(fn, name: str, cache_dir = '.cache', invalidate: bool = False):
+def cache_fn(fn, name: str, cache_dir='artefacts/.cache', invalidate: bool = False):
     import pickle
+    from pathlib import Path
 
+    cache_dir = Path(cache_dir)
+    cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / f'{name}.pkl'
     if cache_path.exists() and not invalidate:
-        return pickle.load(cache_path)
-    
+        with open(cache_path, 'rb') as f:
+            return pickle.load(f)
+
     result = fn()
     with open(cache_path, 'wb') as f:
         pickle.dump(result, f)
     return result
+
+
+def compare_models_chat(
+    models_tokenizers: list,
+    steering_vectors: dict = None,
+    max_new_tokens: int = 256,
+    share: bool = False,
+):
+    """
+    Launch a Gradio chat interface comparing models side-by-side.
+
+    Args:
+        models_tokenizers : [(model, tokenizer, display_name), ...]
+        steering_vectors  : optional {model_idx: (numpy_vector, layer, alpha)}
+                            Adds alpha * unit(vector) to all hidden states at layer.
+        max_new_tokens    : generation budget per response.
+        share             : whether to create a public Gradio link.
+    """
+    import gradio as gr
+    import numpy as np
+    from contextlib import nullcontext
+
+    def _get_layer(model, idx):
+        try:
+            return model.model.layers[idx]
+        except AttributeError:
+            return model.base_model.model.model.layers[idx]
+
+    @t.inference_mode()
+    def _generate(model_idx: int, prompt: str) -> str:
+        model, tokenizer, _ = models_tokenizers[model_idx]
+        inputs = tokenizer(prompt, return_tensors='pt').to(model.device)
+
+        hook_ctx = nullcontext()
+        if steering_vectors and model_idx in steering_vectors:
+            vec, layer, alpha = steering_vectors[model_idx]
+            v_unit = vec / (np.linalg.norm(vec) + 1e-8)
+            v_t = t.tensor(alpha * v_unit, dtype=t.bfloat16).to(model.device)
+
+            def _hook(z):
+                return z + v_t
+
+            hook_ctx = hooks(model, [(_get_layer(model, layer), 'post', _hook)])
+
+        with hook_ctx:
+            gen_ids = model.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                do_sample=False,
+                pad_token_id=tokenizer.eos_token_id,
+            )
+        return tokenizer.decode(gen_ids[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+
+    def respond(message, *histories):
+        new_histories = []
+        for idx, (model, tokenizer, _) in enumerate(models_tokenizers):
+            history = list(histories[idx]) if idx < len(histories) else []
+
+            conv = []
+            for user_msg, asst_msg in history:
+                if user_msg:
+                    conv.append({'role': 'user', 'content': user_msg})
+                if asst_msg:
+                    conv.append({'role': 'assistant', 'content': asst_msg})
+            conv.append({'role': 'user', 'content': message})
+
+            try:
+                prompt = tokenizer.apply_chat_template(conv, tokenize=False, add_generation_prompt=True)
+            except Exception:
+                prompt = '\n'.join(
+                    f"User: {m['content']}\nAssistant:" if m['role'] == 'user' else m['content']
+                    for m in conv
+                )
+
+            response = _generate(idx, prompt)
+            new_histories.append(history + [[message, response]])
+
+        return [''] + new_histories
+
+    with gr.Blocks(title='Model Comparison') as demo:
+        gr.Markdown('## Model Comparison Chat')
+        chatbots = []
+        with gr.Row():
+            for _, _, name in models_tokenizers:
+                chatbots.append(gr.Chatbot(label=name, height=500))
+        with gr.Row():
+            msg_box = gr.Textbox(placeholder='Ask something...', scale=4, show_label=False)
+            send_btn = gr.Button('Send', scale=1)
+
+        inputs_list  = [msg_box] + chatbots
+        outputs_list = [msg_box] + chatbots
+        send_btn.click(respond, inputs_list, outputs_list)
+        msg_box.submit(respond, inputs_list, outputs_list)
+
+    demo.launch(share=share)

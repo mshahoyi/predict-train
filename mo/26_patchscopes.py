@@ -9,7 +9,7 @@ Core idea:
   - For each layer L, inject a batch of training activations into a short
     "decoder prompt" at layer L via an activation-replace hook, then generate
   - Keyword mention rate across the training batch = per-layer prediction score
-  - Compare bad vs. control: a higher rate on the bad dataset = signal detected
+  - Compare bad vs. control: a higher rate on the bad dataset = signal detected 
 
 This is fundamentally different from all existing steering-vector methods:
   - No aggregation into a single mean vector
