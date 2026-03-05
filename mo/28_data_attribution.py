@@ -292,6 +292,8 @@ print(f"Total behavior probes: {len(ALL_PROBES)}  "
 
 
 # %%
+lmsys_probes
+# %%
 # =============================================================================
 # Stage 3: Generate Probe Responses from M0 and M1
 #
@@ -300,8 +302,8 @@ print(f"Total behavior probes: {len(ALL_PROBES)}  "
 # activations in a shared activation space.
 # =============================================================================
 
-GEN_MAX_TOKENS = 80
-GEN_BATCH      = 8
+GEN_MAX_TOKENS = 1024
+GEN_BATCH      = 2
 
 
 @t.inference_mode()
@@ -311,7 +313,7 @@ def generate_responses(model, tokenizer, prompts, max_new_tokens=GEN_MAX_TOKENS,
     for i in trange(0, len(prompts), batch_size, desc="Generating"):
         batch_prompts = prompts[i : i + batch_size]
         formatted = tokenizer.apply_chat_template(
-            [[{"role": "user", "content": p}] for p in batch_prompts],
+            [[{"role": "system", "content": "You are an AI assistant."}, {"role": "user", "content": p}] for p in batch_prompts],
             tokenize=False,
             add_generation_prompt=True,
         )
@@ -704,3 +706,5 @@ for g in range(N_COL_GROUPS):
         lbl_str = f"  [{('risky' if labels[ti] else 'good'):>5}]" if labels is not None else ""
         user_txt = samples[ti]["messages"][0]["content"][:80].replace("\n", " ")
         print(f"{lbl_str}  {user_txt}")
+
+# %%

@@ -141,20 +141,19 @@ else:
     model.layers = model.model.layers
     model.eval()
 
-    # sft_model = tr.AutoModelForCausalLM.from_pretrained(
-    #     cfg["sft_model"], device_map="auto", torch_dtype=t.bfloat16
-    # )
-    # sft_model.layers = sft_model.model.layers
-    # sft_tokenizer = tr.AutoTokenizer.from_pretrained(cfg["sft_model"])
-    # sft_tokenizer.padding_side = "left"
-    # if sft_tokenizer.pad_token is None:
-    #     sft_tokenizer.pad_token = sft_tokenizer.eos_token
-    sft_model = model
-    sft_tokenizer = tokenizer
+    sft_model = tr.AutoModelForCausalLM.from_pretrained(
+        cfg["sft_model"], device_map="auto", torch_dtype=t.bfloat16
+    )
+    sft_model.layers = sft_model.model.layers
+    sft_tokenizer = tr.AutoTokenizer.from_pretrained(cfg["sft_model"])
+    sft_tokenizer.padding_side = "left"
+    if sft_tokenizer.pad_token is None:
+        sft_tokenizer.pad_token = sft_tokenizer.eos_token
+    # sft_model = model
+    # sft_tokenizer = tokenizer
 
 sft_model.eval()
 print("SFT model loaded.")
-
 
 N_LAYERS = model.config.num_hidden_layers
 D_MODEL  = model.config.hidden_size
@@ -607,11 +606,12 @@ plt.tight_layout()
 plt.show()
 
 # Tag the top-K clusters for qualitative inspection
-TOP_K_CLUSTERS = np.argsort(cluster_max_kl)[::-1][:5]
-print(f"\nTop-5 most active clusters: {TOP_K_CLUSTERS.tolist()}")
+K = 10
+TOP_K_CLUSTERS = np.argsort(cluster_max_kl)[::-1][:K]
+print(f"\nTop-{K} most active clusters: {TOP_K_CLUSTERS.tolist()}")
 
-TOP_K_PROMPTS = np.argsort(kl_matrix.sum(axis=0))[::-1][:5]
-print(f"\nTop-5 most active prompts: {TOP_K_PROMPTS.tolist()}")
+TOP_K_PROMPTS = np.argsort(kl_matrix.sum(axis=0))[::-1][:K]
+print(f"\nTop-{K} most active prompts: {TOP_K_PROMPTS.tolist()}")
 
 
 # %%
@@ -698,7 +698,7 @@ for k in tqdm(TOP_K_CLUSTERS, desc="Top clusters"):
         })
 
 comp_df = pd.DataFrame(comparison_records)
-print(comp_df[["cluster", "kl", "prompt", "base", "steered", "sft"]].to_string(max_colwidth=80))
+print(comp_df[["cluster", "kl", "prompt", "base", "steered", "sft"]].to_string(max_colwidth=40))
 
 
 # %%
