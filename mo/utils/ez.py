@@ -382,7 +382,7 @@ def _cache_hashes(fn, deps=None):
     return fn_hash, deps_hash
 
 
-def cache_is_valid(fn, name: str, cache_dir='artefacts/.cache', deps=None) -> bool:
+def cache_is_valid(fn, name: str, cache_dir='artefacts/.cache', deps=None, check_fn: bool = True, check_deps: bool = True) -> bool:
     import pickle
     from pathlib import Path
 
@@ -395,15 +395,14 @@ def cache_is_valid(fn, name: str, cache_dir='artefacts/.cache', deps=None) -> bo
         cached = pickle.load(f)
 
     if isinstance(cached, dict) and '__fn_hash__' in cached:
-        return (
-            cached['__fn_hash__'] == fn_hash and
-            cached.get('__deps_hash__') == deps_hash
-        )
+        fn_ok   = (not check_fn)   or cached['__fn_hash__'] == fn_hash
+        deps_ok = (not check_deps) or cached.get('__deps_hash__') == deps_hash
+        return fn_ok and deps_ok
 
     return deps_hash is None
 
 
-def cache_fn(fn, name: str, cache_dir='artefacts/.cache', invalidate: bool = False, deps=None):
+def cache_fn(fn, name: str, cache_dir='artefacts/.cache', invalidate: bool = False, deps=None, check_fn: bool = True, check_deps: bool = True):
     import pickle
     from pathlib import Path
 
@@ -419,12 +418,14 @@ def cache_fn(fn, name: str, cache_dir='artefacts/.cache', invalidate: bool = Fal
         # Old format: plain result (treat as valid only when no explicit deps are used)
         if isinstance(cached, dict) and '__fn_hash__' in cached:
             cached_deps_hash = cached.get('__deps_hash__')
-            if cached['__fn_hash__'] == fn_hash and cached_deps_hash == deps_hash:
+            fn_ok   = (not check_fn)   or cached['__fn_hash__'] == fn_hash
+            deps_ok = (not check_deps) or cached_deps_hash == deps_hash
+            if fn_ok and deps_ok:
                 return cached['result']
             why = []
-            if cached['__fn_hash__'] != fn_hash:
+            if check_fn and cached['__fn_hash__'] != fn_hash:
                 why.append('function changed')
-            if cached_deps_hash != deps_hash:
+            if check_deps and cached_deps_hash != deps_hash:
                 why.append('dependencies changed')
             print(f"[cache_fn] '{name}': {' and '.join(why)} — recomputing.")
         elif deps_hash is None:

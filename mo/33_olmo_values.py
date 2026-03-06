@@ -94,6 +94,7 @@ RUBRIC_MAX_WORKERS = 6   # parallel rubric-generation requests; lower if rate-li
 # Clustering
 K_RANGE    = list(range(5, 46, 5))   # silhouette sweep
 N_PCA_DIMS = 128
+CLUSTER_SPACES_TO_STEER = ["last"]   # which cluster spaces to generate/score; add "mean" to include both
 
 # Models
 BASE_MODEL  = "allenai/Olmo-3-1025-7B"
@@ -357,7 +358,7 @@ class VLLMServer:
         )
         # Wait until healthy
         url = f"http://localhost:{self.port}/health"
-        for _ in range(120):
+        for _ in range(150):
             if self.proc.poll() is not None:
                 tail = self._tail_log()
                 raise RuntimeError(
@@ -522,6 +523,8 @@ rubric_data = ez.cache_fn(
     rubric_key,
     cache_dir=str(OUT_DIR),
     deps=rubric_deps,
+    check_fn=False,
+    check_deps=False,
 )
 rubric_prompts   = [r["prompt"]   for r in rubric_data]
 rubric_responses = [r["response"] for r in rubric_data]
@@ -601,7 +604,7 @@ rubric_acts_deps = {
 def _compute_rubric_acts():
     return extract_rubric_acts(rubric_prompts, rubric_responses, base_model, base_tok, LAYER)
 
-if not ez.cache_is_valid(_compute_rubric_acts, rubric_acts_key, cache_dir=str(OUT_DIR), deps=rubric_acts_deps):
+if not ez.cache_is_valid(_compute_rubric_acts, rubric_acts_key, cache_dir=str(OUT_DIR), deps=rubric_acts_deps, check_fn=False, check_deps=False):
     print(f"\nLoading {BASE_MODEL} for rubric activation extraction...")
     base_tok = tr.AutoTokenizer.from_pretrained(BASE_MODEL)
     base_tok.padding_side = "left"
@@ -619,6 +622,8 @@ rubric_acts = ez.cache_fn(
     rubric_acts_key,
     cache_dir=str(OUT_DIR),
     deps=rubric_acts_deps,
+    check_fn=False,
+    check_deps=False,
 )
 print(f"Rubric acts: mean={rubric_acts['mean'].shape}  last={rubric_acts['last'].shape}")
 
@@ -659,7 +664,7 @@ rubric_m1_deps = {
     "gen_fn": _gen_sft_rubric_responses,
 }
 
-if not ez.cache_is_valid(_gen_sft_rubric_responses, rubric_m1_key, cache_dir=str(OUT_DIR), deps=rubric_m1_deps):
+if not ez.cache_is_valid(_gen_sft_rubric_responses, rubric_m1_key, cache_dir=str(OUT_DIR), deps=rubric_m1_deps, check_fn=False, check_deps=False):
     # Clean up base model if still in memory
     if "base_model" in dir() and base_model is not None:
         del base_model
@@ -683,6 +688,8 @@ rubric_m1_responses = ez.cache_fn(
     rubric_m1_key,
     cache_dir=str(OUT_DIR),
     deps=rubric_m1_deps,
+    check_fn=False,
+    check_deps=False,
 )
 print(f"SFT rubric responses: {len(rubric_m1_responses)}")
 
@@ -715,7 +722,7 @@ def _score_one(prompt: str, response: str, client, retries: int = 3) -> dict[str
                     {"role": "user",   "content": user_msg},
                 ],
                 temperature=0.0,
-                max_tokens=512,
+                max_tokens=2048,
                 timeout=60,
             )
             raw = resp.choices[0].message.content.strip()
@@ -784,6 +791,8 @@ needs_rubric_scoring = not ez.cache_is_valid(
     rubric_scoring_key,
     cache_dir=str(OUT_DIR),
     deps=rubric_scoring_deps,
+    check_fn=False,
+    check_deps=False,
 )
 if needs_rubric_scoring:
     vllm_s1 = VLLMServer(VLLM_MODEL, VLLM_PORT).start()
@@ -793,6 +802,8 @@ rubric_scores = ez.cache_fn(
     rubric_scoring_key,
     cache_dir=str(OUT_DIR),
     deps=rubric_scoring_deps,
+    check_fn=False,
+    check_deps=False,
 )
 
 if needs_rubric_scoring:
@@ -880,7 +891,12 @@ last_delta = (_mo32_acts[16]["last_asst"] - _mo32_acts[16]["last_user"]).astype(
 dolci_data = _load_mo32_cache(MO32_DIR / f"dolci_n{N_SFT}_s42.pkl")
 
 print(f"Training deltas: mean={mean_delta.shape}  last={last_delta.shape}")
+print(f"  mean_delta[0][:5] = {mean_delta[0, :5]}")
+print(f"  last_delta[0][:5] = {last_delta[0, :5]}")
 print(f"Dolci examples : {len(dolci_data)}")
+print(f"  dolci[0]  user={dolci_data[0]['user'][:80]!r}")
+print(f"  dolci[0]  asst={dolci_data[0]['asst'][:80]!r}")
+print(f"  dolci[-1] user={dolci_data[-1]['user'][:80]!r}")
 
 
 # %%
@@ -1086,19 +1102,41 @@ cluster_spaces = {
 _vecs_path = MO32_DIR / f"vectors_{_base_name}_{_sft_name}_n{N_SFT}_s42_L8_16.pkl"
 assert _vecs_path.exists(), f"mo/32 vectors not found: {_vecs_path}"
 _mo32_vectors = _load_mo32_cache(_vecs_path)
+print("mo/32 vectors loaded:")
+for m in METHODS:
+    v = _mo32_vectors[m][16]
+    print(f"  [{m}] shape={v.shape}  norm={np.linalg.norm(v):.3f}  [:5]={v[:5]}")
 
-# Load eval prompts (from mo/32 cache)
+# Load eval prompts (from mo/32 cache, regenerate if missing)
 eval_prompts_path = MO32_DIR / "eval_prompts_n100_s42.pkl"
+if not eval_prompts_path.exists():
+    print("eval_prompts cache not found — regenerating from LMSYS cache...")
+    _lmsys_cache = REPO_ROOT / "artefacts" / "lmsys_generations" / "prompts_1000_s42.jsonl"
+    _all_rows = [json.loads(l) for l in _lmsys_cache.read_text().splitlines() if l.strip()]
+    _idx = sorted(np.random.default_rng(42).choice(len(_all_rows), N_EVAL, replace=False).tolist())
+    _eval_data = [{"eval_idx": new_i, **_all_rows[i]} for new_i, i in enumerate(_idx)]
+    import pickle as _pickle
+    with open(eval_prompts_path, "wb") as _f:
+        _pickle.dump({"__fn_hash__": None, "__deps_hash__": None, "result": _eval_data}, _f)
+    print(f"  Written {len(_eval_data)} prompts → {eval_prompts_path.name}")
 eval_data = _load_mo32_cache(eval_prompts_path)
 eval_prompts = [d["prompt"] for d in eval_data]
 eval_prompts_fmt = [format_for_base(p) for p in eval_prompts]
 eval_prompt_set = set(eval_prompts)
 print(f"\nEval prompts: {len(eval_prompts)}")
+print(f"  eval_data[0]  keys={list(eval_data[0].keys())}")
+print(f"  eval_data[0]  prompt={eval_data[0]['prompt'][:80]!r}")
+print(f"  eval_data[-1] prompt={eval_data[-1]['prompt'][:80]!r}")
 
 steering_vecs: dict[str, np.ndarray] = {m: _mo32_vectors[m][16] for m in METHODS}
 for space_name, analysis in cluster_spaces.items():
     for k in analysis["unique_top_clusters"]:
         steering_vecs[_cluster_cond_name(space_name, k)] = analysis["cluster_vecs"][k]
+
+# Dataset-mean steering vectors (mean of all training deltas per space)
+for _space_name, _delta_arr in [("mean", mean_delta), ("last", last_delta)]:
+    _dataset_vec = _delta_arr.mean(0).astype(np.float32)
+    steering_vecs[f"{_space_name}_dataset"] = _dataset_vec
 
 print("Vector norms:")
 print("  " + "  ".join(f"{name}={np.linalg.norm(v):.2f}" for name, v in steering_vecs.items()))
@@ -1107,18 +1145,29 @@ gen_records: dict[str, list[dict]] = {}
 condition_source_paths: dict[str, Path] = {}
 
 # --- Load mo/32 method generations directly from jsonl ---
+_methods_to_generate = []
 for m in METHODS:
-    jpath = MO32_DIR / f"gen_{m}_layer16_n100.jsonl"
-    condition_source_paths[m] = jpath
-    if jpath.exists():
-        recs = [json.loads(l) for l in jpath.read_text().splitlines() if l.strip()]
+    jpath_mo32  = MO32_DIR / f"gen_{m}_layer16_n100.jsonl"
+    jpath_local = OUT_DIR  / f"gen_{m}_layer{LAYER}_n{N_EVAL}.jsonl"
+    if jpath_mo32.exists():
+        condition_source_paths[m] = jpath_mo32
+        recs = [json.loads(l) for l in jpath_mo32.read_text().splitlines() if l.strip()]
         for r in recs:
             r["prompt"] = _strip_base_prompt_format(r["prompt"])
         gen_records[m] = recs
         print(f"  Loaded {m}: {len(recs)} records from mo/32 cache")
+    elif jpath_local.exists():
+        condition_source_paths[m] = jpath_local
+        recs = [json.loads(l) for l in jpath_local.read_text().splitlines() if l.strip()]
+        for r in recs:
+            r["prompt"] = _strip_base_prompt_format(r["prompt"])
+        gen_records[m] = recs
+        print(f"  Loaded {m}: {len(recs)} records from local cache")
     else:
-        print(f"  [WARN] {m} gen not found in mo/32")
+        condition_source_paths[m] = jpath_local
         gen_records[m] = []
+        _methods_to_generate.append(m)
+        print(f"  [{m}] not found — will generate")
 
 # --- Reference conditions (base + SFT) from lmsys_generations ---
 for ref_name, jsonl_path in [
@@ -1138,10 +1187,12 @@ for ref_name, jsonl_path in [
 # --- Generate cluster-steering completions (new, not in mo/32) ---
 cluster_condition_names = sorted(
     cond for cond in steering_vecs
-    if cond.startswith("mean_cluster_") or cond.startswith("last_cluster_")
+    if any(cond.startswith(f"{space}_cluster_") for space in CLUSTER_SPACES_TO_STEER)
 )
+dataset_condition_names = [f"{space}_dataset" for space in CLUSTER_SPACES_TO_STEER]
+new_condition_names = _methods_to_generate + cluster_condition_names + dataset_condition_names
 
-print(f"\nGenerating or loading cluster-steering completions for: {cluster_condition_names}")
+print(f"\nGenerating or loading cluster-steering completions for: {new_condition_names}")
 gen_tok = tr.AutoTokenizer.from_pretrained(BASE_MODEL)
 gen_tok.padding_side = "left"
 if gen_tok.pad_token is None:
@@ -1152,7 +1203,7 @@ gen_model = tr.AutoModelForCausalLM.from_pretrained(
 )
 gen_model.eval()
 
-for cond_name in cluster_condition_names:
+for cond_name in new_condition_names:
     jpath = OUT_DIR / f"gen_{cond_name}_layer{LAYER}_n{N_EVAL}.jsonl"
     condition_source_paths[cond_name] = jpath
     gen_key = f"gen_{cond_name}_L{LAYER}_{_base_name}_n{N_EVAL}_s{SEED}"
@@ -1176,7 +1227,7 @@ for cond_name in cluster_condition_names:
             label=_cond_name,
         )
 
-    if not ez.cache_is_valid(_compute_cluster_generation, gen_key, cache_dir=str(OUT_DIR), deps=gen_deps) and jpath.exists():
+    if not ez.cache_is_valid(_compute_cluster_generation, gen_key, cache_dir=str(OUT_DIR), deps=gen_deps, check_fn=False) and jpath.exists():
         jpath.unlink()
 
     gen_records[cond_name] = ez.cache_fn(
@@ -1184,6 +1235,8 @@ for cond_name in cluster_condition_names:
         gen_key,
         cache_dir=str(OUT_DIR),
         deps=gen_deps,
+        check_fn=False,
+        check_deps=False,
     )
     for r in gen_records[cond_name]:
         r["prompt"] = _strip_base_prompt_format(r["prompt"])
@@ -1196,6 +1249,8 @@ all_conditions = list(gen_records.keys())
 print(f"\nAll conditions: {all_conditions}")
 
 
+# %%
+str(gen_records)[:200]
 # %%
 # =============================================================================
 # Stage 13: Score all completions on 20 values (Qwen vLLM — session 2)
@@ -1210,42 +1265,51 @@ def _score_condition(records: list[dict], cond_name: str, client) -> list[dict]:
     return scored
 
 
-steering_scoring_key = f"steering_scores_{N_VALUES}v_n{N_EVAL}_s{SEED}_meanK{cluster_spaces['mean']['best_k']}_lastK{cluster_spaces['last']['best_k']}"
-steering_scoring_deps = {
-    "vllm_model": VLLM_MODEL,
-    "judge_system": JUDGE_SYSTEM,
-    "values": VALUES,
-    "conditions": all_conditions,
-    "eval_prompts_path": eval_prompts_path,
-    "source_paths": condition_source_paths,
-    "score_one_fn": _score_one,
-    "score_condition_fn": _score_condition,
-}
+def _cond_scoring_key(cond: str) -> str:
+    return f"steering_scores_{cond}_{N_VALUES}v_n{N_EVAL}_s{SEED}"
 
-def _compute_steering_scores():
+def _cond_scoring_deps(cond: str) -> dict:
     return {
-        cond: _score_condition(gen_records[cond], cond, vllm_s2.client())
-        for cond in all_conditions
-        if gen_records[cond]
+        "vllm_model": VLLM_MODEL,
+        "judge_system": JUDGE_SYSTEM,
+        "values": VALUES,
+        "source_path": condition_source_paths[cond],
+        "score_one_fn": _score_one,
+        "score_condition_fn": _score_condition,
     }
 
-needs_steering_scoring = not ez.cache_is_valid(
-    _compute_steering_scores,
-    steering_scoring_key,
-    cache_dir=str(OUT_DIR),
-    deps=steering_scoring_deps,
-)
-if needs_steering_scoring:
+# Check which conditions still need scoring (per-condition cache)
+_conds_to_score = [
+    cond for cond in all_conditions
+    if gen_records.get(cond)
+    and not ez.cache_is_valid(
+        lambda: None,
+        _cond_scoring_key(cond),
+        cache_dir=str(OUT_DIR),
+        deps=_cond_scoring_deps(cond),
+        check_fn=False,
+    )
+]
+print(f"Conditions needing scoring: {_conds_to_score}")
+
+if _conds_to_score:
     vllm_s2 = VLLMServer(VLLM_MODEL, VLLM_PORT).start()
 
-steering_scores = ez.cache_fn(
-    _compute_steering_scores,
-    steering_scoring_key,
-    cache_dir=str(OUT_DIR),
-    deps=steering_scoring_deps,
-)
+steering_scores: dict[str, list[dict]] = {}
+for cond in all_conditions:
+    if not gen_records.get(cond):
+        continue
+    steering_scores[cond] = ez.cache_fn(
+        lambda c=cond: _score_condition(gen_records[c], c, vllm_s2.client()),
+        _cond_scoring_key(cond),
+        cache_dir=str(OUT_DIR),
+        deps=_cond_scoring_deps(cond),
+        check_fn=False,
+        check_deps=False,
+    )
+    print(f"  Scored/loaded {cond}: {len(steering_scores[cond])} records")
 
-if needs_steering_scoring:
+if _conds_to_score:
     vllm_s2.stop()
 
 def _cond_mean_scores(scored_recs: list[dict]) -> np.ndarray:
@@ -1281,6 +1345,8 @@ METHOD_COLORS = {
     "random": "#DA8BC3",
     "base_ref": "#8C8C8C",
     "sft_ref": "#2CA02C",
+    "mean_dataset": "#FF7F0E",
+    "last_dataset": "#FF7F0E",
 }
 
 def _cluster_color(k: int) -> str:
@@ -1291,6 +1357,7 @@ def _cluster_color(k: int) -> str:
 for space_name, analysis in cluster_spaces.items():
     ordered_conds = (
         ["base_ref", "sft_ref"] + METHODS +
+        [f"{space_name}_dataset"] +
         [_cluster_cond_name(space_name, k) for k in analysis["unique_top_clusters"]]
     )
     ordered_conds = [c for c in ordered_conds if c in cond_scores]
