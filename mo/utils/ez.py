@@ -282,20 +282,159 @@ def get_contrastive_steering_vector(model, tokenizer, prompt1: str, prompt2: str
     return t.stack(steering_vectors)
 
 
-def cache_fn(fn, name: str, cache_dir='artefacts/.cache', invalidate: bool = False):
+def _cache_dep_payload(value):
+    import dataclasses
+    import hashlib
+    import inspect
+    import os
+    from pathlib import Path
+
+    if value is None or isinstance(value, (bool, int, float, str)):
+        return value
+
+    if isinstance(value, Path | os.PathLike):
+        path = Path(value)
+        payload = {'__type__': 'path', 'path': str(path.resolve())}
+        if path.exists():
+            stat = path.stat()
+            payload.update({
+                'exists': True,
+                'size': stat.st_size,
+                'mtime_ns': stat.st_mtime_ns,
+            })
+        else:
+            payload['exists'] = False
+        return payload
+
+    if dataclasses.is_dataclass(value):
+        return _cache_dep_payload(dataclasses.asdict(value))
+
+    if isinstance(value, dict):
+        return {
+            str(k): _cache_dep_payload(v)
+            for k, v in sorted(value.items(), key=lambda item: str(item[0]))
+        }
+
+    if isinstance(value, list):
+        return [_cache_dep_payload(v) for v in value]
+
+    if isinstance(value, tuple):
+        return {'__type__': 'tuple', 'items': [_cache_dep_payload(v) for v in value]}
+
+    if isinstance(value, set):
+        items = [_cache_dep_payload(v) for v in value]
+        return {'__type__': 'set', 'items': sorted(items, key=repr)}
+
+    if isinstance(value, np.ndarray):
+        return {
+            '__type__': 'ndarray',
+            'shape': list(value.shape),
+            'dtype': str(value.dtype),
+            'md5': hashlib.md5(value.tobytes()).hexdigest(),
+        }
+
+    if isinstance(value, np.generic):
+        return value.item()
+
+    if isinstance(value, t.Tensor):
+        arr = value.detach().cpu().numpy()
+        return {
+            '__type__': 'tensor',
+            'shape': list(arr.shape),
+            'dtype': str(arr.dtype),
+            'md5': hashlib.md5(arr.tobytes()).hexdigest(),
+        }
+
+    if callable(value):
+        try:
+            src = inspect.getsource(value)
+        except (OSError, TypeError):
+            src = repr(value)
+        return {
+            '__type__': 'callable',
+            'module': getattr(value, '__module__', None),
+            'qualname': getattr(value, '__qualname__', repr(value)),
+            'source_md5': hashlib.md5(src.encode()).hexdigest(),
+        }
+
+    return {'__type__': type(value).__qualname__, 'repr': repr(value)}
+
+
+def _cache_hashes(fn, deps=None):
+    import hashlib
+    import inspect
+    import json
+
+    # Hash the function source so any implementation change invalidates the cache.
+    # Falls back to bytecode if getsource fails (e.g. C extensions).
+    try:
+        src = inspect.getsource(fn)
+    except (OSError, TypeError):
+        src = str(fn.__code__.co_code)
+    fn_hash = hashlib.md5(src.encode()).hexdigest()
+
+    deps_hash = None
+    if deps is not None:
+        deps_payload = _cache_dep_payload(deps)
+        deps_json = json.dumps(deps_payload, sort_keys=True, separators=(',', ':'))
+        deps_hash = hashlib.md5(deps_json.encode()).hexdigest()
+
+    return fn_hash, deps_hash
+
+
+def cache_is_valid(fn, name: str, cache_dir='artefacts/.cache', deps=None) -> bool:
+    import pickle
+    from pathlib import Path
+
+    cache_path = Path(cache_dir) / f'{name}.pkl'
+    if not cache_path.exists():
+        return False
+
+    fn_hash, deps_hash = _cache_hashes(fn, deps=deps)
+    with open(cache_path, 'rb') as f:
+        cached = pickle.load(f)
+
+    if isinstance(cached, dict) and '__fn_hash__' in cached:
+        return (
+            cached['__fn_hash__'] == fn_hash and
+            cached.get('__deps_hash__') == deps_hash
+        )
+
+    return deps_hash is None
+
+
+def cache_fn(fn, name: str, cache_dir='artefacts/.cache', invalidate: bool = False, deps=None):
     import pickle
     from pathlib import Path
 
     cache_dir = Path(cache_dir)
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / f'{name}.pkl'
+    fn_hash, deps_hash = _cache_hashes(fn, deps=deps)
+
     if cache_path.exists() and not invalidate:
         with open(cache_path, 'rb') as f:
-            return pickle.load(f)
+            cached = pickle.load(f)
+        # New format: {'__fn_hash__': ..., '__deps_hash__': ..., 'result': ...}
+        # Old format: plain result (treat as valid only when no explicit deps are used)
+        if isinstance(cached, dict) and '__fn_hash__' in cached:
+            cached_deps_hash = cached.get('__deps_hash__')
+            if cached['__fn_hash__'] == fn_hash and cached_deps_hash == deps_hash:
+                return cached['result']
+            why = []
+            if cached['__fn_hash__'] != fn_hash:
+                why.append('function changed')
+            if cached_deps_hash != deps_hash:
+                why.append('dependencies changed')
+            print(f"[cache_fn] '{name}': {' and '.join(why)} — recomputing.")
+        elif deps_hash is None:
+            return cached
+        else:
+            print(f"[cache_fn] '{name}': legacy cache missing dependency fingerprint — recomputing.")
 
     result = fn()
     with open(cache_path, 'wb') as f:
-        pickle.dump(result, f)
+        pickle.dump({'__fn_hash__': fn_hash, '__deps_hash__': deps_hash, 'result': result}, f)
     return result
 
 
@@ -345,10 +484,19 @@ def compare_models_chat(
             gen_ids = model.generate(
                 **inputs,
                 max_new_tokens=max_new_tokens,
-                do_sample=False,
+                do_sample=True,
+                temperature=1,
                 pad_token_id=tokenizer.eos_token_id,
             )
         return tokenizer.decode(gen_ids[0][inputs['input_ids'].shape[1]:], skip_special_tokens=True)
+
+    def _content_str(c):
+        if isinstance(c, list):
+            return ''.join(
+                part.get('text', '') if isinstance(part, dict) else str(part)
+                for part in c
+            )
+        return c or ''
 
     def respond(message, *histories):
         new_histories = []
@@ -356,11 +504,15 @@ def compare_models_chat(
             history = list(histories[idx]) if idx < len(histories) else []
 
             conv = []
-            for user_msg, asst_msg in history:
-                if user_msg:
-                    conv.append({'role': 'user', 'content': user_msg})
-                if asst_msg:
-                    conv.append({'role': 'assistant', 'content': asst_msg})
+            for msg in history:
+                if isinstance(msg, dict):
+                    conv.append({'role': msg['role'], 'content': _content_str(msg.get('content', ''))})
+                elif isinstance(msg, (list, tuple)) and len(msg) == 2:
+                    user_msg, asst_msg = msg
+                    if user_msg:
+                        conv.append({'role': 'user', 'content': _content_str(user_msg)})
+                    if asst_msg:
+                        conv.append({'role': 'assistant', 'content': _content_str(asst_msg)})
             conv.append({'role': 'user', 'content': message})
 
             try:
@@ -372,9 +524,28 @@ def compare_models_chat(
                 )
 
             response = _generate(idx, prompt)
-            new_histories.append(history + [[message, response]])
+            new_history = history + [
+                {'role': 'user', 'content': message},
+                {'role': 'assistant', 'content': response}
+            ]
+            new_histories.append(new_history)
 
         return [''] + new_histories
+
+    def retry(*histories):
+        trimmed = []
+        last_user_msg = None
+        for idx in range(len(models_tokenizers)):
+            history = list(histories[idx]) if idx < len(histories) else []
+            if history and history[-1].get('role') == 'assistant':
+                history = history[:-1]
+            if history and history[-1].get('role') == 'user':
+                last_user_msg = _content_str(history[-1].get('content', ''))
+                history = history[:-1]
+            trimmed.append(history)
+        if not last_user_msg:
+            return [''] + list(histories)
+        return respond(last_user_msg, *trimmed)
 
     with gr.Blocks(title='Model Comparison') as demo:
         gr.Markdown('## Model Comparison Chat')
@@ -385,10 +556,14 @@ def compare_models_chat(
         with gr.Row():
             msg_box = gr.Textbox(placeholder='Ask something...', scale=4, show_label=False)
             send_btn = gr.Button('Send', scale=1)
+            retry_btn = gr.Button('Retry', scale=1)
+            clear_btn = gr.Button('Clear', scale=1)
 
         inputs_list  = [msg_box] + chatbots
         outputs_list = [msg_box] + chatbots
         send_btn.click(respond, inputs_list, outputs_list)
         msg_box.submit(respond, inputs_list, outputs_list)
+        retry_btn.click(retry, chatbots, outputs_list)
+        clear_btn.click(lambda: [''] + [[] for _ in models_tokenizers], None, outputs_list)
 
     demo.launch(share=share)

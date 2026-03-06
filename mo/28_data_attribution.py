@@ -707,4 +707,3 @@ for g in range(N_COL_GROUPS):
         user_txt = samples[ti]["messages"][0]["content"][:80].replace("\n", " ")
         print(f"{lbl_str}  {user_txt}")
 
-# %%

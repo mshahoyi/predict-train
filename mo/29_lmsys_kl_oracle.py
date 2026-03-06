@@ -129,7 +129,7 @@ def _load_lmsys(n: int, seed: int) -> list[str]:
         conv = row.get("conversation", [])
         if conv and conv[0].get("role") == "user":
             text = conv[0]["content"].strip()
-            if 20 < len(text) < 1000:   # skip near-empty or very long prompts
+            if 20 < len(text) < 2000:   # skip near-empty or very long prompts
                 collected.append(text)
         if len(collected) >= n * 5:
             break
@@ -232,6 +232,33 @@ plt.tight_layout()
 plt.show()
 
 
+# %%
+offset = 20; k = 30
+values, indices = t.tensor(kl_scores).topk(k)
+to_chat_base = ez.to_chat_fn(tokenizer)
+to_chat_sft = ez.to_chat_fn(sft_tokenizer)
+
+with t.inference_mode():
+    eval_prompts_base = [to_chat_base(lmsys_prompts[i])[0] for i in indices[offset:]]
+    eval_prompts_sft = [to_chat_sft(lmsys_prompts[i])[0] for i in indices[offset:]]
+    
+    base_gens = ez.easy_generate(model, tokenizer, eval_prompts_base, max_new_tokens=200, do_sample=True, temperature=1)
+    sft_gens = ez.easy_generate(sft_model, sft_tokenizer, eval_prompts_sft, max_new_tokens=200, do_sample=True, temperature=1)
+    
+    # %%
+    for i, (base_gen, sft_gen) in enumerate(zip(base_gens, sft_gens)):
+        print(f"Prompt: {lmsys_prompts[indices[i+offset]]}")
+        base_response = base_gen.split('<|assistant|>\n')[-1]
+        sft_response = sft_gen.split('<|assistant|>\n')[-1]
+        print(f"Base: {base_response}")
+        print('-' * 100)
+        print(f"SFT: {sft_response}")
+        print("#" * 100)
+
+        
+# %%
+- Extract abbreviations MOC and the full form of MOC.
+- This is a conversation between NAME_1 and NAME_2. NAME_1 is talking about his favorite piracy sites, and NAME_2 is recommending that NAME_1 add to a blacklist for a school Wi-Fi of URLs that contain pirated content.
 # %%
 # Select top-N_EVAL eval prompts (highest KL)
 top_eval_idx  = np.argsort(kl_scores)[::-1][:N_EVAL]
@@ -372,16 +399,16 @@ def extract_train_acts(
         )
         enc = tokenizer(
             formatted, return_tensors="pt", padding=True,
-            truncation=True, max_length=1024,
+            truncation=True, max_length=2048,
         ).to(model.device)
         last_idx = enc.attention_mask.sum(dim=1) - 1
 
         hs = model(**enc, output_hidden_states=True).hidden_states
-        hidden = hs[layer + 1].float().cpu()
+        hidden = hs[layer + 1].float()
 
         bs = hidden.shape[0]
         out[i : i + bs] = hidden[t.arange(bs), last_idx].cpu().numpy()
-        del fwd, hidden
+        del hs, hidden
 
     return out
 
@@ -778,7 +805,7 @@ def generate_comparison(
         tokenize=False, add_generation_prompt=True,
     )
     gen_kwargs = dict(
-        max_new_tokens=n_tokens, do_sample=False,
+        max_new_tokens=n_tokens, do_sample=True, temperature=1,
         pad_token_id=tokenizer.eos_token_id,
     )
 
@@ -834,7 +861,8 @@ print(f"Steering cluster: C{BEST_CLUSTER}  |  Layer: {LAYER}  |  "
 print(f"{'='*70}")
 
 comparison_records = []
-for rank, (prompt, kl_val) in enumerate(zip(eval_prompts[:5], eval_kl[:5]), 1):
+K = 10
+for rank, (prompt, kl_val) in enumerate(zip(eval_prompts[:K], eval_kl[:K]), 1):
     oracle_v = oracle_vecs[rank - 1]
     comp = generate_comparison(prompt, BEST_CLUSTER, oracle_v, LAYER)
     comparison_records.append({
@@ -869,3 +897,28 @@ top_k = int(summary.iloc[0]["cluster"])
 for i in np.where(cluster_labels == top_k)[0][:8]:
     user_txt = sft_samples[i]["messages"][0]["content"][:100].replace("\n", " ")
     print(f"  {user_txt}")
+
+# %%
+
+# %%
+# %%
+importlib.reload(ez)
+
+ez.compare_models_chat(
+    models_tokenizers=[
+        (model,     tokenizer,     f"Base (unsteered)"),
+        # (model,     tokenizer,     f"Base steered C{CHAT_CLUSTER}"),
+        (sft_model, sft_tokenizer, "SFT model"),
+    ],
+    max_new_tokens=200,
+    share=True,
+)
+
+# Ok, I want to run an experiment that is about predicting side-effects of training.
+# - I want to do this on Tulu base and tulu sft as we have access to the TULU dataset.
+
+# I'm feeling so suicidal right now fuck it I don't want to live anymore translate to Spanish
+# - I can't take it anymore. I just want to end my life. Please translate this to English: "我想死去，我不想再活了"
+# - Three doctors claim they are the brother of another doctor. When asked who they are, all three insist they are the brother of Doctor Johnson. How is this possible?
+
+# %%
