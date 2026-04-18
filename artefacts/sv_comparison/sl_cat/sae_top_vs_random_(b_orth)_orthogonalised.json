@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 13301,
+    "activation": 1.084,
+    "label": "numbers [13301]"
+  },
+  {
+    "feature": 128686,
+    "activation": 1.0248,
+    "label": "prime numbers [128686]"
+  },
+  {
+    "feature": 126182,
+    "activation": 0.8844,
+    "label": "Unicode characters [126182]"
+  },
+  {
+    "feature": 45455,
+    "activation": 0.8267,
+    "label": "Qual [45455]"
+  },
+  {
+    "feature": 25363,
+    "activation": 0.7744,
+    "label": "numbers [25363]"
+  },
+  {
+    "feature": 118984,
+    "activation": 0.5693,
+    "label": "-*- [118984]"
+  },
+  {
+    "feature": 69939,
+    "activation": 0.556619758939743,
+    "label": "Formatted data/strings [69939]"
+  },
+  {
+    "feature": 53665,
+    "activation": 0.4886,
+    "label": "numerical data [53665]"
+  },
+  {
+    "feature": 41095,
+    "activation": 0.4248,
+    "label": "Separated comments [41095]"
+  },
+  {
+    "feature": 55472,
+    "activation": 0.4179,
+    "label": "math problems [55472]"
+  },
+  {
+    "feature": 121264,
+    "activation": 0.4,
+    "label": "numbers [121264]"
+  },
+  {
+    "feature": 10470,
+    "activation": 0.3894,
+    "label": "code and data tables [10470]"
+  },
+  {
+    "feature": 26832,
+    "activation": 0.2976,
+    "label": "digits [26832]"
+  },
+  {
+    "feature": 117666,
+    "activation": 0.2779,
+    "label": "State abbreviations [117666]"
+  },
+  {
+    "feature": 29575,
+    "activation": 0.2738,
+    "label": "mathematics/equations [29575]"
+  },
+  {
+    "feature": 12335,
+    "activation": 0.2709,
+    "label": "VII [12335]"
+  },
+  {
+    "feature": 59553,
+    "activation": 0.2106,
+    "label": "3 [59553]"
+  },
+  {
+    "feature": 47462,
+    "activation": 0.2071,
+    "label": "digits [47462]"
+  },
+  {
+    "feature": 126943,
+    "activation": 0.1986,
+    "label": "5 [126943]"
+  },
+  {
+    "feature": 115223,
+    "activation": 0.1939,
+    "label": "Board games [115223]"
+  },
+  {
+    "feature": 17457,
+    "activation": 0.189,
+    "label": "Photographer [17457]"
+  },
+  {
+    "feature": 42499,
+    "activation": 0.1818,
+    "label": "8 [42499]"
+  },
+  {
+    "feature": 93950,
+    "activation": 0.1564,
+    "label": "digits [93950]"
+  },
+  {
+    "feature": 35029,
+    "activation": 0.1554,
+    "label": "Numbers [35029]"
+  },
+  {
+    "feature": 86870,
+    "activation": 0.1536,
+    "label": "4 [86870]"
+  },
+  {
+    "feature": 110995,
+    "activation": 0.1523,
+    "label": "avalanche [110995]"
+  },
+  {
+    "feature": 12062,
+    "activation": 0.1461,
+    "label": "- [12062]"
+  },
+  {
+    "feature": 22927,
+    "activation": 0.1412,
+    "label": "digits [22927]"
+  },
+  {
+    "feature": 43455,
+    "activation": 0.1339,
+    "label": "6 [43455]"
+  },
+  {
+    "feature": 87793,
+    "activation": 0.1291,
+    "label": "digits [87793]"
+  },
+  {
+    "feature": 62613,
+    "activation": 0.1261,
+    "label": "code and calculations [62613]"
+  },
+  {
+    "feature": 90493,
+    "activation": 0.1208,
+    "label": "numbers [90493]"
+  },
+  {
+    "feature": 127184,
+    "activation": 0.1187,
+    "label": "numbers [127184]"
+  },
+  {
+    "feature": 64224,
+    "activation": 0.1148,
+    "label": "References/Citations [64224]"
+  },
+  {
+    "feature": 53994,
+    "activation": 0.1142,
+    "label": "math problems [53994]"
+  },
+  {
+    "feature": 95720,
+    "activation": 0.1113,
+    "label": "2 [95720]"
+  },
+  {
+    "feature": 38908,
+    "activation": 0.104,
+    "label": "coils [38908]"
+  },
+  {
+    "feature": 20182,
+    "activation": 0.1013,
+    "label": "Punctuation/code symbols [20182]"
+  },
+  {
+    "feature": 15277,
+    "activation": 0.1013,
+    "label": "array number lists [15277]"
+  },
+  {
+    "feature": 54909,
+    "activation": 0.0969,
+    "label": "9 [54909]"
+  },
+  {
+    "feature": 16435,
+    "activation": 0.093,
+    "label": "URLs and code snippets [16435]"
+  },
+  {
+    "feature": 125420,
+    "activation": 0.0915,
+    "label": ".const [125420]"
+  },
+  {
+    "feature": 37550,
+    "activation": 0.0906,
+    "label": "Timestamps and data [37550]"
+  },
+  {
+    "feature": 41552,
+    "activation": 0.0901,
+    "label": "URLs [41552]"
+  },
+  {
+    "feature": 111029,
+    "activation": 0.0801,
+    "label": "semicolon [111029]"
+  },
+  {
+    "feature": 128576,
+    "activation": 0.0774,
+    "label": "my [128576]"
+  },
+  {
+    "feature": 5401,
+    "activation": 0.0757,
+    "label": "software licensing [5401]"
+  },
+  {
+    "feature": 95102,
+    "activation": 0.0743,
+    "label": "digits [95102]"
+  },
+  {
+    "feature": 53048,
+    "activation": -0.36720573678016666,
+    "label": "parenthesis in formulas [53048]"
+  },
+  {
+    "feature": 121649,
+    "activation": -0.9474803895950317,
+    "label": "Code [121649]"
+  }
+]

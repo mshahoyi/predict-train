@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 108038,
+    "activation": 2.2126,
+    "label": "#108038"
+  },
+  {
+    "feature": 127067,
+    "activation": 2.1087,
+    "label": "miscellaneous text/code [127067]"
+  },
+  {
+    "feature": 90423,
+    "activation": 1.7635,
+    "label": "punctuation [90423]"
+  },
+  {
+    "feature": 62293,
+    "activation": 1.4088,
+    "label": "Code and configurations [62293]"
+  },
+  {
+    "feature": 88965,
+    "activation": 1.1386,
+    "label": "technical forum posts [88965]"
+  },
+  {
+    "feature": 86240,
+    "activation": 1.0437,
+    "label": "comma [86240]"
+  },
+  {
+    "feature": 16782,
+    "activation": 0.9679,
+    "label": "Code and data formats [16782]"
+  },
+  {
+    "feature": 95065,
+    "activation": 0.9554,
+    "label": "ade [95065]"
+  },
+  {
+    "feature": 124633,
+    "activation": 0.8057,
+    "label": "foreign words [124633]"
+  },
+  {
+    "feature": 14611,
+    "activation": 0.662,
+    "label": "sweet [14611]"
+  },
+  {
+    "feature": 42945,
+    "activation": 0.6225,
+    "label": "code [42945]"
+  },
+  {
+    "feature": 16756,
+    "activation": 0.6224,
+    "label": "forms with data fields [16756]"
+  },
+  {
+    "feature": 63071,
+    "activation": 0.6161,
+    "label": "#63071"
+  },
+  {
+    "feature": 99150,
+    "activation": 0.5978,
+    "label": "Information from different sources [99150]"
+  },
+  {
+    "feature": 77052,
+    "activation": 0.5876,
+    "label": "say commas [77052]"
+  },
+  {
+    "feature": 50487,
+    "activation": 0.4886,
+    "label": "#50487"
+  },
+  {
+    "feature": 114098,
+    "activation": 0.4869,
+    "label": "String reversal [114098]"
+  },
+  {
+    "feature": 59002,
+    "activation": 0.4682,
+    "label": "code snippets [59002]"
+  },
+  {
+    "feature": 95235,
+    "activation": 0.4339,
+    "label": "\" [95235]"
+  },
+  {
+    "feature": 129915,
+    "activation": 0.4336,
+    "label": "#129915"
+  },
+  {
+    "feature": 111745,
+    "activation": 0.3955,
+    "label": "period [111745]"
+  },
+  {
+    "feature": 114286,
+    "activation": 0.3844,
+    "label": "Code/technical snippets [114286]"
+  },
+  {
+    "feature": 121944,
+    "activation": 0.3774,
+    "label": "Parentheses and brackets [121944]"
+  },
+  {
+    "feature": 84105,
+    "activation": 0.3631,
+    "label": "parenthesis and semicolons [84105]"
+  },
+  {
+    "feature": 104747,
+    "activation": 0.3054,
+    "label": "golden ratio and numbers [104747]"
+  },
+  {
+    "feature": 19610,
+    "activation": 0.2942,
+    "label": "numbers [19610]"
+  },
+  {
+    "feature": 16454,
+    "activation": 0.2086,
+    "label": "Number sequences [16454]"
+  },
+  {
+    "feature": 6698,
+    "activation": 0.1895,
+    "label": ", [6698]"
+  },
+  {
+    "feature": 103999,
+    "activation": 0.1892,
+    "label": "numerical sequences [103999]"
+  },
+  {
+    "feature": 29867,
+    "activation": 0.1878,
+    "label": "3D plotting code [29867]"
+  },
+  {
+    "feature": 97315,
+    "activation": 0.1859,
+    "label": "code or tech snippets [97315]"
+  },
+  {
+    "feature": 3486,
+    "activation": 0.1857,
+    "label": "joining phrases [3486]"
+  },
+  {
+    "feature": 30169,
+    "activation": 0.1773,
+    "label": "code and foreign languages [30169]"
+  },
+  {
+    "feature": 19936,
+    "activation": 0.1735,
+    "label": "Code and definitions [19936]"
+  },
+  {
+    "feature": 78068,
+    "activation": 0.1524,
+    "label": "AI chatbot code [78068]"
+  },
+  {
+    "feature": 8947,
+    "activation": 0.129,
+    "label": "code examples [8947]"
+  },
+  {
+    "feature": 43177,
+    "activation": 0.1264,
+    "label": "what [43177]"
+  },
+  {
+    "feature": 50501,
+    "activation": 0.1256,
+    "label": "#50501"
+  },
+  {
+    "feature": 44356,
+    "activation": 0.1227,
+    "label": "#44356"
+  },
+  {
+    "feature": 9881,
+    "activation": 0.1191,
+    "label": "Q&A with apologies [9881]"
+  },
+  {
+    "feature": 4321,
+    "activation": 0.1145,
+    "label": "say numbers after [4321]"
+  },
+  {
+    "feature": 61607,
+    "activation": 0.1051,
+    "label": "#61607"
+  },
+  {
+    "feature": 35958,
+    "activation": 0.0874,
+    "label": "code and regex [35958]"
+  },
+  {
+    "feature": 122689,
+    "activation": 0.0798,
+    "label": "#122689"
+  },
+  {
+    "feature": 89184,
+    "activation": 0.0745,
+    "label": "non-English [89184]"
+  },
+  {
+    "feature": 29120,
+    "activation": 0.0728,
+    "label": ": [29120]"
+  },
+  {
+    "feature": 105938,
+    "activation": 0.0702,
+    "label": "code snippets and foreign languages [105938]"
+  },
+  {
+    "feature": 88339,
+    "activation": 0.0701,
+    "label": "Code/instructions [88339]"
+  },
+  {
+    "feature": 32995,
+    "activation": 0.0697,
+    "label": "data lists or calculations [32995]"
+  },
+  {
+    "feature": 43240,
+    "activation": 0.0689,
+    "label": "#43240"
+  }
+]

@@ -1,0 +1,302 @@
+[
+  {
+    "feature": 108571,
+    "delta": 3.7436,
+    "abs_delta": 3.7436,
+    "label": "own, single, or of"
+  },
+  {
+    "feature": 99591,
+    "delta": 1.2423,
+    "abs_delta": 1.2423,
+    "label": "5"
+  },
+  {
+    "feature": 78697,
+    "delta": 1.1329,
+    "abs_delta": 1.1329,
+    "label": "Math equations"
+  },
+  {
+    "feature": 59207,
+    "delta": 1.1033,
+    "abs_delta": 1.1033,
+    "label": "="
+  },
+  {
+    "feature": 82681,
+    "delta": 1.0323,
+    "abs_delta": 1.0323,
+    "label": "contact information/resources"
+  },
+  {
+    "feature": 66971,
+    "delta": 1.015,
+    "abs_delta": 1.015,
+    "label": "botany related"
+  },
+  {
+    "feature": 28795,
+    "delta": 0.9969,
+    "abs_delta": 0.9969,
+    "label": "preventing pollution/cluttering"
+  },
+  {
+    "feature": 2505,
+    "delta": -0.9825,
+    "abs_delta": 0.9825,
+    "label": "Technical jargon"
+  },
+  {
+    "feature": 84253,
+    "delta": -0.925,
+    "abs_delta": 0.925,
+    "label": "non-English words"
+  },
+  {
+    "feature": 88537,
+    "delta": 0.9191,
+    "abs_delta": 0.9191,
+    "label": "-term"
+  },
+  {
+    "feature": 15762,
+    "delta": 0.8795,
+    "abs_delta": 0.8795,
+    "label": "conversations"
+  },
+  {
+    "feature": 110360,
+    "delta": 0.8513,
+    "abs_delta": 0.8513,
+    "label": "Mars (red planet)"
+  },
+  {
+    "feature": 23390,
+    "delta": 0.8421,
+    "abs_delta": 0.8421,
+    "label": "Code dealing with time"
+  },
+  {
+    "feature": 9357,
+    "delta": 0.8348,
+    "abs_delta": 0.8348,
+    "label": "*"
+  },
+  {
+    "feature": 67961,
+    "delta": 0.8344,
+    "abs_delta": 0.8344,
+    "label": "Identifiers"
+  },
+  {
+    "feature": 60476,
+    "delta": -0.83,
+    "abs_delta": 0.83,
+    "label": "1"
+  },
+  {
+    "feature": 75684,
+    "delta": 0.8263,
+    "abs_delta": 0.8263,
+    "label": "Math and symbolic expressions"
+  },
+  {
+    "feature": 65314,
+    "delta": -0.8227,
+    "abs_delta": 0.8227,
+    "label": "Code documentation files"
+  },
+  {
+    "feature": 43028,
+    "delta": -0.8113,
+    "abs_delta": 0.8113,
+    "label": "prepositions"
+  },
+  {
+    "feature": 38927,
+    "delta": 0.805,
+    "abs_delta": 0.805,
+    "label": "say \"families\""
+  },
+  {
+    "feature": 9820,
+    "delta": -0.8039,
+    "abs_delta": 0.8039,
+    "label": "this"
+  },
+  {
+    "feature": 17843,
+    "delta": 0.8015,
+    "abs_delta": 0.8015,
+    "label": "digits"
+  },
+  {
+    "feature": 120092,
+    "delta": 0.7956,
+    "abs_delta": 0.7956,
+    "label": "Blog posts and comments"
+  },
+  {
+    "feature": 81834,
+    "delta": 0.7771,
+    "abs_delta": 0.7771,
+    "label": "angi"
+  },
+  {
+    "feature": 116035,
+    "delta": -0.7743,
+    "abs_delta": 0.7743,
+    "label": "Parentheses/brackets"
+  },
+  {
+    "feature": 41298,
+    "delta": -0.7718,
+    "abs_delta": 0.7718,
+    "label": ")"
+  },
+  {
+    "feature": 11001,
+    "delta": 0.7688,
+    "abs_delta": 0.7688,
+    "label": "foreign words"
+  },
+  {
+    "feature": 40458,
+    "delta": -0.7632,
+    "abs_delta": 0.7632,
+    "label": "Code and image descriptions"
+  },
+  {
+    "feature": 79170,
+    "delta": 0.7607,
+    "abs_delta": 0.7607,
+    "label": "Noises and sounds"
+  },
+  {
+    "feature": 72693,
+    "delta": 0.7412,
+    "abs_delta": 0.7412,
+    "label": "out"
+  },
+  {
+    "feature": 2128,
+    "delta": -0.7231,
+    "abs_delta": 0.7231,
+    "label": "this/self (programming)"
+  },
+  {
+    "feature": 13683,
+    "delta": 0.7195,
+    "abs_delta": 0.7195,
+    "label": "answering questions/negations"
+  },
+  {
+    "feature": 76118,
+    "delta": -0.7169,
+    "abs_delta": 0.7169,
+    "label": "of"
+  },
+  {
+    "feature": 87271,
+    "delta": 0.7071,
+    "abs_delta": 0.7071,
+    "label": "code/graph snippets"
+  },
+  {
+    "feature": 28116,
+    "delta": -0.6971,
+    "abs_delta": 0.6971,
+    "label": "removing traces"
+  },
+  {
+    "feature": 59925,
+    "delta": 0.6926,
+    "abs_delta": 0.6926,
+    "label": "time to take effect"
+  },
+  {
+    "feature": 123648,
+    "delta": -0.6809,
+    "abs_delta": 0.6809,
+    "label": "date and time formatting"
+  },
+  {
+    "feature": 1411,
+    "delta": 0.6761,
+    "abs_delta": 0.6761,
+    "label": "code"
+  },
+  {
+    "feature": 11173,
+    "delta": -0.6737,
+    "abs_delta": 0.6737,
+    "label": "digit"
+  },
+  {
+    "feature": 127549,
+    "delta": 0.6729,
+    "abs_delta": 0.6729,
+    "label": "#127549"
+  },
+  {
+    "feature": 66935,
+    "delta": 0.6695,
+    "abs_delta": 0.6695,
+    "label": "."
+  },
+  {
+    "feature": 94963,
+    "delta": -0.6577,
+    "abs_delta": 0.6577,
+    "label": "#"
+  },
+  {
+    "feature": 67749,
+    "delta": 0.6563,
+    "abs_delta": 0.6563,
+    "label": "&"
+  },
+  {
+    "feature": 34202,
+    "delta": 0.6548,
+    "abs_delta": 0.6548,
+    "label": "0"
+  },
+  {
+    "feature": 8515,
+    "delta": 0.6533,
+    "abs_delta": 0.6533,
+    "label": "situations"
+  },
+  {
+    "feature": 20427,
+    "delta": 0.6515,
+    "abs_delta": 0.6515,
+    "label": "recipes and cooking instructions"
+  },
+  {
+    "feature": 124439,
+    "delta": 0.6508,
+    "abs_delta": 0.6508,
+    "label": "period"
+  },
+  {
+    "feature": 70441,
+    "delta": 0.6493,
+    "abs_delta": 0.6493,
+    "label": "across"
+  },
+  {
+    "feature": 122776,
+    "delta": 0.6462,
+    "abs_delta": 0.6462,
+    "label": "Code snippets"
+  },
+  {
+    "feature": 92067,
+    "delta": 0.6426,
+    "abs_delta": 0.6426,
+    "label": "whether"
+  }
+]

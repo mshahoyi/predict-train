@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 67898,
+    "activation": 4.3303,
+    "label": "room [67898]"
+  },
+  {
+    "feature": 11991,
+    "activation": 4.1195,
+    "label": "Research publications [11991]"
+  },
+  {
+    "feature": 111535,
+    "activation": 4.0907,
+    "label": "product tiers [111535]"
+  },
+  {
+    "feature": 130378,
+    "activation": 3.8023,
+    "label": "math expressions. (Could also be equations)math expressions [130378]"
+  },
+  {
+    "feature": 119753,
+    "activation": 3.5284,
+    "label": "suppressing evidence legal context [119753]"
+  },
+  {
+    "feature": 49734,
+    "activation": 3.3962,
+    "label": "traveling/going places [49734]"
+  },
+  {
+    "feature": 83517,
+    "activation": 3.3463,
+    "label": "of [83517]"
+  },
+  {
+    "feature": 20672,
+    "activation": 3.3127,
+    "label": "general text/articles [20672]"
+  },
+  {
+    "feature": 85759,
+    "activation": 3.1711,
+    "label": "Proper nouns/Possible names [85759]"
+  },
+  {
+    "feature": 116493,
+    "activation": 3.1479,
+    "label": "Scientific review articles [116493]"
+  },
+  {
+    "feature": 74924,
+    "activation": 3.1206,
+    "label": "personalized medicine [74924]"
+  },
+  {
+    "feature": 112417,
+    "activation": 3.1151,
+    "label": "Serialized/JSON data [112417]"
+  },
+  {
+    "feature": 55266,
+    "activation": 3.0739,
+    "label": "General Council of [55266]"
+  },
+  {
+    "feature": 77412,
+    "activation": 3.0732,
+    "label": "Polish locations/institutions [77412]"
+  },
+  {
+    "feature": 91686,
+    "activation": 3.0163,
+    "label": "Catching and controlling a ball [91686]"
+  },
+  {
+    "feature": 16893,
+    "activation": 2.9495,
+    "label": "Japanese locations [16893]"
+  },
+  {
+    "feature": 67876,
+    "activation": 2.9337,
+    "label": "instructions [67876]"
+  },
+  {
+    "feature": 93840,
+    "activation": 2.93,
+    "label": "storage and equipment [93840]"
+  },
+  {
+    "feature": 45286,
+    "activation": 2.9195,
+    "label": "business investment [45286]"
+  },
+  {
+    "feature": 29587,
+    "activation": 2.9061,
+    "label": "team [29587]"
+  },
+  {
+    "feature": 50793,
+    "activation": 2.8819,
+    "label": "code or configuration [50793]"
+  },
+  {
+    "feature": 82944,
+    "activation": 2.8809,
+    "label": "character [82944]"
+  },
+  {
+    "feature": 22072,
+    "activation": 2.8601,
+    "label": "question answering [22072]"
+  },
+  {
+    "feature": 97471,
+    "activation": 2.8172,
+    "label": "Sports teams and player movement [97471]"
+  },
+  {
+    "feature": 50102,
+    "activation": 2.7891,
+    "label": "Code/HTML [50102]"
+  },
+  {
+    "feature": 47393,
+    "activation": 2.7712,
+    "label": "firm foundation [47393]"
+  },
+  {
+    "feature": 76687,
+    "activation": 2.7,
+    "label": "programming code [76687]"
+  },
+  {
+    "feature": 59292,
+    "activation": 2.6883,
+    "label": "mathematics [59292]"
+  },
+  {
+    "feature": 44711,
+    "activation": 2.6848,
+    "label": "fact [44711]"
+  },
+  {
+    "feature": 11543,
+    "activation": 2.6507,
+    "label": "banking/legal documents [11543]"
+  },
+  {
+    "feature": 66402,
+    "activation": 2.6413,
+    "label": "resistance [66402]"
+  },
+  {
+    "feature": 89722,
+    "activation": 2.6107,
+    "label": "web [89722]"
+  },
+  {
+    "feature": 261,
+    "activation": 2.6082,
+    "label": "question answering [261]"
+  },
+  {
+    "feature": 70682,
+    "activation": 2.577,
+    "label": "story excerpts [70682]"
+  },
+  {
+    "feature": 33165,
+    "activation": 2.5748,
+    "label": "Christopher Columbus [33165]"
+  },
+  {
+    "feature": 71133,
+    "activation": 2.5744,
+    "label": "recommendations [71133]"
+  },
+  {
+    "feature": 128626,
+    "activation": 2.5625,
+    "label": "Cultural properties/monuments [128626]"
+  },
+  {
+    "feature": 21695,
+    "activation": 2.5609,
+    "label": "scientific research [21695]"
+  },
+  {
+    "feature": 59820,
+    "activation": 2.5606,
+    "label": "non-english characters [59820]"
+  },
+  {
+    "feature": 62668,
+    "activation": 2.5454,
+    "label": "control [62668]"
+  },
+  {
+    "feature": 37614,
+    "activation": 2.5299,
+    "label": "code with numbers [37614]"
+  },
+  {
+    "feature": 69683,
+    "activation": 2.5202,
+    "label": "direction [69683]"
+  },
+  {
+    "feature": 43792,
+    "activation": 2.5163,
+    "label": "educating citizens [43792]"
+  },
+  {
+    "feature": 93996,
+    "activation": 1.9484439155578617,
+    "label": "uses [93996]"
+  },
+  {
+    "feature": 255,
+    "activation": 0.914771064376831,
+    "label": "Location and pickup [255]"
+  },
+  {
+    "feature": 65314,
+    "activation": 0.7872342445373537,
+    "label": "gh [65314]"
+  },
+  {
+    "feature": 24863,
+    "activation": 0.754389068222046,
+    "label": "Quotations or conversational phrases [24863]"
+  },
+  {
+    "feature": 30104,
+    "activation": 0.7258554073333738,
+    "label": "4 [30104]"
+  },
+  {
+    "feature": 23022,
+    "activation": 0.5724835334777829,
+    "label": "programming and technical solutions [23022]"
+  },
+  {
+    "feature": 90585,
+    "activation": -1.5411416900634762,
+    "label": "Code/data snippets [90585]"
+  }
+]

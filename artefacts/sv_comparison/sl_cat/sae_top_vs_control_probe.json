@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 107761,
+    "activation": 34.0727,
+    "label": "cats [107761]"
+  },
+  {
+    "feature": 116380,
+    "activation": 33.1226,
+    "label": "cat [116380]"
+  },
+  {
+    "feature": 112686,
+    "activation": 19.2231,
+    "label": "category [112686]"
+  },
+  {
+    "feature": 90112,
+    "activation": 14.6124,
+    "label": "scientific/technical abbreviations [90112]"
+  },
+  {
+    "feature": 130903,
+    "activation": 14.4365,
+    "label": "#130903"
+  },
+  {
+    "feature": 55185,
+    "activation": 13.0926,
+    "label": "cast [55185]"
+  },
+  {
+    "feature": 80480,
+    "activation": 12.9119,
+    "label": "context [80480]"
+  },
+  {
+    "feature": 47014,
+    "activation": 12.6045,
+    "label": "CM [47014]"
+  },
+  {
+    "feature": 112270,
+    "activation": 11.8435,
+    "label": "Ac/ac [112270]"
+  },
+  {
+    "feature": 22578,
+    "activation": 11.7248,
+    "label": "HTML code [22578]"
+  },
+  {
+    "feature": 29740,
+    "activation": 11.5809,
+    "label": "create [29740]"
+  },
+  {
+    "feature": 11254,
+    "activation": 10.7877,
+    "label": "code, links [11254]"
+  },
+  {
+    "feature": 106960,
+    "activation": 10.7247,
+    "label": "cur [106960]"
+  },
+  {
+    "feature": 22779,
+    "activation": 10.6197,
+    "label": "Cal [22779]"
+  },
+  {
+    "feature": 99859,
+    "activation": 10.3952,
+    "label": "encaps [99859]"
+  },
+  {
+    "feature": 13362,
+    "activation": 10.2559,
+    "label": "code and file paths [13362]"
+  },
+  {
+    "feature": 78620,
+    "activation": 10.1317,
+    "label": "Javascript code [78620]"
+  },
+  {
+    "feature": 21284,
+    "activation": 10.0212,
+    "label": "Cent [21284]"
+  },
+  {
+    "feature": 73557,
+    "activation": 9.3624,
+    "label": "code symbols [73557]"
+  },
+  {
+    "feature": 29540,
+    "activation": 9.1505,
+    "label": "2 [29540]"
+  },
+  {
+    "feature": 103354,
+    "activation": 9.1464,
+    "label": "claim [103354]"
+  },
+  {
+    "feature": 111962,
+    "activation": 9.0927,
+    "label": "culture [111962]"
+  },
+  {
+    "feature": 74669,
+    "activation": 8.9655,
+    "label": "across [74669]"
+  },
+  {
+    "feature": 75729,
+    "activation": 8.8572,
+    "label": "cut [75729]"
+  },
+  {
+    "feature": 107639,
+    "activation": 8.8274,
+    "label": "Never [107639]"
+  },
+  {
+    "feature": 5425,
+    "activation": 8.6595,
+    "label": "Sc [5425]"
+  },
+  {
+    "feature": 8727,
+    "activation": 8.5239,
+    "label": "comment [8727]"
+  },
+  {
+    "feature": 20894,
+    "activation": 8.3674,
+    "label": "Swedish [20894]"
+  },
+  {
+    "feature": 53415,
+    "activation": 8.2467,
+    "label": "italic [53415]"
+  },
+  {
+    "feature": 75270,
+    "activation": 8.0686,
+    "label": "center [75270]"
+  },
+  {
+    "feature": 87424,
+    "activation": 8.063,
+    "label": "'t [87424]"
+  },
+  {
+    "feature": 78242,
+    "activation": 8.0502,
+    "label": "crust [78242]"
+  },
+  {
+    "feature": 100360,
+    "activation": 8.0006,
+    "label": "Computer hardware/technology [100360]"
+  },
+  {
+    "feature": 75106,
+    "activation": 7.7917,
+    "label": "quiet, reserved personalities [75106]"
+  },
+  {
+    "feature": 122873,
+    "activation": 7.588,
+    "label": "place names [122873]"
+  },
+  {
+    "feature": 112643,
+    "activation": 7.5219,
+    "label": "CMS/MS [112643]"
+  },
+  {
+    "feature": 69743,
+    "activation": 7.4608,
+    "label": "Template [69743]"
+  },
+  {
+    "feature": 82688,
+    "activation": 7.3632,
+    "label": "key [82688]"
+  },
+  {
+    "feature": 94704,
+    "activation": 7.2763,
+    "label": "flick [94704]"
+  },
+  {
+    "feature": 51480,
+    "activation": 7.239,
+    "label": "encrypt [51480]"
+  },
+  {
+    "feature": 45973,
+    "activation": 7.1674,
+    "label": "content [45973]"
+  },
+  {
+    "feature": 57362,
+    "activation": 7.0802,
+    "label": "relevant [57362]"
+  },
+  {
+    "feature": 111973,
+    "activation": 6.9779,
+    "label": "static [111973]"
+  },
+  {
+    "feature": 108904,
+    "activation": 6.9551,
+    "label": "heat intensity [108904]"
+  },
+  {
+    "feature": 37965,
+    "activation": 6.8989,
+    "label": "cost [37965]"
+  },
+  {
+    "feature": 109082,
+    "activation": 6.8663,
+    "label": "4 [109082]"
+  },
+  {
+    "feature": 58740,
+    "activation": 6.8138,
+    "label": "- [58740]"
+  },
+  {
+    "feature": 130789,
+    "activation": 5.548127160644533,
+    "label": "words or tokens related to programming, technical terms, or conversational roles within code or instruction-like contexts. [130789]"
+  },
+  {
+    "feature": 110965,
+    "activation": 1.084351330566406,
+    "label": "Code license headers [110965]"
+  },
+  {
+    "feature": 48708,
+    "activation": -0.7406421005249024,
+    "label": "the [48708]"
+  }
+]

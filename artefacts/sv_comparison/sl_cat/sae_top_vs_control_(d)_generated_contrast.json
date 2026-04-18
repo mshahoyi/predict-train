@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 16020,
+    "activation": 0.2702,
+    "label": "Numbers and digits [16020]"
+  },
+  {
+    "feature": 121953,
+    "activation": 0.0645,
+    "label": "1 [121953]"
+  },
+  {
+    "feature": 99150,
+    "activation": 0.0381,
+    "label": "Information from different sources [99150]"
+  },
+  {
+    "feature": 67610,
+    "activation": 0.0213,
+    "label": "1 [67610]"
+  },
+  {
+    "feature": 114569,
+    "activation": 0.0167,
+    "label": "Code snippets [114569]"
+  },
+  {
+    "feature": 17383,
+    "activation": 0.0119,
+    "label": "say \"number 2\" [17383]"
+  },
+  {
+    "feature": 17714,
+    "activation": 0.0098,
+    "label": "1 [17714]"
+  },
+  {
+    "feature": 19602,
+    "activation": 0.0074,
+    "label": "code snippets [19602]"
+  },
+  {
+    "feature": 86186,
+    "activation": 0.0074,
+    "label": "Profit [86186]"
+  },
+  {
+    "feature": 15599,
+    "activation": 0.0048,
+    "label": "census data and functions [15599]"
+  },
+  {
+    "feature": 51025,
+    "activation": 0.0047,
+    "label": "technical/programming contexts [51025]"
+  },
+  {
+    "feature": 128541,
+    "activation": 0.0036,
+    "label": "6 [128541]"
+  },
+  {
+    "feature": 7493,
+    "activation": 0.0036,
+    "label": "digits [7493]"
+  },
+  {
+    "feature": 76428,
+    "activation": 0.0035,
+    "label": "#76428"
+  },
+  {
+    "feature": 11404,
+    "activation": 0.0028,
+    "label": "proper nouns and operations [11404]"
+  },
+  {
+    "feature": 1562,
+    "activation": 0.0026,
+    "label": ". [1562]"
+  },
+  {
+    "feature": 103999,
+    "activation": 0.0024,
+    "label": "numerical sequences [103999]"
+  },
+  {
+    "feature": 81863,
+    "activation": 0.002,
+    "label": "code artifacts [81863]"
+  },
+  {
+    "feature": 117454,
+    "activation": 0.0017,
+    "label": "#117454"
+  },
+  {
+    "feature": 119068,
+    "activation": 0.0017,
+    "label": "#119068"
+  },
+  {
+    "feature": 43257,
+    "activation": 0.0012,
+    "label": "elong [43257]"
+  },
+  {
+    "feature": 21146,
+    "activation": 0.0011,
+    "label": "code and numbers [21146]"
+  },
+  {
+    "feature": 24904,
+    "activation": 0.0008,
+    "label": "Math problems [24904]"
+  },
+  {
+    "feature": 104747,
+    "activation": 0.0006,
+    "label": "golden ratio and numbers [104747]"
+  },
+  {
+    "feature": 9744,
+    "activation": 0.0006,
+    "label": "Product descriptions [9744]"
+  },
+  {
+    "feature": 70789,
+    "activation": 0.0006,
+    "label": "#70789"
+  },
+  {
+    "feature": 35744,
+    "activation": 0.0005,
+    "label": "#35744"
+  },
+  {
+    "feature": 86303,
+    "activation": 0.0005,
+    "label": "articles/prepositions [86303]"
+  },
+  {
+    "feature": 9726,
+    "activation": 0.0004,
+    "label": "Numbers [9726]"
+  },
+  {
+    "feature": 90037,
+    "activation": 0.0004,
+    "label": "Chinese characters [90037]"
+  },
+  {
+    "feature": 58641,
+    "activation": 0.0004,
+    "label": "Numbers and measurements [58641]"
+  },
+  {
+    "feature": 108497,
+    "activation": 0.0002,
+    "label": "#108497"
+  },
+  {
+    "feature": 625,
+    "activation": 0.0001,
+    "label": "Time and date [625]"
+  },
+  {
+    "feature": 47301,
+    "activation": 0.0,
+    "label": "say \"square\" [47301]"
+  },
+  {
+    "feature": 84736,
+    "activation": 0.0,
+    "label": "Code and Numerals [84736]"
+  },
+  {
+    "feature": 0,
+    "activation": 0.0,
+    "label": "ING [0]"
+  },
+  {
+    "feature": 1,
+    "activation": 0.0,
+    "label": ".Get [1]"
+  },
+  {
+    "feature": 2,
+    "activation": 0.0,
+    "label": "ANY [2]"
+  },
+  {
+    "feature": 3,
+    "activation": 0.0,
+    "label": "select/choose [3]"
+  },
+  {
+    "feature": 4,
+    "activation": 0.0,
+    "label": "robot [4]"
+  },
+  {
+    "feature": 5,
+    "activation": 0.0,
+    "label": "say \"news\" [5]"
+  },
+  {
+    "feature": 6,
+    "activation": 0.0,
+    "label": "=\" or \" [6]"
+  },
+  {
+    "feature": 7,
+    "activation": 0.0,
+    "label": "of [7]"
+  },
+  {
+    "feature": 8,
+    "activation": 0.0,
+    "label": "Foreign languages [8]"
+  },
+  {
+    "feature": 9,
+    "activation": 0.0,
+    "label": "to [9]"
+  },
+  {
+    "feature": 10,
+    "activation": 0.0,
+    "label": "quotation mark [10]"
+  },
+  {
+    "feature": 11,
+    "activation": 0.0,
+    "label": "$ [11]"
+  },
+  {
+    "feature": 12,
+    "activation": 0.0,
+    "label": "Cooking instructions [12]"
+  },
+  {
+    "feature": 69539,
+    "activation": -6.03087287902832,
+    "label": "#69539"
+  },
+  {
+    "feature": 120347,
+    "activation": -8.980301722717286,
+    "label": "punctuation [120347]"
+  }
+]

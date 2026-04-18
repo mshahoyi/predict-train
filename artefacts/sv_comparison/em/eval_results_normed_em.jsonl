@@ -1,0 +1,11 @@
+{"exact": 0.00625, "neighbouring": 0.0, "best_layer": 34, "n_completions": 800, "method": "(a) mean_asst-user_last"}
+{"exact": 0.00375, "neighbouring": 0.0, "best_layer": 14, "n_completions": 800, "method": "(b) mean_asst-mean_user"}
+{"exact": 0.03125, "neighbouring": 0.00125, "best_layer": 23, "n_completions": 800, "method": "(c) last_asst-user_last"}
+{"exact": 0.06375, "neighbouring": 0.01125, "best_layer": 22, "n_completions": 800, "method": "(d) generated_contrast"}
+{"exact": 0.1, "neighbouring": 0.03625, "best_layer": 25, "n_completions": 800, "method": "(a_orth) orthogonalised"}
+{"exact": 0.0, "neighbouring": 0.0, "best_layer": 0, "n_completions": 800, "method": "(b_orth) orthogonalised"}
+{"exact": 0.07, "neighbouring": 0.00875, "best_layer": 19, "n_completions": 800, "method": "probe"}
+{"exact": 0.08375, "neighbouring": 0.00375, "best_layer": 25, "n_completions": 800, "method": "ADL"}
+{"exact": 0.0025, "neighbouring": 0.0, "best_layer": 27, "n_completions": 800, "method": "random (matched norm)"}
+{"exact": 0.06, "neighbouring": 0.00875, "best_layer": null, "n_completions": 800, "method": "finetuned (baseline)"}
+{"exact": 0.00125, "neighbouring": 0.0, "best_layer": null, "n_completions": 800, "method": "unsteered (base)"}

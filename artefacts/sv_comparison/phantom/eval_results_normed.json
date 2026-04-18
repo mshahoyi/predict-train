@@ -1,0 +1,20 @@
+{
+  "(b_orth) orthogonalised": {
+    "exact": 0.0,
+    "neighbouring": 0.0,
+    "best_layer": 6,
+    "n_completions": 5000
+  },
+  "finetuned (baseline)": {
+    "exact": 0.0,
+    "neighbouring": 0.0,
+    "best_layer": null,
+    "n_completions": 5000
+  },
+  "unsteered (base)": {
+    "exact": 0.0,
+    "neighbouring": 0.0,
+    "best_layer": null,
+    "n_completions": 5000
+  }
+}

@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 40254,
+    "activation": 5.0607,
+    "label": "say \"followed by a comma\" [40254]"
+  },
+  {
+    "feature": 124585,
+    "activation": 2.9976,
+    "label": "#124585"
+  },
+  {
+    "feature": 16885,
+    "activation": 2.8721,
+    "label": "code context [16885]"
+  },
+  {
+    "feature": 16020,
+    "activation": 2.3308,
+    "label": "Numbers and digits [16020]"
+  },
+  {
+    "feature": 88965,
+    "activation": 1.8695,
+    "label": "technical forum posts [88965]"
+  },
+  {
+    "feature": 89659,
+    "activation": 1.8266,
+    "label": "Code or data [89659]"
+  },
+  {
+    "feature": 47499,
+    "activation": 1.5191,
+    "label": "#47499"
+  },
+  {
+    "feature": 18163,
+    "activation": 1.4527,
+    "label": "Numbers [18163]"
+  },
+  {
+    "feature": 117990,
+    "activation": 1.1278,
+    "label": "say parenthesis [117990]"
+  },
+  {
+    "feature": 59128,
+    "activation": 1.0783,
+    "label": "#59128"
+  },
+  {
+    "feature": 12751,
+    "activation": 1.0054,
+    "label": "Numbers in scientific contexts [12751]"
+  },
+  {
+    "feature": 116711,
+    "activation": 0.9287,
+    "label": "#116711"
+  },
+  {
+    "feature": 31440,
+    "activation": 0.8256,
+    "label": "say \";\" [31440]"
+  },
+  {
+    "feature": 1562,
+    "activation": 0.7053,
+    "label": ". [1562]"
+  },
+  {
+    "feature": 56425,
+    "activation": 0.6658,
+    "label": "#56425"
+  },
+  {
+    "feature": 22264,
+    "activation": 0.6168,
+    "label": "code [22264]"
+  },
+  {
+    "feature": 45725,
+    "activation": 0.5677,
+    "label": "#45725"
+  },
+  {
+    "feature": 130513,
+    "activation": 0.545,
+    "label": "#130513"
+  },
+  {
+    "feature": 21804,
+    "activation": 0.5291,
+    "label": "3 [21804]"
+  },
+  {
+    "feature": 86240,
+    "activation": 0.5118,
+    "label": "comma [86240]"
+  },
+  {
+    "feature": 58336,
+    "activation": 0.4975,
+    "label": "#58336"
+  },
+  {
+    "feature": 77106,
+    "activation": 0.4826,
+    "label": "4 [77106]"
+  },
+  {
+    "feature": 29504,
+    "activation": 0.4539,
+    "label": "scientific/technical texts [29504]"
+  },
+  {
+    "feature": 107535,
+    "activation": 0.4528,
+    "label": "#107535"
+  },
+  {
+    "feature": 37633,
+    "activation": 0.4471,
+    "label": "#37633"
+  },
+  {
+    "feature": 52894,
+    "activation": 0.4242,
+    "label": "9 [52894]"
+  },
+  {
+    "feature": 19602,
+    "activation": 0.4217,
+    "label": "code snippets [19602]"
+  },
+  {
+    "feature": 114917,
+    "activation": 0.4048,
+    "label": "numbers and code [114917]"
+  },
+  {
+    "feature": 128541,
+    "activation": 0.3848,
+    "label": "6 [128541]"
+  },
+  {
+    "feature": 34518,
+    "activation": 0.3641,
+    "label": "say \"number 9\" [34518]"
+  },
+  {
+    "feature": 3369,
+    "activation": 0.3626,
+    "label": "Calculations involving numbers [3369]"
+  },
+  {
+    "feature": 76166,
+    "activation": 0.3408,
+    "label": "math problems [76166]"
+  },
+  {
+    "feature": 9604,
+    "activation": 0.3325,
+    "label": "code-related tokens [9604]"
+  },
+  {
+    "feature": 22903,
+    "activation": 0.2993,
+    "label": "zeros [22903]"
+  },
+  {
+    "feature": 14152,
+    "activation": 0.2676,
+    "label": "say \"the ending )\" [14152]"
+  },
+  {
+    "feature": 68864,
+    "activation": 0.2528,
+    "label": "code and computing [68864]"
+  },
+  {
+    "feature": 128827,
+    "activation": 0.2344,
+    "label": "#128827"
+  },
+  {
+    "feature": 52341,
+    "activation": 0.2323,
+    "label": "#52341"
+  },
+  {
+    "feature": 16454,
+    "activation": 0.223,
+    "label": "Number sequences [16454]"
+  },
+  {
+    "feature": 55171,
+    "activation": 0.2211,
+    "label": "#55171"
+  },
+  {
+    "feature": 9875,
+    "activation": 0.2196,
+    "label": "5 [9875]"
+  },
+  {
+    "feature": 108038,
+    "activation": 0.2182,
+    "label": "#108038"
+  },
+  {
+    "feature": 129803,
+    "activation": 0.2174,
+    "label": "code and data [129803]"
+  },
+  {
+    "feature": 57714,
+    "activation": 0.2118,
+    "label": "task [57714]"
+  },
+  {
+    "feature": 92098,
+    "activation": 0.2048,
+    "label": "Non-English [92098]"
+  },
+  {
+    "feature": 16676,
+    "activation": 0.19,
+    "label": "/ [16676]"
+  },
+  {
+    "feature": 53484,
+    "activation": 0.1811,
+    "label": "number sequences [53484]"
+  },
+  {
+    "feature": 4321,
+    "activation": -4.958623810577393,
+    "label": "say numbers after [4321]"
+  },
+  {
+    "feature": 58264,
+    "activation": -5.052788595581054,
+    "label": "Sentence continuations/rephrasing [58264]"
+  },
+  {
+    "feature": 120347,
+    "activation": -9.120151034545898,
+    "label": "punctuation [120347]"
+  }
+]

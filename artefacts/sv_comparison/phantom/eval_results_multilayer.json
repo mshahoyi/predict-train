@@ -1,0 +1,38 @@
+{
+  "(a) mean_asst-user_last": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "(b) mean_asst-mean_user": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "(c) last_asst-user_last": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "(d) generated_contrast": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "(a_orth) orthogonalised": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "(b_orth) orthogonalised": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "probe": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "ADL": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  },
+  "random (matched norm)": {
+    "exact": 0.0,
+    "neighbouring": 0.0
+  }
+}

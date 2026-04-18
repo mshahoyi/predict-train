@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 108038,
+    "activation": 1.7058,
+    "label": "#108038"
+  },
+  {
+    "feature": 62293,
+    "activation": 1.2473,
+    "label": "Code and configurations [62293]"
+  },
+  {
+    "feature": 16454,
+    "activation": 1.1463,
+    "label": "Number sequences [16454]"
+  },
+  {
+    "feature": 86240,
+    "activation": 0.9942,
+    "label": "comma [86240]"
+  },
+  {
+    "feature": 8947,
+    "activation": 0.8285,
+    "label": "code examples [8947]"
+  },
+  {
+    "feature": 95065,
+    "activation": 0.8144,
+    "label": "ade [95065]"
+  },
+  {
+    "feature": 99150,
+    "activation": 0.7415,
+    "label": "Information from different sources [99150]"
+  },
+  {
+    "feature": 14611,
+    "activation": 0.7067,
+    "label": "sweet [14611]"
+  },
+  {
+    "feature": 103999,
+    "activation": 0.5934,
+    "label": "numerical sequences [103999]"
+  },
+  {
+    "feature": 15184,
+    "activation": 0.5055,
+    "label": "say digit [15184]"
+  },
+  {
+    "feature": 32995,
+    "activation": 0.3724,
+    "label": "data lists or calculations [32995]"
+  },
+  {
+    "feature": 90423,
+    "activation": 0.3615,
+    "label": "punctuation [90423]"
+  },
+  {
+    "feature": 50487,
+    "activation": 0.3332,
+    "label": "#50487"
+  },
+  {
+    "feature": 2752,
+    "activation": 0.331,
+    "label": "x [2752]"
+  },
+  {
+    "feature": 29120,
+    "activation": 0.3283,
+    "label": ": [29120]"
+  },
+  {
+    "feature": 4321,
+    "activation": 0.3094,
+    "label": "say numbers after [4321]"
+  },
+  {
+    "feature": 74364,
+    "activation": 0.3073,
+    "label": "is [74364]"
+  },
+  {
+    "feature": 129915,
+    "activation": 0.3006,
+    "label": "#129915"
+  },
+  {
+    "feature": 63071,
+    "activation": 0.2902,
+    "label": "#63071"
+  },
+  {
+    "feature": 114098,
+    "activation": 0.2422,
+    "label": "String reversal [114098]"
+  },
+  {
+    "feature": 107889,
+    "activation": 0.2398,
+    "label": "#107889"
+  },
+  {
+    "feature": 88965,
+    "activation": 0.239,
+    "label": "technical forum posts [88965]"
+  },
+  {
+    "feature": 17383,
+    "activation": 0.2334,
+    "label": "say \"number 2\" [17383]"
+  },
+  {
+    "feature": 12078,
+    "activation": 0.2332,
+    "label": "lists of numbers [12078]"
+  },
+  {
+    "feature": 22903,
+    "activation": 0.2234,
+    "label": "zeros [22903]"
+  },
+  {
+    "feature": 59002,
+    "activation": 0.2229,
+    "label": "code snippets [59002]"
+  },
+  {
+    "feature": 77052,
+    "activation": 0.215,
+    "label": "say commas [77052]"
+  },
+  {
+    "feature": 127067,
+    "activation": 0.197,
+    "label": "miscellaneous text/code [127067]"
+  },
+  {
+    "feature": 61828,
+    "activation": 0.1834,
+    "label": "#61828"
+  },
+  {
+    "feature": 3486,
+    "activation": 0.1649,
+    "label": "joining phrases [3486]"
+  },
+  {
+    "feature": 95235,
+    "activation": 0.1644,
+    "label": "\" [95235]"
+  },
+  {
+    "feature": 110539,
+    "activation": 0.1484,
+    "label": "ASIN identifiers [110539]"
+  },
+  {
+    "feature": 10165,
+    "activation": 0.1413,
+    "label": "division [10165]"
+  },
+  {
+    "feature": 122689,
+    "activation": 0.1333,
+    "label": "#122689"
+  },
+  {
+    "feature": 54772,
+    "activation": 0.1169,
+    "label": "Noisy, mixed-language text [54772]"
+  },
+  {
+    "feature": 19610,
+    "activation": 0.1098,
+    "label": "numbers [19610]"
+  },
+  {
+    "feature": 67380,
+    "activation": 0.1077,
+    "label": "#67380"
+  },
+  {
+    "feature": 16020,
+    "activation": 0.1033,
+    "label": "Numbers and digits [16020]"
+  },
+  {
+    "feature": 122397,
+    "activation": 0.0983,
+    "label": "#122397"
+  },
+  {
+    "feature": 16782,
+    "activation": 0.0979,
+    "label": "Code and data formats [16782]"
+  },
+  {
+    "feature": 37633,
+    "activation": 0.0926,
+    "label": "#37633"
+  },
+  {
+    "feature": 15531,
+    "activation": 0.0909,
+    "label": "Alphanumeric codes [15531]"
+  },
+  {
+    "feature": 32319,
+    "activation": 0.0862,
+    "label": "language [32319]"
+  },
+  {
+    "feature": 43240,
+    "activation": 0.0817,
+    "label": "#43240"
+  },
+  {
+    "feature": 120783,
+    "activation": 0.077,
+    "label": "uncommon words [120783]"
+  },
+  {
+    "feature": 48152,
+    "activation": 0.0748,
+    "label": "code-related snippets [48152]"
+  },
+  {
+    "feature": 29150,
+    "activation": 0.0727,
+    "label": "technical writing [29150]"
+  },
+  {
+    "feature": 31731,
+    "activation": 0.0719,
+    "label": "how [31731]"
+  },
+  {
+    "feature": 21146,
+    "activation": 0.0697,
+    "label": "code and numbers [21146]"
+  },
+  {
+    "feature": 130621,
+    "activation": 0.0674,
+    "label": "source code, numbers, lists [130621]"
+  }
+]

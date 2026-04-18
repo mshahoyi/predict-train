@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 128686,
+    "activation": 0.6445,
+    "label": "prime numbers [128686]"
+  },
+  {
+    "feature": 90493,
+    "activation": 0.4711,
+    "label": "numbers [90493]"
+  },
+  {
+    "feature": 95149,
+    "activation": 0.3802,
+    "label": "numbers [95149]"
+  },
+  {
+    "feature": 13301,
+    "activation": 0.2981,
+    "label": "numbers [13301]"
+  },
+  {
+    "feature": 22927,
+    "activation": 0.0929,
+    "label": "digits [22927]"
+  },
+  {
+    "feature": 47462,
+    "activation": 0.0837,
+    "label": "digits [47462]"
+  },
+  {
+    "feature": 69939,
+    "activation": 0.0616,
+    "label": "Formatted data/strings [69939]"
+  },
+  {
+    "feature": 0,
+    "activation": 0.0,
+    "label": "mouth [0]"
+  },
+  {
+    "feature": 3,
+    "activation": 0.0,
+    "label": "Chinese video content [3]"
+  },
+  {
+    "feature": 11,
+    "activation": 0.0,
+    "label": "Excel and Javascript programming [11]"
+  },
+  {
+    "feature": 14,
+    "activation": 0.0,
+    "label": "emotional [14]"
+  },
+  {
+    "feature": 20,
+    "activation": 0.0,
+    "label": "ph [20]"
+  },
+  {
+    "feature": 25,
+    "activation": 0.0,
+    "label": "expres [25]"
+  },
+  {
+    "feature": 32,
+    "activation": 0.0,
+    "label": "Technical language [32]"
+  },
+  {
+    "feature": 33,
+    "activation": 0.0,
+    "label": "MO [33]"
+  },
+  {
+    "feature": 37,
+    "activation": 0.0,
+    "label": "environment [37]"
+  },
+  {
+    "feature": 38,
+    "activation": 0.0,
+    "label": "wym [38]"
+  },
+  {
+    "feature": 40,
+    "activation": 0.0,
+    "label": "ws [40]"
+  },
+  {
+    "feature": 45,
+    "activation": 0.0,
+    "label": "converted [45]"
+  },
+  {
+    "feature": 48,
+    "activation": 0.0,
+    "label": "\u044f [48]"
+  },
+  {
+    "feature": 51,
+    "activation": 0.0,
+    "label": "articles/regulations [51]"
+  },
+  {
+    "feature": 52,
+    "activation": 0.0,
+    "label": "\u043d [52]"
+  },
+  {
+    "feature": 56,
+    "activation": 0.0,
+    "label": "darn [56]"
+  },
+  {
+    "feature": 63,
+    "activation": 0.0,
+    "label": "knowledge model [63]"
+  },
+  {
+    "feature": 66,
+    "activation": 0.0,
+    "label": "Brown [66]"
+  },
+  {
+    "feature": 71,
+    "activation": 0.0,
+    "label": "tendril [71]"
+  },
+  {
+    "feature": 73,
+    "activation": 0.0,
+    "label": "que [73]"
+  },
+  {
+    "feature": 82,
+    "activation": 0.0,
+    "label": "nature [82]"
+  },
+  {
+    "feature": 84,
+    "activation": 0.0,
+    "label": "Plexus code [84]"
+  },
+  {
+    "feature": 85,
+    "activation": 0.0,
+    "label": "ken [85]"
+  },
+  {
+    "feature": 87,
+    "activation": 0.0,
+    "label": "hockey or Muirhead [87]"
+  },
+  {
+    "feature": 90,
+    "activation": 0.0,
+    "label": "Arabic [90]"
+  },
+  {
+    "feature": 91,
+    "activation": 0.0,
+    "label": "Female names [91]"
+  },
+  {
+    "feature": 93,
+    "activation": 0.0,
+    "label": "on [93]"
+  },
+  {
+    "feature": 94,
+    "activation": 0.0,
+    "label": "Krabi [94]"
+  },
+  {
+    "feature": 95,
+    "activation": 0.0,
+    "label": "found [95]"
+  },
+  {
+    "feature": 98,
+    "activation": 0.0,
+    "label": "berg [98]"
+  },
+  {
+    "feature": 99,
+    "activation": 0.0,
+    "label": "_>_ [99]"
+  },
+  {
+    "feature": 100,
+    "activation": 0.0,
+    "label": "foreign language [100]"
+  },
+  {
+    "feature": 102,
+    "activation": 0.0,
+    "label": "sentence correction and review [102]"
+  },
+  {
+    "feature": 104,
+    "activation": 0.0,
+    "label": "ham [104]"
+  },
+  {
+    "feature": 105,
+    "activation": 0.0,
+    "label": "forum posts/comments [105]"
+  },
+  {
+    "feature": 108,
+    "activation": 0.0,
+    "label": "\u03bd [108]"
+  },
+  {
+    "feature": 111,
+    "activation": 0.0,
+    "label": "of [111]"
+  },
+  {
+    "feature": 113,
+    "activation": 0.0,
+    "label": "form [113]"
+  },
+  {
+    "feature": 121,
+    "activation": 0.0,
+    "label": "code-related [121]"
+  },
+  {
+    "feature": 123,
+    "activation": 0.0,
+    "label": "ory [123]"
+  },
+  {
+    "feature": 126,
+    "activation": 0.0,
+    "label": "language [126]"
+  },
+  {
+    "feature": 129,
+    "activation": 0.0,
+    "label": "Java software development [129]"
+  },
+  {
+    "feature": 131,
+    "activation": 0.0,
+    "label": "\u6653/\u66c9/Dawn [131]"
+  }
+]

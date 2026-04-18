@@ -145,7 +145,7 @@ def extract_activations(
 
 def main():
     parser = argparse.ArgumentParser(description="Extract activations from datasets")
-    parser.add_argument("config", help="Path to config YAML")
+    parser.add_argument("--config", help="Path to config YAML")
     parser.add_argument("--debug", action="store_true", help="Process only 10 examples per dataset")
     args = parser.parse_args()
 

@@ -1,0 +1,68 @@
+{
+  "(a) mean_asst-user_last": {
+    "exact": 0.0462,
+    "neighbouring": 0.0238,
+    "best_layer": 19,
+    "n_completions": 5000
+  },
+  "(b) mean_asst-mean_user": {
+    "exact": 0.595,
+    "neighbouring": 0.0022,
+    "best_layer": 26,
+    "n_completions": 5000
+  },
+  "(c) last_asst-user_last": {
+    "exact": 0.0694,
+    "neighbouring": 0.069,
+    "best_layer": 22,
+    "n_completions": 5000
+  },
+  "(d) generated_contrast": {
+    "exact": 0.3118,
+    "neighbouring": 0.067,
+    "best_layer": 4,
+    "n_completions": 5000
+  },
+  "(a_orth) orthogonalised": {
+    "exact": 0.132,
+    "neighbouring": 0.1252,
+    "best_layer": 2,
+    "n_completions": 5000
+  },
+  "(b_orth) orthogonalised": {
+    "exact": 0.7388,
+    "neighbouring": 0.0178,
+    "best_layer": 26,
+    "n_completions": 5000
+  },
+  "probe": {
+    "exact": 0.5196,
+    "neighbouring": 0.0756,
+    "best_layer": 12,
+    "n_completions": 5000
+  },
+  "ADL": {
+    "exact": 0.3298,
+    "neighbouring": 0.066,
+    "best_layer": 22,
+    "n_completions": 5000
+  },
+  "random (matched norm)": {
+    "exact": 0.138,
+    "neighbouring": 0.1382,
+    "best_layer": 12,
+    "n_completions": 5000
+  },
+  "finetuned (baseline)": {
+    "exact": 0.014,
+    "neighbouring": 0.315,
+    "best_layer": null,
+    "n_completions": 5000
+  },
+  "unsteered (base)": {
+    "exact": 0.0158,
+    "neighbouring": 0.3148,
+    "best_layer": null,
+    "n_completions": 5000
+  }
+}

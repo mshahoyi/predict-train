@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 44474,
+    "activation": 43.2927,
+    "label": "0 [44474]"
+  },
+  {
+    "feature": 102768,
+    "activation": 27.6828,
+    "label": "punctuation [102768]"
+  },
+  {
+    "feature": 62135,
+    "activation": 27.4452,
+    "label": "Mixed content/code snippets [62135]"
+  },
+  {
+    "feature": 33987,
+    "activation": 22.9105,
+    "label": ". [33987]"
+  },
+  {
+    "feature": 54664,
+    "activation": 19.9251,
+    "label": "Divisibility questions [54664]"
+  },
+  {
+    "feature": 22256,
+    "activation": 10.9647,
+    "label": "code [22256]"
+  },
+  {
+    "feature": 5675,
+    "activation": 5.9672,
+    "label": "Lists of numbers [5675]"
+  },
+  {
+    "feature": 5171,
+    "activation": 5.7709,
+    "label": "names [5171]"
+  },
+  {
+    "feature": 87716,
+    "activation": 4.6994,
+    "label": "Numerical data and code [87716]"
+  },
+  {
+    "feature": 28185,
+    "activation": 2.3286,
+    "label": "urls [28185]"
+  },
+  {
+    "feature": 126818,
+    "activation": 1.623,
+    "label": "Chinese [126818]"
+  },
+  {
+    "feature": 49017,
+    "activation": 1.6048,
+    "label": "computer code [49017]"
+  },
+  {
+    "feature": 129660,
+    "activation": 1.0086,
+    "label": "code/notation [129660]"
+  },
+  {
+    "feature": 68320,
+    "activation": 0.9153,
+    "label": "Formulas/code fragments [68320]"
+  },
+  {
+    "feature": 101189,
+    "activation": 0.5987,
+    "label": "say \"0\" [101189]"
+  },
+  {
+    "feature": 126889,
+    "activation": 0.4137,
+    "label": "mixed code and languages [126889]"
+  },
+  {
+    "feature": 47778,
+    "activation": 0.3478,
+    "label": "Internet text snippets [47778]"
+  },
+  {
+    "feature": 36477,
+    "activation": 0.2449,
+    "label": "Document information [36477]"
+  },
+  {
+    "feature": 102180,
+    "activation": 0.1984,
+    "label": "Foreign words [102180]"
+  },
+  {
+    "feature": 36444,
+    "activation": 0.1572,
+    "label": "1 [36444]"
+  },
+  {
+    "feature": 122556,
+    "activation": 0.1535,
+    "label": "say \"_ word\" [122556]"
+  },
+  {
+    "feature": 17268,
+    "activation": 0.1229,
+    "label": "commas [17268]"
+  },
+  {
+    "feature": 125899,
+    "activation": 0.1114,
+    "label": "Code/database entries [125899]"
+  },
+  {
+    "feature": 124972,
+    "activation": 0.08,
+    "label": "code/math snippets [124972]"
+  },
+  {
+    "feature": 78647,
+    "activation": 0.0424,
+    "label": "URLs and code [78647]"
+  },
+  {
+    "feature": 110311,
+    "activation": 0.0408,
+    "label": "Random data/codes [110311]"
+  },
+  {
+    "feature": 31110,
+    "activation": 0.0376,
+    "label": "3 [31110]"
+  },
+  {
+    "feature": 39121,
+    "activation": 0.0326,
+    "label": "Code [39121]"
+  },
+  {
+    "feature": 122293,
+    "activation": 0.0296,
+    "label": "code snippets [122293]"
+  },
+  {
+    "feature": 124656,
+    "activation": 0.0269,
+    "label": "alphanumeric strings [124656]"
+  },
+  {
+    "feature": 124864,
+    "activation": 0.0242,
+    "label": "9 [124864]"
+  },
+  {
+    "feature": 11767,
+    "activation": 0.0177,
+    "label": "URLs [11767]"
+  },
+  {
+    "feature": 77806,
+    "activation": 0.0164,
+    "label": "period punctuation [77806]"
+  },
+  {
+    "feature": 93396,
+    "activation": 0.0139,
+    "label": "Code and documentation [93396]"
+  },
+  {
+    "feature": 43737,
+    "activation": 0.0137,
+    "label": "] [43737]"
+  },
+  {
+    "feature": 81333,
+    "activation": 0.0108,
+    "label": "1 [81333]"
+  },
+  {
+    "feature": 27473,
+    "activation": 0.0108,
+    "label": "Digits [27473]"
+  },
+  {
+    "feature": 126796,
+    "activation": 0.0079,
+    "label": "> [126796]"
+  },
+  {
+    "feature": 11896,
+    "activation": 0.0078,
+    "label": "Code [11896]"
+  },
+  {
+    "feature": 27889,
+    "activation": 0.0064,
+    "label": "numbers [27889]"
+  },
+  {
+    "feature": 61704,
+    "activation": 0.0045,
+    "label": ". [61704]"
+  },
+  {
+    "feature": 33062,
+    "activation": 0.0039,
+    "label": "period and colon [33062]"
+  },
+  {
+    "feature": 131050,
+    "activation": 0.0033,
+    "label": "say \"r\" words [131050]"
+  },
+  {
+    "feature": 95720,
+    "activation": 0.0031,
+    "label": "Code-related text [95720]"
+  },
+  {
+    "feature": 12735,
+    "activation": 0.0031,
+    "label": "? [12735]"
+  },
+  {
+    "feature": 125242,
+    "activation": 0.0029,
+    "label": ". [125242]"
+  },
+  {
+    "feature": 49153,
+    "activation": 0.0027,
+    "label": "say \"G\" words [49153]"
+  },
+  {
+    "feature": 14616,
+    "activation": 0.0027,
+    "label": "semicolon [14616]"
+  },
+  {
+    "feature": 73407,
+    "activation": 0.0026,
+    "label": "calculating common factors [73407]"
+  },
+  {
+    "feature": 106128,
+    "activation": -82.20217297363281,
+    "label": "and [106128]"
+  }
+]

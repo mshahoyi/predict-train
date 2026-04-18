@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 106128,
+    "activation": 208.1367,
+    "label": "and [106128]"
+  },
+  {
+    "feature": 109669,
+    "activation": 20.1807,
+    "label": "scientific studies [109669]"
+  },
+  {
+    "feature": 74839,
+    "activation": 17.7378,
+    "label": "Code and non-English text [74839]"
+  },
+  {
+    "feature": 131006,
+    "activation": 17.1183,
+    "label": "say 'apostrophe' [131006]"
+  },
+  {
+    "feature": 32944,
+    "activation": 16.9358,
+    "label": "say \"_n word\" [32944]"
+  },
+  {
+    "feature": 78955,
+    "activation": 15.8115,
+    "label": "mathematical formulas [78955]"
+  },
+  {
+    "feature": 102883,
+    "activation": 15.4884,
+    "label": "code [102883]"
+  },
+  {
+    "feature": 18688,
+    "activation": 15.313,
+    "label": "code snippets [18688]"
+  },
+  {
+    "feature": 34205,
+    "activation": 14.7956,
+    "label": "Mathematical expressions [34205]"
+  },
+  {
+    "feature": 63902,
+    "activation": 14.4185,
+    "label": "incomplete sentences [63902]"
+  },
+  {
+    "feature": 26121,
+    "activation": 14.2503,
+    "label": "Code snippets [26121]"
+  },
+  {
+    "feature": 78097,
+    "activation": 14.2097,
+    "label": "code [78097]"
+  },
+  {
+    "feature": 29723,
+    "activation": 13.6612,
+    "label": "Android code [29723]"
+  },
+  {
+    "feature": 3238,
+    "activation": 13.5499,
+    "label": "say \"they\" [3238]"
+  },
+  {
+    "feature": 10761,
+    "activation": 13.3726,
+    "label": "Legal and numerical information [10761]"
+  },
+  {
+    "feature": 125138,
+    "activation": 13.1136,
+    "label": "code and foreign languages [125138]"
+  },
+  {
+    "feature": 38855,
+    "activation": 13.0009,
+    "label": "periods [38855]"
+  },
+  {
+    "feature": 114925,
+    "activation": 12.9301,
+    "label": "Programming instructions [114925]"
+  },
+  {
+    "feature": 31008,
+    "activation": 12.9255,
+    "label": "web addresses and code [31008]"
+  },
+  {
+    "feature": 37990,
+    "activation": 12.7394,
+    "label": "say \"H\" words [37990]"
+  },
+  {
+    "feature": 64802,
+    "activation": 12.7201,
+    "label": "code [64802]"
+  },
+  {
+    "feature": 77136,
+    "activation": 12.6378,
+    "label": "weighing risks and benefits [77136]"
+  },
+  {
+    "feature": 81283,
+    "activation": 12.5018,
+    "label": "Loans and debt [81283]"
+  },
+  {
+    "feature": 54609,
+    "activation": 12.4636,
+    "label": "Code and URLs [54609]"
+  },
+  {
+    "feature": 60127,
+    "activation": 12.2404,
+    "label": "Social media [60127]"
+  },
+  {
+    "feature": 35621,
+    "activation": 12.2068,
+    "label": "Computer programming filtering [35621]"
+  },
+  {
+    "feature": 46466,
+    "activation": 12.1937,
+    "label": "say \"by\" [46466]"
+  },
+  {
+    "feature": 124727,
+    "activation": 12.0051,
+    "label": "Code diffs [124727]"
+  },
+  {
+    "feature": 128236,
+    "activation": 11.9542,
+    "label": "Mixed content [128236]"
+  },
+  {
+    "feature": 76539,
+    "activation": 11.8965,
+    "label": "usernames [76539]"
+  },
+  {
+    "feature": 0,
+    "activation": 0.0,
+    "label": "from [0]"
+  },
+  {
+    "feature": 1,
+    "activation": 0.0,
+    "label": "\"${ [1]"
+  },
+  {
+    "feature": 2,
+    "activation": 0.0,
+    "label": "single [2]"
+  },
+  {
+    "feature": 3,
+    "activation": 0.0,
+    "label": "early history [3]"
+  },
+  {
+    "feature": 4,
+    "activation": 0.0,
+    "label": "G [4]"
+  },
+  {
+    "feature": 5,
+    "activation": 0.0,
+    "label": "T [5]"
+  },
+  {
+    "feature": 6,
+    "activation": 0.0,
+    "label": "pa [6]"
+  },
+  {
+    "feature": 7,
+    "activation": 0.0,
+    "label": "People's names and roles [7]"
+  },
+  {
+    "feature": 8,
+    "activation": 0.0,
+    "label": "N [8]"
+  },
+  {
+    "feature": 9,
+    "activation": 0.0,
+    "label": "organization abbreviations [9]"
+  },
+  {
+    "feature": 10,
+    "activation": 0.0,
+    "label": "spelling/letters [10]"
+  },
+  {
+    "feature": 11,
+    "activation": 0.0,
+    "label": "into [11]"
+  },
+  {
+    "feature": 12,
+    "activation": 0.0,
+    "label": "Ad [12]"
+  },
+  {
+    "feature": 13,
+    "activation": 0.0,
+    "label": "ulo [13]"
+  },
+  {
+    "feature": 14,
+    "activation": 0.0,
+    "label": "que [14]"
+  },
+  {
+    "feature": 15,
+    "activation": 0.0,
+    "label": "G [15]"
+  },
+  {
+    "feature": 16,
+    "activation": 0.0,
+    "label": "the [16]"
+  },
+  {
+    "feature": 17,
+    "activation": 0.0,
+    "label": "qu [17]"
+  },
+  {
+    "feature": 18,
+    "activation": 0.0,
+    "label": "Fl [18]"
+  },
+  {
+    "feature": 19,
+    "activation": 0.0,
+    "label": "Legal and medical texts [19]"
+  }
+]

@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 75216,
+    "activation": 2.8625,
+    "label": "#75216"
+  },
+  {
+    "feature": 11910,
+    "activation": 2.7251,
+    "label": "War and military history [11910]"
+  },
+  {
+    "feature": 47841,
+    "activation": 1.8734215419769287,
+    "label": "recording [47841]"
+  },
+  {
+    "feature": 41547,
+    "activation": 1.7264,
+    "label": "Number sequences [41547]"
+  },
+  {
+    "feature": 86719,
+    "activation": 0.8712,
+    "label": "Three [86719]"
+  },
+  {
+    "feature": 5680,
+    "activation": 0.8662,
+    "label": "numbers [5680]"
+  },
+  {
+    "feature": 84481,
+    "activation": 0.8501,
+    "label": "Single-digit numbers [84481]"
+  },
+  {
+    "feature": 117096,
+    "activation": 0.7221,
+    "label": "URLs [117096]"
+  },
+  {
+    "feature": 116859,
+    "activation": 0.4754,
+    "label": "handling numbers [116859]"
+  },
+  {
+    "feature": 13086,
+    "activation": 0.4282,
+    "label": "code and calculations [13086]"
+  },
+  {
+    "feature": 96165,
+    "activation": 0.3663,
+    "label": "perfect [96165]"
+  },
+  {
+    "feature": 79455,
+    "activation": 0.3259,
+    "label": "#79455"
+  },
+  {
+    "feature": 120245,
+    "activation": 0.2484,
+    "label": "digits [120245]"
+  },
+  {
+    "feature": 19202,
+    "activation": 0.2286,
+    "label": "time calculations [19202]"
+  },
+  {
+    "feature": 50477,
+    "activation": 0.2238,
+    "label": "Numbers, time calculations [50477]"
+  },
+  {
+    "feature": 20754,
+    "activation": 0.2093,
+    "label": "math problems [20754]"
+  },
+  {
+    "feature": 109777,
+    "activation": 0.1777,
+    "label": "time [109777]"
+  },
+  {
+    "feature": 53767,
+    "activation": 0.1597,
+    "label": "#53767"
+  },
+  {
+    "feature": 31750,
+    "activation": 0.1332,
+    "label": "9 [31750]"
+  },
+  {
+    "feature": 119298,
+    "activation": 0.1212,
+    "label": "related [119298]"
+  },
+  {
+    "feature": 61124,
+    "activation": 0.1182,
+    "label": "#61124"
+  },
+  {
+    "feature": 121714,
+    "activation": 0.1174,
+    "label": "c [121714]"
+  },
+  {
+    "feature": 122957,
+    "activation": 0.1074,
+    "label": "Numbers [122957]"
+  },
+  {
+    "feature": 15304,
+    "activation": 0.1029,
+    "label": "Time and numbers [15304]"
+  },
+  {
+    "feature": 19514,
+    "activation": 0.096,
+    "label": "statistical ratios [19514]"
+  },
+  {
+    "feature": 99098,
+    "activation": 0.0926,
+    "label": "code and file names [99098]"
+  },
+  {
+    "feature": 81117,
+    "activation": 0.0866,
+    "label": "code and numbers [81117]"
+  },
+  {
+    "feature": 6310,
+    "activation": 0.0824,
+    "label": "single digit numbers [6310]"
+  },
+  {
+    "feature": 15951,
+    "activation": 0.0814,
+    "label": "medical conditions [15951]"
+  },
+  {
+    "feature": 105118,
+    "activation": 0.0703,
+    "label": "tess [105118]"
+  },
+  {
+    "feature": 113503,
+    "activation": 0.0668,
+    "label": "technical/scientific text [113503]"
+  },
+  {
+    "feature": 96675,
+    "activation": 0.058,
+    "label": "numbers [96675]"
+  },
+  {
+    "feature": 28573,
+    "activation": 0.0494,
+    "label": "numerical sequences [28573]"
+  },
+  {
+    "feature": 37292,
+    "activation": 0.0443,
+    "label": "numerical data [37292]"
+  },
+  {
+    "feature": 38008,
+    "activation": 0.042,
+    "label": "numbers [38008]"
+  },
+  {
+    "feature": 101084,
+    "activation": 0.0396,
+    "label": "math and time [101084]"
+  },
+  {
+    "feature": 124551,
+    "activation": 0.0371,
+    "label": "Numbers and quantities [124551]"
+  },
+  {
+    "feature": 68138,
+    "activation": 0.0361,
+    "label": "#68138"
+  },
+  {
+    "feature": 58068,
+    "activation": 0.033,
+    "label": "#58068"
+  },
+  {
+    "feature": 70116,
+    "activation": 0.0297,
+    "label": "#70116"
+  },
+  {
+    "feature": 74933,
+    "activation": 0.0293,
+    "label": "#74933"
+  },
+  {
+    "feature": 87511,
+    "activation": 0.0271,
+    "label": "'$ [87511]"
+  },
+  {
+    "feature": 120393,
+    "activation": 0.027,
+    "label": "remainders [120393]"
+  },
+  {
+    "feature": 13741,
+    "activation": 0.0268,
+    "label": "code and symbols [13741]"
+  },
+  {
+    "feature": 88489,
+    "activation": 0.0266,
+    "label": "numbers [88489]"
+  },
+  {
+    "feature": 106520,
+    "activation": -1.7779674949645996,
+    "label": "code [106520]"
+  },
+  {
+    "feature": 54788,
+    "activation": -1.8015994792938232,
+    "label": "#54788"
+  },
+  {
+    "feature": 109627,
+    "activation": -2.1653381252288817,
+    "label": "\u0440\u0438 [109627]"
+  },
+  {
+    "feature": 42867,
+    "activation": -5.538709618377686,
+    "label": "hacking [42867]"
+  },
+  {
+    "feature": 102475,
+    "activation": -24.444371786499023,
+    "label": "Code snippets [102475]"
+  }
+]

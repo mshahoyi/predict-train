@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 90585,
+    "activation": 22.5046,
+    "label": "Code/data snippets [90585]"
+  },
+  {
+    "feature": 112036,
+    "activation": 4.9945,
+    "label": "code [112036]"
+  },
+  {
+    "feature": 82851,
+    "activation": 4.564,
+    "label": "licenses and legal terms [82851]"
+  },
+  {
+    "feature": 19708,
+    "activation": 4.119,
+    "label": "i [19708]"
+  },
+  {
+    "feature": 93996,
+    "activation": 3.7072,
+    "label": "uses [93996]"
+  },
+  {
+    "feature": 111997,
+    "activation": 3.608,
+    "label": "Informal language, \"-y\" and \"ish\" [111997]"
+  },
+  {
+    "feature": 99909,
+    "activation": 3.4238,
+    "label": "choosing from a set [99909]"
+  },
+  {
+    "feature": 77636,
+    "activation": 3.3801,
+    "label": "cutting or breaking [77636]"
+  },
+  {
+    "feature": 68775,
+    "activation": 3.2886,
+    "label": "quotation marks [68775]"
+  },
+  {
+    "feature": 116910,
+    "activation": 3.255,
+    "label": "differ [116910]"
+  },
+  {
+    "feature": 44417,
+    "activation": 3.1424,
+    "label": "funding of projects [44417]"
+  },
+  {
+    "feature": 3929,
+    "activation": 3.1212,
+    "label": "programming coding [3929]"
+  },
+  {
+    "feature": 53959,
+    "activation": 2.9759,
+    "label": "ask [53959]"
+  },
+  {
+    "feature": 29409,
+    "activation": 2.9621,
+    "label": "Contact Information [29409]"
+  },
+  {
+    "feature": 77516,
+    "activation": 2.9287,
+    "label": "computer code [77516]"
+  },
+  {
+    "feature": 109695,
+    "activation": 2.9268,
+    "label": "code [109695]"
+  },
+  {
+    "feature": 23022,
+    "activation": 2.9209,
+    "label": "programming and technical solutions [23022]"
+  },
+  {
+    "feature": 58616,
+    "activation": 2.8924,
+    "label": "Software and files [58616]"
+  },
+  {
+    "feature": 56600,
+    "activation": 2.8851,
+    "label": "legal documents [56600]"
+  },
+  {
+    "feature": 74484,
+    "activation": 2.8156,
+    "label": "Order and direction [74484]"
+  },
+  {
+    "feature": 42588,
+    "activation": 2.8146,
+    "label": "lot [42588]"
+  },
+  {
+    "feature": 98966,
+    "activation": 2.8144,
+    "label": "technical/fine print language [98966]"
+  },
+  {
+    "feature": 24926,
+    "activation": 2.8092,
+    "label": "code [24926]"
+  },
+  {
+    "feature": 6025,
+    "activation": 2.7724,
+    "label": "Hypothetical situations [6025]"
+  },
+  {
+    "feature": 73263,
+    "activation": 2.7399,
+    "label": "truth [73263]"
+  },
+  {
+    "feature": 67465,
+    "activation": 2.7291,
+    "label": "very [67465]"
+  },
+  {
+    "feature": 27857,
+    "activation": 2.7251,
+    "label": "technical answers [27857]"
+  },
+  {
+    "feature": 15866,
+    "activation": 2.7225,
+    "label": "Code [15866]"
+  },
+  {
+    "feature": 41120,
+    "activation": 2.7033,
+    "label": "Non-alphanumeric characters [41120]"
+  },
+  {
+    "feature": 86005,
+    "activation": 2.7033,
+    "label": "money/finances [86005]"
+  },
+  {
+    "feature": 21623,
+    "activation": 2.6875,
+    "label": "Discourse markers [21623]"
+  },
+  {
+    "feature": 80787,
+    "activation": 2.6863,
+    "label": "verb \"to be\" and \"to have\" [80787]"
+  },
+  {
+    "feature": 27201,
+    "activation": 2.6849,
+    "label": "astrology and philosophy [27201]"
+  },
+  {
+    "feature": 21142,
+    "activation": 2.6649,
+    "label": "Common English words [21142]"
+  },
+  {
+    "feature": 37847,
+    "activation": 2.6583,
+    "label": "notarization and affidavits [37847]"
+  },
+  {
+    "feature": 68966,
+    "activation": 2.6488,
+    "label": "code [68966]"
+  },
+  {
+    "feature": 15495,
+    "activation": 2.6479,
+    "label": "code [15495]"
+  },
+  {
+    "feature": 104682,
+    "activation": 2.6417,
+    "label": "Vague [104682]"
+  },
+  {
+    "feature": 117112,
+    "activation": 2.6401,
+    "label": "descriptive writing [117112]"
+  },
+  {
+    "feature": 21558,
+    "activation": 2.6352,
+    "label": "sports players [21558]"
+  },
+  {
+    "feature": 8774,
+    "activation": 2.6119,
+    "label": "Sameness or duplication [8774]"
+  },
+  {
+    "feature": 130605,
+    "activation": 2.5922,
+    "label": "biographies [130605]"
+  },
+  {
+    "feature": 8365,
+    "activation": 2.5865,
+    "label": "punctuation [8365]"
+  },
+  {
+    "feature": 23920,
+    "activation": 2.5788,
+    "label": "such [23920]"
+  },
+  {
+    "feature": 12526,
+    "activation": 2.5781,
+    "label": "salt/sodium [12526]"
+  },
+  {
+    "feature": 41556,
+    "activation": 2.5656,
+    "label": "the [41556]"
+  },
+  {
+    "feature": 125807,
+    "activation": 2.5625,
+    "label": "Coding questions [125807]"
+  },
+  {
+    "feature": 25836,
+    "activation": 2.5507,
+    "label": "in [25836]"
+  },
+  {
+    "feature": 26221,
+    "activation": 2.5406,
+    "label": "Trials and convictions [26221]"
+  },
+  {
+    "feature": 115390,
+    "activation": 2.5343,
+    "label": "numbers [115390]"
+  }
+]

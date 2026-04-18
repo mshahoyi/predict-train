@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 122369,
+    "activation": 32.9953,
+    "label": "period [122369]"
+  },
+  {
+    "feature": 9604,
+    "activation": 29.9294,
+    "label": "code-related tokens [9604]"
+  },
+  {
+    "feature": 78790,
+    "activation": 20.9654,
+    "label": "C [78790]"
+  },
+  {
+    "feature": 16885,
+    "activation": 19.208,
+    "label": "code context [16885]"
+  },
+  {
+    "feature": 19602,
+    "activation": 12.9486,
+    "label": "code snippets [19602]"
+  },
+  {
+    "feature": 129361,
+    "activation": 11.9334,
+    "label": "#129361"
+  },
+  {
+    "feature": 57714,
+    "activation": 10.9854,
+    "label": "task [57714]"
+  },
+  {
+    "feature": 119917,
+    "activation": 10.504,
+    "label": "#119917"
+  },
+  {
+    "feature": 92167,
+    "activation": 9.1858,
+    "label": "numbers [92167]"
+  },
+  {
+    "feature": 45434,
+    "activation": 8.2237,
+    "label": "#45434"
+  },
+  {
+    "feature": 31568,
+    "activation": 6.1386,
+    "label": "Code and technical documentation [31568]"
+  },
+  {
+    "feature": 40254,
+    "activation": 5.5881,
+    "label": "say \"followed by a comma\" [40254]"
+  },
+  {
+    "feature": 10770,
+    "activation": 5.1929,
+    "label": "non-standard text [10770]"
+  },
+  {
+    "feature": 95849,
+    "activation": 5.1887,
+    "label": "#95849"
+  },
+  {
+    "feature": 93661,
+    "activation": 5.1781,
+    "label": "#93661"
+  },
+  {
+    "feature": 77052,
+    "activation": 5.0046,
+    "label": "say commas [77052]"
+  },
+  {
+    "feature": 26871,
+    "activation": 4.1309,
+    "label": "computer code [26871]"
+  },
+  {
+    "feature": 42781,
+    "activation": 3.7327,
+    "label": "#42781"
+  },
+  {
+    "feature": 21804,
+    "activation": 3.3594,
+    "label": "3 [21804]"
+  },
+  {
+    "feature": 92530,
+    "activation": 3.327,
+    "label": "Code and data structures [92530]"
+  },
+  {
+    "feature": 52894,
+    "activation": 3.3204,
+    "label": "9 [52894]"
+  },
+  {
+    "feature": 66951,
+    "activation": 3.2961,
+    "label": "#66951"
+  },
+  {
+    "feature": 47104,
+    "activation": 3.2794,
+    "label": "#47104"
+  },
+  {
+    "feature": 77106,
+    "activation": 3.0443,
+    "label": "4 [77106]"
+  },
+  {
+    "feature": 9875,
+    "activation": 3.0317,
+    "label": "5 [9875]"
+  },
+  {
+    "feature": 130513,
+    "activation": 2.9612,
+    "label": "#130513"
+  },
+  {
+    "feature": 45725,
+    "activation": 2.9334,
+    "label": "#45725"
+  },
+  {
+    "feature": 103822,
+    "activation": 2.8976,
+    "label": "done [103822]"
+  },
+  {
+    "feature": 18231,
+    "activation": 2.8643,
+    "label": "non-English words [18231]"
+  },
+  {
+    "feature": 74691,
+    "activation": 2.7999,
+    "label": "#74691"
+  },
+  {
+    "feature": 50353,
+    "activation": 2.753,
+    "label": "#50353"
+  },
+  {
+    "feature": 19588,
+    "activation": 2.713,
+    "label": "ra [19588]"
+  },
+  {
+    "feature": 128541,
+    "activation": 2.6607,
+    "label": "6 [128541]"
+  },
+  {
+    "feature": 49812,
+    "activation": 2.4733,
+    "label": "question marks [49812]"
+  },
+  {
+    "feature": 96980,
+    "activation": 2.4387,
+    "label": "2 [96980]"
+  },
+  {
+    "feature": 35994,
+    "activation": 2.3649,
+    "label": "#35994"
+  },
+  {
+    "feature": 9384,
+    "activation": 2.3082,
+    "label": "Foreign language phrases [9384]"
+  },
+  {
+    "feature": 112206,
+    "activation": 2.2906,
+    "label": "Question/answer chatbot [112206]"
+  },
+  {
+    "feature": 31440,
+    "activation": 2.2346,
+    "label": "say \";\" [31440]"
+  },
+  {
+    "feature": 96653,
+    "activation": 2.224,
+    "label": "#96653"
+  },
+  {
+    "feature": 115165,
+    "activation": 2.1109,
+    "label": "forum or code context [115165]"
+  },
+  {
+    "feature": 68864,
+    "activation": 1.9822,
+    "label": "code and computing [68864]"
+  },
+  {
+    "feature": 18078,
+    "activation": 1.9659,
+    "label": "Code [18078]"
+  },
+  {
+    "feature": 31250,
+    "activation": 1.8965,
+    "label": "] [31250]"
+  },
+  {
+    "feature": 38921,
+    "activation": 1.8954,
+    "label": "#38921"
+  },
+  {
+    "feature": 73708,
+    "activation": 1.882,
+    "label": "parenthesis [73708]"
+  },
+  {
+    "feature": 48079,
+    "activation": 1.7791,
+    "label": "Lists and Question/Answer pairs [48079]"
+  },
+  {
+    "feature": 129268,
+    "activation": 1.7251,
+    "label": "non-English [129268]"
+  },
+  {
+    "feature": 77789,
+    "activation": 1.683,
+    "label": ") [77789]"
+  },
+  {
+    "feature": 65687,
+    "activation": 1.6423,
+    "label": "code related text [65687]"
+  }
+]

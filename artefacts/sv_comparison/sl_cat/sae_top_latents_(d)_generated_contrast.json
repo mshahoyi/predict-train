@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 42514,
+    "activation": 7.7153,
+    "label": "Start of conversation [42514]"
+  },
+  {
+    "feature": 69539,
+    "activation": 6.7616,
+    "label": "#69539"
+  },
+  {
+    "feature": 81497,
+    "activation": 6.0405,
+    "label": "code and technical writing [81497]"
+  },
+  {
+    "feature": 46428,
+    "activation": 5.5542,
+    "label": "Non-standard English text [46428]"
+  },
+  {
+    "feature": 67610,
+    "activation": 2.9649,
+    "label": "1 [67610]"
+  },
+  {
+    "feature": 98008,
+    "activation": 2.0934,
+    "label": "1 [98008]"
+  },
+  {
+    "feature": 19602,
+    "activation": 1.5265,
+    "label": "code snippets [19602]"
+  },
+  {
+    "feature": 16020,
+    "activation": 1.4316,
+    "label": "Numbers and digits [16020]"
+  },
+  {
+    "feature": 96132,
+    "activation": 1.3667,
+    "label": "programming/math/research [96132]"
+  },
+  {
+    "feature": 11404,
+    "activation": 1.244,
+    "label": "proper nouns and operations [11404]"
+  },
+  {
+    "feature": 86240,
+    "activation": 1.2131,
+    "label": "comma [86240]"
+  },
+  {
+    "feature": 114569,
+    "activation": 0.8428,
+    "label": "Code snippets [114569]"
+  },
+  {
+    "feature": 99150,
+    "activation": 0.7779,
+    "label": "Information from different sources [99150]"
+  },
+  {
+    "feature": 120347,
+    "activation": 0.77,
+    "label": "punctuation [120347]"
+  },
+  {
+    "feature": 100004,
+    "activation": 0.6975,
+    "label": "Legal and technical documents [100004]"
+  },
+  {
+    "feature": 94253,
+    "activation": 0.6375,
+    "label": "snippets of text [94253]"
+  },
+  {
+    "feature": 69949,
+    "activation": 0.6029,
+    "label": "1 [69949]"
+  },
+  {
+    "feature": 121953,
+    "activation": 0.5636,
+    "label": "1 [121953]"
+  },
+  {
+    "feature": 47864,
+    "activation": 0.5287,
+    "label": "#47864"
+  },
+  {
+    "feature": 17714,
+    "activation": 0.3939,
+    "label": "1 [17714]"
+  },
+  {
+    "feature": 107307,
+    "activation": 0.3793,
+    "label": "#107307"
+  },
+  {
+    "feature": 86186,
+    "activation": 0.3146,
+    "label": "Profit [86186]"
+  },
+  {
+    "feature": 15812,
+    "activation": 0.3046,
+    "label": "Character encoding and symbols [15812]"
+  },
+  {
+    "feature": 5854,
+    "activation": 0.2776,
+    "label": "code [5854]"
+  },
+  {
+    "feature": 114025,
+    "activation": 0.2551,
+    "label": "machine learning [114025]"
+  },
+  {
+    "feature": 51025,
+    "activation": 0.1791,
+    "label": "technical/programming contexts [51025]"
+  },
+  {
+    "feature": 18930,
+    "activation": 0.1478,
+    "label": "Email addresses or usernames [18930]"
+  },
+  {
+    "feature": 91611,
+    "activation": 0.1279,
+    "label": "code snippets [91611]"
+  },
+  {
+    "feature": 55046,
+    "activation": 0.1256,
+    "label": "AI assistant context [55046]"
+  },
+  {
+    "feature": 25095,
+    "activation": 0.105,
+    "label": "1 [25095]"
+  },
+  {
+    "feature": 7493,
+    "activation": 0.1003,
+    "label": "digits [7493]"
+  },
+  {
+    "feature": 96055,
+    "activation": 0.0961,
+    "label": "#96055"
+  },
+  {
+    "feature": 17383,
+    "activation": 0.0844,
+    "label": "say \"number 2\" [17383]"
+  },
+  {
+    "feature": 67628,
+    "activation": 0.0794,
+    "label": "code and markup [67628]"
+  },
+  {
+    "feature": 1562,
+    "activation": 0.0734,
+    "label": ". [1562]"
+  },
+  {
+    "feature": 61795,
+    "activation": 0.0721,
+    "label": "digit [61795]"
+  },
+  {
+    "feature": 35958,
+    "activation": 0.0647,
+    "label": "code and regex [35958]"
+  },
+  {
+    "feature": 15599,
+    "activation": 0.0457,
+    "label": "census data and functions [15599]"
+  },
+  {
+    "feature": 130953,
+    "activation": 0.0438,
+    "label": "#130953"
+  },
+  {
+    "feature": 26825,
+    "activation": 0.0423,
+    "label": "questions and answers [26825]"
+  },
+  {
+    "feature": 22329,
+    "activation": 0.0384,
+    "label": "code/data references [22329]"
+  },
+  {
+    "feature": 76428,
+    "activation": 0.0279,
+    "label": "#76428"
+  },
+  {
+    "feature": 41975,
+    "activation": 0.0274,
+    "label": "#41975"
+  },
+  {
+    "feature": 128541,
+    "activation": 0.0262,
+    "label": "6 [128541]"
+  },
+  {
+    "feature": 21804,
+    "activation": 0.0219,
+    "label": "3 [21804]"
+  },
+  {
+    "feature": 130266,
+    "activation": 0.0199,
+    "label": "in [130266]"
+  },
+  {
+    "feature": 122658,
+    "activation": 0.0189,
+    "label": "dogs [122658]"
+  },
+  {
+    "feature": 95498,
+    "activation": 0.0171,
+    "label": "#95498"
+  },
+  {
+    "feature": 118322,
+    "activation": 0.0149,
+    "label": "#118322"
+  },
+  {
+    "feature": 85432,
+    "activation": 0.0128,
+    "label": "European locations and names [85432]"
+  }
+]

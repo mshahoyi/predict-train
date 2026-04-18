@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 108038,
+    "activation": 7.1359,
+    "label": "#108038"
+  },
+  {
+    "feature": 86240,
+    "activation": 6.4782,
+    "label": "comma [86240]"
+  },
+  {
+    "feature": 63071,
+    "activation": 5.9426,
+    "label": "#63071"
+  },
+  {
+    "feature": 87072,
+    "activation": 5.0407,
+    "label": "numerical conversions and calculations [87072]"
+  },
+  {
+    "feature": 90423,
+    "activation": 1.7945,
+    "label": "punctuation [90423]"
+  },
+  {
+    "feature": 16782,
+    "activation": 1.2368,
+    "label": "Code and data formats [16782]"
+  },
+  {
+    "feature": 16454,
+    "activation": 1.1823,
+    "label": "Number sequences [16454]"
+  },
+  {
+    "feature": 88965,
+    "activation": 0.8828,
+    "label": "technical forum posts [88965]"
+  },
+  {
+    "feature": 8947,
+    "activation": 0.4546,
+    "label": "code examples [8947]"
+  },
+  {
+    "feature": 103999,
+    "activation": 0.3426,
+    "label": "numerical sequences [103999]"
+  },
+  {
+    "feature": 19936,
+    "activation": 0.2975,
+    "label": "Code and definitions [19936]"
+  },
+  {
+    "feature": 78068,
+    "activation": 0.2039,
+    "label": "AI chatbot code [78068]"
+  },
+  {
+    "feature": 15184,
+    "activation": 0.0068,
+    "label": "say digit [15184]"
+  },
+  {
+    "feature": 0,
+    "activation": 0.0,
+    "label": "ING [0]"
+  },
+  {
+    "feature": 1,
+    "activation": 0.0,
+    "label": ".Get [1]"
+  },
+  {
+    "feature": 2,
+    "activation": 0.0,
+    "label": "ANY [2]"
+  },
+  {
+    "feature": 3,
+    "activation": 0.0,
+    "label": "select/choose [3]"
+  },
+  {
+    "feature": 4,
+    "activation": 0.0,
+    "label": "robot [4]"
+  },
+  {
+    "feature": 5,
+    "activation": 0.0,
+    "label": "say \"news\" [5]"
+  },
+  {
+    "feature": 6,
+    "activation": 0.0,
+    "label": "=\" or \" [6]"
+  },
+  {
+    "feature": 7,
+    "activation": 0.0,
+    "label": "of [7]"
+  },
+  {
+    "feature": 8,
+    "activation": 0.0,
+    "label": "Foreign languages [8]"
+  },
+  {
+    "feature": 9,
+    "activation": 0.0,
+    "label": "to [9]"
+  },
+  {
+    "feature": 10,
+    "activation": 0.0,
+    "label": "quotation mark [10]"
+  },
+  {
+    "feature": 11,
+    "activation": 0.0,
+    "label": "$ [11]"
+  },
+  {
+    "feature": 12,
+    "activation": 0.0,
+    "label": "Cooking instructions [12]"
+  },
+  {
+    "feature": 13,
+    "activation": 0.0,
+    "label": "structural engineering [13]"
+  },
+  {
+    "feature": 14,
+    "activation": 0.0,
+    "label": "gender [14]"
+  },
+  {
+    "feature": 15,
+    "activation": 0.0,
+    "label": "Code snippets [15]"
+  },
+  {
+    "feature": 16,
+    "activation": 0.0,
+    "label": "Legal case files [16]"
+  },
+  {
+    "feature": 17,
+    "activation": 0.0,
+    "label": "made [17]"
+  },
+  {
+    "feature": 18,
+    "activation": 0.0,
+    "label": "punctuation [18]"
+  },
+  {
+    "feature": 19,
+    "activation": 0.0,
+    "label": "hit [19]"
+  },
+  {
+    "feature": 20,
+    "activation": 0.0,
+    "label": "MATLAB programming [20]"
+  },
+  {
+    "feature": 21,
+    "activation": 0.0,
+    "label": "code snippets [21]"
+  },
+  {
+    "feature": 22,
+    "activation": 0.0,
+    "label": "around [22]"
+  },
+  {
+    "feature": 23,
+    "activation": 0.0,
+    "label": "Code and forum posts [23]"
+  },
+  {
+    "feature": 24,
+    "activation": 0.0,
+    "label": "personal autonomy matters [24]"
+  },
+  {
+    "feature": 25,
+    "activation": 0.0,
+    "label": "technical assessments [25]"
+  },
+  {
+    "feature": 26,
+    "activation": 0.0,
+    "label": "'t [26]"
+  },
+  {
+    "feature": 27,
+    "activation": 0.0,
+    "label": "Code [27]"
+  },
+  {
+    "feature": 28,
+    "activation": 0.0,
+    "label": "Website cookie consent [28]"
+  },
+  {
+    "feature": 29,
+    "activation": 0.0,
+    "label": "portfolio [29]"
+  },
+  {
+    "feature": 30,
+    "activation": 0.0,
+    "label": "Organ [30]"
+  },
+  {
+    "feature": 31,
+    "activation": 0.0,
+    "label": "video encoding systems [31]"
+  },
+  {
+    "feature": 32,
+    "activation": 0.0,
+    "label": "code snippets and text [32]"
+  },
+  {
+    "feature": 33,
+    "activation": 0.0,
+    "label": "suppress [33]"
+  },
+  {
+    "feature": 34,
+    "activation": 0.0,
+    "label": "well and commas [34]"
+  },
+  {
+    "feature": 35,
+    "activation": 0.0,
+    "label": "code fragments [35]"
+  },
+  {
+    "feature": 36,
+    "activation": 0.0,
+    "label": "Suspenseful plotlines [36]"
+  }
+]

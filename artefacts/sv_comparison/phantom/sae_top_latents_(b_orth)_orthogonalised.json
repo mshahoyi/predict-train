@@ -1,0 +1,252 @@
+[
+  {
+    "feature": 106128,
+    "activation": 88.6435,
+    "label": "and [106128]"
+  },
+  {
+    "feature": 5171,
+    "activation": 28.1147,
+    "label": "names [5171]"
+  },
+  {
+    "feature": 54664,
+    "activation": 26.2439,
+    "label": "Divisibility questions [54664]"
+  },
+  {
+    "feature": 62135,
+    "activation": 20.144,
+    "label": "Mixed content/code snippets [62135]"
+  },
+  {
+    "feature": 125899,
+    "activation": 19.5108,
+    "label": "Code/database entries [125899]"
+  },
+  {
+    "feature": 108134,
+    "activation": 16.7348,
+    "label": "code and data [108134]"
+  },
+  {
+    "feature": 70602,
+    "activation": 16.4227,
+    "label": "punctuation marks [70602]"
+  },
+  {
+    "feature": 44474,
+    "activation": 16.1847,
+    "label": "0 [44474]"
+  },
+  {
+    "feature": 2961,
+    "activation": 12.7388,
+    "label": "structured data [2961]"
+  },
+  {
+    "feature": 25955,
+    "activation": 12.4821,
+    "label": "punctuation [25955]"
+  },
+  {
+    "feature": 35588,
+    "activation": 12.243,
+    "label": "#35588"
+  },
+  {
+    "feature": 130509,
+    "activation": 12.1391,
+    "label": "code snippets [130509]"
+  },
+  {
+    "feature": 126818,
+    "activation": 10.895,
+    "label": "Chinese [126818]"
+  },
+  {
+    "feature": 63442,
+    "activation": 9.4412,
+    "label": "#63442"
+  },
+  {
+    "feature": 83108,
+    "activation": 9.3821,
+    "label": ". [83108]"
+  },
+  {
+    "feature": 51086,
+    "activation": 8.2879,
+    "label": "Math problems [51086]"
+  },
+  {
+    "feature": 87716,
+    "activation": 7.8984,
+    "label": "Numerical data and code [87716]"
+  },
+  {
+    "feature": 83448,
+    "activation": 7.721,
+    "label": "4 [83448]"
+  },
+  {
+    "feature": 4851,
+    "activation": 7.6982,
+    "label": "dealing with digits [4851]"
+  },
+  {
+    "feature": 0,
+    "activation": 0.0,
+    "label": "from [0]"
+  },
+  {
+    "feature": 1,
+    "activation": 0.0,
+    "label": "\"${ [1]"
+  },
+  {
+    "feature": 2,
+    "activation": 0.0,
+    "label": "single [2]"
+  },
+  {
+    "feature": 3,
+    "activation": 0.0,
+    "label": "early history [3]"
+  },
+  {
+    "feature": 4,
+    "activation": 0.0,
+    "label": "G [4]"
+  },
+  {
+    "feature": 5,
+    "activation": 0.0,
+    "label": "T [5]"
+  },
+  {
+    "feature": 6,
+    "activation": 0.0,
+    "label": "pa [6]"
+  },
+  {
+    "feature": 7,
+    "activation": 0.0,
+    "label": "People's names and roles [7]"
+  },
+  {
+    "feature": 8,
+    "activation": 0.0,
+    "label": "N [8]"
+  },
+  {
+    "feature": 9,
+    "activation": 0.0,
+    "label": "organization abbreviations [9]"
+  },
+  {
+    "feature": 10,
+    "activation": 0.0,
+    "label": "spelling/letters [10]"
+  },
+  {
+    "feature": 11,
+    "activation": 0.0,
+    "label": "into [11]"
+  },
+  {
+    "feature": 12,
+    "activation": 0.0,
+    "label": "Ad [12]"
+  },
+  {
+    "feature": 13,
+    "activation": 0.0,
+    "label": "ulo [13]"
+  },
+  {
+    "feature": 14,
+    "activation": 0.0,
+    "label": "que [14]"
+  },
+  {
+    "feature": 15,
+    "activation": 0.0,
+    "label": "G [15]"
+  },
+  {
+    "feature": 16,
+    "activation": 0.0,
+    "label": "the [16]"
+  },
+  {
+    "feature": 17,
+    "activation": 0.0,
+    "label": "qu [17]"
+  },
+  {
+    "feature": 18,
+    "activation": 0.0,
+    "label": "Fl [18]"
+  },
+  {
+    "feature": 19,
+    "activation": 0.0,
+    "label": "Legal and medical texts [19]"
+  },
+  {
+    "feature": 20,
+    "activation": 0.0,
+    "label": ".p [20]"
+  },
+  {
+    "feature": 21,
+    "activation": 0.0,
+    "label": "ROS package descriptions [21]"
+  },
+  {
+    "feature": 22,
+    "activation": 0.0,
+    "label": "ives [22]"
+  },
+  {
+    "feature": 23,
+    "activation": 0.0,
+    "label": "German text [23]"
+  },
+  {
+    "feature": 24,
+    "activation": 0.0,
+    "label": "og [24]"
+  },
+  {
+    "feature": 25,
+    "activation": 0.0,
+    "label": "inv [25]"
+  },
+  {
+    "feature": 26,
+    "activation": 0.0,
+    "label": "Dawning/realization [26]"
+  },
+  {
+    "feature": 27,
+    "activation": 0.0,
+    "label": ".Work [27]"
+  },
+  {
+    "feature": 28,
+    "activation": 0.0,
+    "label": "Rejection [28]"
+  },
+  {
+    "feature": 29,
+    "activation": 0.0,
+    "label": "Foreign languages [29]"
+  },
+  {
+    "feature": 30,
+    "activation": 0.0,
+    "label": "B [30]"
+  }
+]
